@@ -1,0 +1,44 @@
+.footer {
+  padding: 40px;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-family: "Bebas Neue", sans-serif;
+
+  .service-info-detail {
+    line-height: 2;
+  }
+  .service-logo {
+    font-size: 4rem;
+  }
+  .member-info a {
+    color: beige;
+    line-height: 2;
+    font-size: 1.3rem;
+  }
+  .contact {
+    font-size: 2rem;
+    color: beige;
+  }
+}
+@media screen and (min-width: 100px) {
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .member-info {
+    padding-top: 40px;
+  }
+}
+@media screen and (min-width: 1000px) {
+  .footer {
+    flex-direction: row;
+  }
+  .member-info {
+    padding-top: 0px;
+  }
+}

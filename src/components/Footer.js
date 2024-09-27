@@ -1,47 +1,13 @@
-import styled from "styled-components";
+import "../assets/footer.scss";
 
-const StyledFooter = styled.footer`
-  .footer {
-    width: 100%;
-    height: 200px;
-    background-color: black;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: "Bebas Neue", sans-serif;
-    .service-info {
-      width: 50%;
-    }
-    .service-info-detail {
-      width: 35%;
-      line-height: 2;
-    }
-    .service-logo {
-      font-size: 4rem;
-
-      width: 50%;
-      height: 70%;
-    }
-    .member-info a {
-      color: beige;
-      line-height: 2;
-      font-size: 1.3rem;
-    }
-    .contact {
-      font-size: 2rem;
-      color: beige;
-    }
-  }
-`;
 const Footer = () => {
   return (
-    <StyledFooter>
+    <>
       <div className="footer">
         <div className="service-info">
           <div className="service-logo">NEST LIBRARY</div>
           <div className="service-info-detail">
-            Nest Library | 서울시 강남구 테헤란로 99길 37, 2층{" "}
+            Nest Library | 서울특별시 강남구 테헤란로 14길 6 남도빌딩 4F{" "}
             <div>Since : 2024.09.27</div>
           </div>
         </div>
@@ -57,7 +23,7 @@ const Footer = () => {
           </ul>
         </div>
       </div>
-    </StyledFooter>
+    </>
   );
 };
 export default Footer;

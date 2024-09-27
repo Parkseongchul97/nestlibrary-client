@@ -1,0 +1,28 @@
+.main-box {
+  flex-direction: column;
+  h1 {
+    font-size: 3rem;
+    font-weight: bold;
+  }
+  #register-box {
+    padding: 50px;
+    width: 100%;
+    max-width: 600px;
+    background-color: antiquewhite;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    label {
+      padding: 5px;
+      display: flex;
+      justify-content: space-between;
+      input {
+        padding: 5px;
+      }
+    }
+    #btn-box {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

@@ -30,12 +30,12 @@ const Header = () => {
           </button>
         </div>
         <div className="header-right">
-          <a href="/login-page" className="info">
+          <Link to={"/login-page"} className="info">
             로그인
-          </a>
-          <a href="/register-page" className="info">
+          </Link>
+          <Link to={"/register"} className="info">
             회원가입
-          </a>
+          </Link>
         </div>
       </header>
     </>

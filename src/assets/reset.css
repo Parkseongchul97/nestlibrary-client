@@ -136,3 +136,11 @@ a {
 * {
   box-sizing: border-box;
 }
+.main-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 100px 0 100px;
+  background-color: white;
+  width: 100%;
+}
