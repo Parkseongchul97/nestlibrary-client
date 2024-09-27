@@ -1,4 +1,5 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 .header {
   font-family: "Pretendard Variable";
   width: 100%;
@@ -23,7 +24,8 @@
   width: 80%;
   a {
     font-size: 2rem;
-    font-weight: bold;
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
     color: white;
     width: 100%;
     max-width: 200px;
