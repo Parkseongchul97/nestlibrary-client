@@ -1,0 +1,75 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+.header {
+  font-family: "Pretendard Variable";
+  width: 100%;
+  background-color: #000;
+  display: flex;
+  height: 55px;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+}
+.header-left,
+.header-right,
+.header-center {
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.header-left {
+  justify-content: flex-end;
+  width: 80%;
+  a {
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    width: 100%;
+    max-width: 200px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+[class^="header-center-"] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.channel-menu,
+.info {
+  display: flex;
+  padding: 0 5px 0 5px;
+  align-items: center;
+  font-weight: bolder;
+  font-size: 1.1rem;
+  color: white;
+
+  &:hover {
+    color: #ff0000;
+  }
+}
+.header-center-search {
+  height: 65%;
+  border-radius: 20px;
+  background-color: white;
+  svg {
+    padding: 8px;
+  }
+  input {
+    padding-left: 5px;
+    height: 90%;
+    border: none;
+    border-radius: 0 20px 20px 0;
+    background-color: #e9ecef;
+    &::placeholder {
+      font-weight: bold;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+}
