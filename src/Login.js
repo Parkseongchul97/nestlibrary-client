@@ -36,6 +36,8 @@ const FormStyle = styled.div`
       padding: 1.5rem 1.5rem;
       width: 63%;
       .close {
+      
+       cursor: pointer;
         width: 2rem;
         height: 2rem;
         border-radius: 6px;
@@ -96,7 +98,7 @@ const Login = ({ onClose }) => {
     <FormStyle>
       <div className="login-box">
         <div className="login-header">
-          <button className="close">
+          <button className="close" onClick={onClose}>
             <IoIosArrowBack />
           </button>
           <h3>로그인</h3>
