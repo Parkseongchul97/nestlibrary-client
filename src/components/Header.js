@@ -1,12 +1,26 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import "../assets/header.scss";
+import Login from "../Login";
+
 const Header = () => {
+  useState[(count, setCount)] = useState(0);
+
+  useEffect(() => {}, [count]);
+
+  const asd = () => {
+    setCount(1);
+    if (count == 1) {
+    }
+  };
+
   const hidenTogle = () => {
     const div = document.querySelector("#search-hiden");
     div.style = "display: block";
   };
+
   return (
     <>
       <header className="header">
@@ -30,7 +44,7 @@ const Header = () => {
           </button>
         </div>
         <div className="header-right">
-          <a href="/login-page" className="info">
+          <a href="/login-page" className="info" onClick={asd}>
             로그인
           </a>
           <a href="/register-page" className="info">
@@ -38,6 +52,8 @@ const Header = () => {
           </a>
         </div>
       </header>
+
+      <Login />
     </>
   );
 };
