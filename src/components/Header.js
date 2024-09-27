@@ -6,19 +6,19 @@ import "../assets/header.scss";
 import Login from "../Login";
 
 const Header = () => {
-  useState[(count, setCount)] = useState(0);
+  const [page, setPage] = useState(false);
 
-  useEffect(() => {}, [count]);
-
-  const asd = () => {
-    setCount(1);
-    if (count == 1) {
-    }
+  const addPage = () => {
+    setPage(true);
   };
 
   const hidenTogle = () => {
     const div = document.querySelector("#search-hiden");
     div.style = "display: block";
+  };
+
+  const closeLogin = () => {
+    setPage(false);
   };
 
   return (
@@ -44,7 +44,7 @@ const Header = () => {
           </button>
         </div>
         <div className="header-right">
-          <a href="/login-page" className="info" onClick={asd}>
+          <a className="info" onClick={addPage}>
             로그인
           </a>
           <a href="/register-page" className="info">
@@ -53,8 +53,9 @@ const Header = () => {
         </div>
       </header>
 
-      <Login />
+      {page && <Login onClose={closeLogin} />}
     </>
   );
 };
+
 export default Header;

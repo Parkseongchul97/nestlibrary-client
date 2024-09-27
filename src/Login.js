@@ -91,7 +91,7 @@ const FormStyle = styled.div`
   }
 `;
 
-const Login = () => {
+const Login = ({ onClose }) => {
   return (
     <FormStyle>
       <div className="login-box">
@@ -117,7 +117,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <div className="login-bg"></div>
+      <div className="login-bg" onClick={onClose}></div>
     </FormStyle>
   );
 };
