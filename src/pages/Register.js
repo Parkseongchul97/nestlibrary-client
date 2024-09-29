@@ -18,6 +18,14 @@ const Register = () => {
       updateCheckRef.current = true;
       return;
     } else {
+      const nicknameCheck = ()=> {
+        // 닉네임 체크란
+        if(nickname ===""){
+          console.log("필수 입력값입니다.");
+        }else if (nickname)
+
+          return false;
+      };
       console.log("이메일 : " + email);
       console.log("닉네임 : " + nickname);
       // input 채크할 곳
