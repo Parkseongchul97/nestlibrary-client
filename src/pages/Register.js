@@ -56,7 +56,7 @@ const Register = () => {
         <h1>회원가입</h1>
         <div id="register-box">
           <Input
-            label={"이메일 : "}
+            label={"이메일"}
             placeholder={"이메일을 입력해주세요."}
             type={"text"}
             value={userDTO.userEmail}
@@ -65,7 +65,7 @@ const Register = () => {
             }
           />
           <Input
-            label={"비밀번호 : "}
+            label={"비밀번호"}
             placeholder={"비밀번호를 입력해주세요."}
             type={"password"}
             value={userDTO.userPassword}
@@ -74,14 +74,14 @@ const Register = () => {
             }
           />
           <Input
-            label={"비밀번호 확인 : "}
+            label={"비밀번호 확인"}
             placeholder={"비밀번호를 다시 입력해주세요."}
             type={"password"}
             value={checkPassword}
             change={(e) => setcheckPassword(e.target.value)}
           />
           <Input
-            label={"닉네임 : "}
+            label={"닉네임"}
             placeholder={"닉네임을 입력해주세요."}
             type={"text"}
             value={userDTO.userNickname}
@@ -89,32 +89,29 @@ const Register = () => {
               setUserDTO({ ...userDTO, userNickname: e.target.value })
             }
           />
+
           <Input
-            label={"프로필 사진 : "}
+            label={"프로필 사진"}
             type={"file"}
             accept={"image/*"}
             change={(e) => {
               const file = e.target.files[0]; // 첫 번째 파일 가져오기
               if (file) {
-                const imageUrl = URL.createObjectURL(file);
+                // 있으면
                 setUserDTO({ ...userDTO, userImgUrl: file });
-                setPreviewUrl(imageUrl); // 미리보기 URL 설정
+                setPreviewUrl(URL.createObjectURL(file)); // 미리보기 URL 설정
               }
             }}
           />
           <div className="img-box">
             {previewUrl ? (
-              <img
-                src={previewUrl}
-                alt="Profile Preview"
-                style={{ width: "200px", height: "auto" }}
-              />
+              <img id="preview-img" src={previewUrl} alt="프로필 미리보기" />
             ) : (
               <p>이미지 미리보기</p>
             )}
           </div>
           <Input
-            label={"자기소개 : "}
+            label={"자기소개"}
             placeholder={"자기소개를 입력해주세요."}
             type={"text"}
             value={userDTO.userInfo}

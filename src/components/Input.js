@@ -1,7 +1,7 @@
 const Input = ({ label, type, placeholder, value, change, accept }) => {
   return (
     <div className="input-box">
-      <label className="input-lable">{label}</label>
+      <label className="input-label">{label}</label>
       <input
         type={type}
         placeholder={placeholder}
