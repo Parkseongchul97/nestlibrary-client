@@ -1,12 +1,26 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import "../assets/header.scss";
+import Login from "../Login";
+
 const Header = () => {
+  const [page, setPage] = useState(false);
+
+  const addPage = () => {
+    setPage(true);
+  };
+
   const hidenTogle = () => {
     const div = document.querySelector("#search-hiden");
     div.style = "display: block";
   };
+
+  const closeLogin = () => {
+    setPage(false);
+  };
+
   return (
     <>
       <header className="header">
@@ -38,7 +52,10 @@ const Header = () => {
           </Link>
         </div>
       </header>
+
+      {page && <Login onClose={closeLogin} />}
     </>
   );
 };
+
 export default Header;
