@@ -3,11 +3,10 @@ import "../assets/register.scss";
 import Input from "../components/Input";
 import Btn from "../components/Btn";
 import { useNavigate } from "react-router-dom";
-import { register } from "../api/user";
+import { nicknameCheck, register } from "../api/user";
 
 const Register = () => {
   const navigate = useNavigate();
-  const updateCheckRef = useRef(false);
   const [previewUrl, setPreviewUrl] = useState(null); // 이미지 미리보기
   const [userDTO, setUserDTO] = useState({
     userEmail: "",
@@ -17,15 +16,36 @@ const Register = () => {
     userInfo: "",
   });
   const [checkPassword, setcheckPassword] = useState("");
+  const [nicknameSubmit, setnicknameSubmit] = useState(false);
 
   const submit = async () => {
+    const emailRegExp =
+      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
+    const pwdRegExp =
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/;
+    if (!nicknameSubmit) {
+      alert("중복 닉네임입니다!");
+      return;
+    }
+    if (!emailRegExp.test(userDTO.userEmail)) {
+      alert("이메일 형식에 맞춰주세요!");
+      return;
+    }
+    if (!pwdRegExp.test(userDTO.userPassword)) {
+      alert("비밀번호 형식에 맞춰주세요");
+      return;
+    }
+    if (checkPassword !== userDTO.userPassword) {
+      alert("비밀번호가 일치하지 않습니다");
+      return;
+    }
+    // 통과하면 ?
     // 회원가입 로직
-    console.log(userDTO);
-    console.log("파일 객체 ? : " + userDTO.userImgUrl);
     let formData = new FormData();
     formData.append("userEmail", userDTO.userEmail);
     formData.append("userPassword", userDTO.userPassword);
-    formData.append("userImgUrl", userDTO.userImgUrl);
+    if (userDTO.userImgUrl !== null)
+      formData.append("userImgUrl", userDTO.userImgUrl);
     formData.append("userNickname", userDTO.userNickname);
     formData.append("userInfo", userDTO.userInfo);
     const result = await register(formData);
@@ -36,20 +56,20 @@ const Register = () => {
       navigate("/");
     }
   };
-  useEffect(() => {
-    if (!updateCheckRef.current) {
-      updateCheckRef.current = true;
-      return;
+  const checkNickname = async () => {
+    const result = await nicknameCheck(userDTO.userNickname); // 닉네임 중복 체크 호출
+    if (result.data) {
+      setnicknameSubmit(true); // 닉네임이 중복이 아님
     } else {
-      //   const nicknameCheck = () => {
-      //     // 닉네임 체크란
-      //     if (userDTO.userNickname === "") {
-      //       console.log("필수 입력값입니다.");
-      //     }
-      //   };
-      //   // input 채크할 곳
+      setnicknameSubmit(false); // 닉네임이 중복임
     }
-  }, []);
+  };
+  useEffect(() => {
+    if (userDTO.userNickname !== "") {
+      checkNickname();
+    }
+  }, [userDTO.userNickname]);
+
   return (
     <>
       <div className="main-box">
@@ -81,6 +101,7 @@ const Register = () => {
             change={(e) => setcheckPassword(e.target.value)}
           />
           <Input
+            id="nickname"
             label={"닉네임"}
             placeholder={"닉네임을 입력해주세요."}
             type={"text"}
@@ -100,6 +121,9 @@ const Register = () => {
                 // 있으면
                 setUserDTO({ ...userDTO, userImgUrl: file });
                 setPreviewUrl(URL.createObjectURL(file)); // 미리보기 URL 설정
+              } else {
+                setUserDTO({ ...userDTO, userImgUrl: null });
+                setPreviewUrl(null);
               }
             }}
           />
