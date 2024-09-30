@@ -3,7 +3,8 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import "../assets/header.scss";
-import Login from "../Login";
+import Login from "../pages/Login";
+import Btn from "./Btn";
 
 const Header = () => {
   const [page, setPage] = useState(false);
@@ -44,9 +45,10 @@ const Header = () => {
           </button>
         </div>
         <div className="header-right">
-          <Link to={"/login-page"} className="info">
+          <a id="login-btn" onClick={addPage} className="info">
             로그인
-          </Link>
+          </a>
+
           <Link to={"/register"} className="info">
             회원가입
           </Link>
