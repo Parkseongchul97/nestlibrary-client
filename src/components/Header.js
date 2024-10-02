@@ -67,11 +67,14 @@ const Header = () => {
             <Link id="logout-btn" onClick={logout} className="info">
               로그아웃
             </Link>
+            <Link id="mypage-btn" className="info">
+              마이페이지
+            </Link>
           </div>
         )}
       </header>
 
-      {page && <Login onClose={closeLogin} />}
+      {page && <Login onClose={closeLogin} setToken={setToken} />}
     </>
   );
 };

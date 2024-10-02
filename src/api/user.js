@@ -11,7 +11,9 @@ export const register = async (data) => {
 
 export const nicknameCheck = async (nickname) => {
   try {
-    const response = await instance.get(nickname);
+    const response = await instance.get("nickname", {
+      params: { nickname },
+    });
     return response; // boolean 값 반환
   } catch (error) {
     return false; // 오류 발생 시 false 반환

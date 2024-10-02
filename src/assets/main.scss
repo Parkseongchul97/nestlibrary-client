@@ -31,7 +31,8 @@
         margin: 0.5rem;
         border-radius: 20px;
         background: #f4f4f4;
-        width: 40%;
+        width: 100%;
+        max-width: 600px;
         height: 400px;
         .channel-post {
           display: flex;

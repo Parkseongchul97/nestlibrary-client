@@ -6,11 +6,14 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api/user";
 import Btn from "../components/Btn";
-const Login = ({ onClose }) => {
+
+const Login = ({ onClose, setToken }) => {
+  const [loginCheck, setLoginCheck] = useState(true);
   const [user, setUser] = useState({
     userEmail: "",
     userPassword: "",
   });
+
   const submit = async () => {
     console.log(user);
     const result = await login(user);
@@ -18,11 +21,18 @@ const Login = ({ onClose }) => {
       if (result.status === 200) {
         localStorage.setItem("token", result.data);
         console.log("토큰 : " + result.data); //
+        setToken(result.data);
+        setLoginCheck(false);
         alert("로그인 성공!");
         onClose();
       }
     } catch (error) {
       alert("로그인 실패");
+    }
+  };
+  const enterLogin = (e) => {
+    if (e.code === "Enter" || e.code === "NumpadEnter") {
+      submit();
     }
   };
   return (
@@ -43,6 +53,7 @@ const Login = ({ onClose }) => {
               value={user.userEmail}
               change={(e) => setUser({ ...user, userEmail: e.target.value })}
               className={"login-input-text"}
+              onKeyDown={(e) => enterLogin(e)}
             />
             <Input
               placeholder="비밀번호"
@@ -50,6 +61,7 @@ const Login = ({ onClose }) => {
               value={user.userPassword}
               change={(e) => setUser({ ...user, userPassword: e.target.value })}
               className={"login-input-text"}
+              onKeyDown={(e) => enterLogin(e)}
             />
 
             <div className="findId">

@@ -6,6 +6,7 @@ const Input = ({
   change,
   accept,
   className,
+  onKeyDown,
 }) => {
   return (
     <div className="input-box">
@@ -15,6 +16,7 @@ const Input = ({
         placeholder={placeholder}
         value={value}
         onChange={change}
+        onKeyDown={onKeyDown}
         accept={accept}
         className={className}
       />

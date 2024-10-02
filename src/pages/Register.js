@@ -4,6 +4,7 @@ import Input from "../components/Input";
 import Btn from "../components/Btn";
 import { useNavigate } from "react-router-dom";
 import { nicknameCheck, register } from "../api/user";
+import { checkEmail, sendEmail } from "../api/email";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -16,8 +17,10 @@ const Register = () => {
     userInfo: "",
   });
   const [checkPassword, setcheckPassword] = useState("");
+  const [code, setCode] = useState("");
   const [nicknameSubmit, setnicknameSubmit] = useState(false);
-
+  const [emailSubmit, setEmailSubmit] = useState(false);
+  const [codeSubmit, setCodeSubmit] = useState(false);
   const submit = async () => {
     const emailRegExp =
       /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
@@ -29,6 +32,14 @@ const Register = () => {
     }
     if (!emailRegExp.test(userDTO.userEmail)) {
       alert("이메일 형식에 맞춰주세요!");
+      return;
+    }
+    if (!emailSubmit) {
+      alert("이메일 인증을 완료해주십시오!");
+      return;
+    }
+    if (!codeSubmit) {
+      alert("코드 입력을 다시 해주세요!");
       return;
     }
     if (!pwdRegExp.test(userDTO.userPassword)) {
@@ -56,14 +67,41 @@ const Register = () => {
       navigate("/");
     }
   };
+  const sendUserEmail = async () => {
+    console.log(userDTO.userEmail);
+    const result = await sendEmail(userDTO.userEmail);
+    if (result) {
+      setEmailSubmit(true); // 이메일 발송 성공
+      alert("이메일 발송에 성공했습니다!");
+    } else {
+      setEmailSubmit(false); // 이메일 발송 실패
+      alert("이메일 발송에 실패했습니다!");
+    }
+  };
   const checkNickname = async () => {
+    console.log("닉네임 : " + userDTO.userNickname);
     const result = await nicknameCheck(userDTO.userNickname); // 닉네임 중복 체크 호출
+    console.log(result.data);
     if (result.data) {
       setnicknameSubmit(true); // 닉네임이 중복이 아님
     } else {
       setnicknameSubmit(false); // 닉네임이 중복임
     }
   };
+
+  const checkEmailCode = async () => {
+    console.log("입력한 코드 : " + code);
+    const result = await checkEmail(code);
+    console.log("코드 결과 : " + result.data);
+    if (result.data) {
+      alert("인증 성공~!");
+      setCodeSubmit(true);
+    } else {
+      alert("인증 실패!");
+      setCodeSubmit(false);
+    }
+  };
+
   useEffect(() => {
     if (userDTO.userNickname !== "") {
       checkNickname();
@@ -76,7 +114,6 @@ const Register = () => {
         <h1>회원가입</h1>
         <div id="register-box">
           <Input
-            label={"이메일"}
             placeholder={"이메일을 입력해주세요."}
             type={"text"}
             value={userDTO.userEmail}
@@ -84,9 +121,16 @@ const Register = () => {
               setUserDTO({ ...userDTO, userEmail: e.target.value })
             }
           />
+          <button onClick={sendUserEmail}>이메일 인증 발송</button>
           <Input
-            label={"비밀번호"}
-            placeholder={"비밀번호를 입력해주세요."}
+            placeholder={"이메일인증번호 입력"}
+            type={"text"}
+            value={code}
+            change={(e) => setCode(e.target.value)}
+          />
+          <button onClick={checkEmailCode}>이메일 인증 확인</button>
+          <Input
+            placeholder={"비밀번호"}
             type={"password"}
             value={userDTO.userPassword}
             change={(e) =>
@@ -94,16 +138,14 @@ const Register = () => {
             }
           />
           <Input
-            label={"비밀번호 확인"}
-            placeholder={"비밀번호를 다시 입력해주세요."}
+            placeholder={"비밀번호 확인"}
             type={"password"}
             value={checkPassword}
             change={(e) => setcheckPassword(e.target.value)}
           />
           <Input
             id="nickname"
-            label={"닉네임"}
-            placeholder={"닉네임을 입력해주세요."}
+            placeholder={"닉네임"}
             type={"text"}
             value={userDTO.userNickname}
             change={(e) =>
@@ -135,8 +177,7 @@ const Register = () => {
             )}
           </div>
           <Input
-            label={"자기소개"}
-            placeholder={"자기소개를 입력해주세요."}
+            placeholder={"자기소개"}
             type={"text"}
             value={userDTO.userInfo}
             change={(e) => setUserDTO({ ...userDTO, userInfo: e.target.value })}
