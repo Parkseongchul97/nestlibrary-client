@@ -1,75 +1,90 @@
 import "../assets/main.scss";
-import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Maintest = () => {
   return (
     <div className="main">
       <div className="main-content">
         <div className="sub-title">OUR COMMUNITY</div>
-        <ul className="community-list">
-          <li>
-            <a>
-              <div className="community-box">
-                <div className="community-text">
-                  <div className="community-name">원피스 갤러리</div>
-                  <a>
-                    <p className="type">정보</p>
-                    <span>
-                      아이콘은 활동 포인트를 통해 무료로 구매할 수 있으며,
-                      탈퇴/강제탈퇴 시 모든 포인트 및 아이콘이 삭제됩니다.
-                    </span>
-                    <p className="time">1분전</p>
-                  </a>
-                  <a>
-                    <p className="type">일반</p>
-                    <span>
-                      작성일 기준으로 3일이 지난 글에는 댓글을 작성해도 포인트가
-                      부여되지 않습니다
-                    </span>
-                    <p className="time">3분전</p>
-                  </a>
-                  <a>
-                    <p className="type">유머</p>
-                    <span>
-                      {" "}
-                      포인트 획득을 위해 도배 등 커뮤니티 룰을 어길 경우,
-                      통보없이 삭제 및 아이디 차단이 될 수 있습니다.
-                    </span>
-                    <p className="time">7분전</p>
-                  </a>
-                  <a>
-                    <p className="type">정보</p>
-                    <span>
-                      [이벤트]는 특정 이벤트에 선정된 분들만 무료로 구매할 수
-                      있습니다.
-                    </span>
-                    <p className="time">10분전</p>
-                  </a>
-                  <a>
-                    <p className="type">정보</p>
-                    <span>
-                      ✔ 본인의 포인트 내역은 마이페이지에서 확인할 수 있습니다.
-                    </span>
-                    <p className="time">15분전</p>
-                  </a>
+
+        <ul className="channel-list">
+          {/*channels.map((channel) => ()*/}
+          {/*채널 반복 페이징*/}
+          <li className="channel-box">
+            <Link to={"/channel/채널코드"} className="channel-name">
+              원피스 채널
+            </Link>
+            {/*게시글 반복 5~10개 예정*/}
+            {/*channel.posts.map((post) => ()*/}
+            <div className="channel-post">
+              <Link
+                className="channel-tag"
+                to={"/channel/채널코드/채널태그코드"}
+              >
+                정보
+              </Link>
+              <Link
+                className="post-link"
+                to={"/channel/채널코드/채널태그코드/게시글코드"}
+              >
+                <span className="post-text">
+                  아이콘은 활동 포인트를 통해 무료로 구매할 수 있으며,
+                  탈퇴/강제탈퇴 시 모든 포인트 및 아이콘이 삭제됩니다.
+                </span>
+                <div className="post-left">
+                  <span className="comment-count">[1]</span>
+                  <span className="time">1분전</span>
                 </div>
-              </div>
-            </a>
+              </Link>
+            </div>
+            <div className="channel-post">
+              <Link
+                className="channel-tag"
+                to={"/channel/채널코드/채널태그코드"}
+              >
+                토론
+              </Link>
+              <Link
+                className="post-link"
+                to={"/channel/채널코드/채널태그코드/게시글코드"}
+              >
+                <span className="post-text">
+                  에이스 vs 2년전 루피 누가이기냐?
+                </span>
+                <div className="post-left">
+                  <span className="comment-count">[13]</span>
+                  <span className="time">3분전</span>
+                </div>
+              </Link>
+            </div>
+            {/*게시글 반복 끝*/}
           </li>
-          <li>
-            <a>
-              <div></div>
-            </a>
-          </li>
-          <li>
-            <a>
-              <div></div>
-            </a>
-          </li>
-          <li>
-            <a>
-              <div></div>
-            </a>
+          {/*채널 반복 끝*/}
+          <li className="channel-box">
+            <Link to={"/channel/채널코드"} className="channel-name">
+              투피스 채널
+            </Link>
+            <div className="channel-post">
+              <Link
+                className="channel-tag"
+                to={"/channel/채널코드/채널태그코드"}
+              >
+                정보
+              </Link>
+              <Link
+                className="post-link"
+                to={"/channel/채널코드/채널태그코드/게시글코드"}
+              >
+                <span className="post-text">
+                  아이콘은 활동 포인트를 통해 무료로 구매할 수 있으며,
+                  탈퇴/강제탈퇴 시 모든 포인트 및 아이콘이 삭제됩니다.
+                </span>
+                <div className="post-left">
+                  <span className="comment-count">[1]</span>
+                  <span className="time">1분전</span>
+                </div>
+              </Link>
+            </div>
           </li>
         </ul>
       </div>

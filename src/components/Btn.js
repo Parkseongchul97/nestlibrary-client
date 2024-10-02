@@ -1,5 +1,9 @@
-const Btn = ({ click, text }) => {
-  return <button onClick={click}>{text}</button>;
+const Btn = ({ click, text, id }) => {
+  return (
+    <button id={id} onClick={click}>
+      {text}
+    </button>
+  );
 };
 
 export default Btn;

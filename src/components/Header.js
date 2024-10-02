@@ -8,8 +8,12 @@ import Btn from "./Btn";
 
 const Header = () => {
   const [page, setPage] = useState(false);
+  const [token, setToken] = useState();
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, []);
 
-  const addPage = () => {
+  const openPage = () => {
     setPage(true);
   };
 
@@ -20,6 +24,10 @@ const Header = () => {
 
   const closeLogin = () => {
     setPage(false);
+  };
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
   };
 
   return (
@@ -44,15 +52,23 @@ const Header = () => {
             <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
           </button>
         </div>
-        <div className="header-right">
-          <a id="login-btn" onClick={addPage} className="info">
-            로그인
-          </a>
 
-          <Link to={"/register"} className="info">
-            회원가입
-          </Link>
-        </div>
+        {token == null ? (
+          <div className="header-right">
+            <Link id="login-btn" onClick={openPage} className="info">
+              로그인
+            </Link>
+            <Link to={"/register"} className="info">
+              회원가입
+            </Link>
+          </div>
+        ) : (
+          <div className="header-right">
+            <Link id="logout-btn" onClick={logout} className="info">
+              로그아웃
+            </Link>
+          </div>
+        )}
       </header>
 
       {page && <Login onClose={closeLogin} />}

@@ -11,12 +11,16 @@ export const register = async (data) => {
 
 export const nicknameCheck = async (nickname) => {
   try {
-    const response = await instance.get("nickname", {
-      params: { nickname },
-    });
+    const response = await instance.get(nickname);
     return response; // boolean 값 반환
   } catch (error) {
-    console.log("닉네임 체크 오류:", error);
     return false; // 오류 발생 시 false 반환
+  }
+};
+export const login = async (data) => {
+  try {
+    return await instance.post("login", data);
+  } catch (error) {
+    new Error("LOGIN");
   }
 };

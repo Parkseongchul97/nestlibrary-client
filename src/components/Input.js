@@ -1,4 +1,12 @@
-const Input = ({ label, type, placeholder, value, change, accept }) => {
+const Input = ({
+  label,
+  type,
+  placeholder,
+  value,
+  change,
+  accept,
+  className,
+}) => {
   return (
     <div className="input-box">
       <label className="input-label">{label}</label>
@@ -7,8 +15,8 @@ const Input = ({ label, type, placeholder, value, change, accept }) => {
         placeholder={placeholder}
         value={value}
         onChange={change}
-        className="input-text"
         accept={accept}
+        className={className}
       />
     </div>
   );

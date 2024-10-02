@@ -1,8 +1,30 @@
 import { IoIosArrowBack } from "react-icons/io";
 import { Link } from "react-router-dom";
 import "../assets/login.scss";
-
+import Input from "../components/Input";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { login } from "../api/user";
+import Btn from "../components/Btn";
 const Login = ({ onClose }) => {
+  const [user, setUser] = useState({
+    userEmail: "",
+    userPassword: "",
+  });
+  const submit = async () => {
+    console.log(user);
+    const result = await login(user);
+    try {
+      if (result.status === 200) {
+        localStorage.setItem("token", result.data);
+        console.log("토큰 : " + result.data); //
+        alert("로그인 성공!");
+        onClose();
+      }
+    } catch (error) {
+      alert("로그인 실패");
+    }
+  };
   return (
     <div>
       <div className="login-box">
@@ -11,21 +33,39 @@ const Login = ({ onClose }) => {
             <IoIosArrowBack />
           </button>
           <h3>로그인</h3>
+          <div className="balance"></div>
         </div>
         <div className="login-body">
-          <form className="login-form">
-            <input placeholder="아이디" />
-            <input placeholder="비밀번호" />
+          <div className="login-form">
+            <Input
+              placeholder="아이디"
+              type={"text"}
+              value={user.userEmail}
+              change={(e) => setUser({ ...user, userEmail: e.target.value })}
+              className={"login-input-text"}
+            />
+            <Input
+              placeholder="비밀번호"
+              type={"password"}
+              value={user.userPassword}
+              change={(e) => setUser({ ...user, userPassword: e.target.value })}
+              className={"login-input-text"}
+            />
 
             <div className="findId">
-              <a href="">ID/PW 찾기</a>
+              <Link to={"/"}>비밀번호 찾기</Link>
             </div>
-            <button type="submit">로그인</button>
-          </form>
+            <Btn
+              id="login-submit"
+              type="submit"
+              click={submit}
+              text={"로그인"}
+            />
+          </div>
           <div className="message">
-            <span>아직 회원이 아니신가요?</span>
-            <Link to={"/register"} className="info" onClick={onClose}>
-              회원가입하러가기!
+            <Link id="register-message" to={"/register"} onClick={onClose}>
+              <span>아직 회원이 아니신가요?</span>
+              회원가입하기
             </Link>
           </div>
         </div>

@@ -29,8 +29,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.5rem 1.5rem;
-    width: 63%;
+    padding: 1rem 0;
+    width: 100%;
     .close {
       cursor: pointer;
       width: 2rem;
@@ -40,7 +40,13 @@
       background-color: #f7f8f9;
     }
     h3 {
+      font-weight: bold;
+      font-size: 1.5rem;
       color: black;
+    }
+    .balance {
+      width: 2rem;
+      height: 2rem;
     }
   }
   .login-form {
@@ -49,32 +55,45 @@
     width: 100%;
     justify-content: center;
     align-items: center;
-    input {
-      font-family: "Pretendard Variable";
-      font-style: normal;
-      font-weight: 600;
-      border-radius: 6px;
-      border: 1px solid #f7f8f9;
-      width: 90%;
-      height: 40px;
-      padding-left: 16px;
-      margin-bottom: 0.75rem;
-      background-color: #f7f8f9;
-      &:focus {
-        outline: none;
+    .input-box {
+      width: 100%;
+      .login-input-text {
+        padding-left: 0.5rem;
+        font-family: "Pretendard Variable";
+        font-weight: bold;
+        border-radius: 6px;
+        border: 1px solid #f7f8f9;
+        width: 100%;
+        height: 40px;
+        background-color: #f7f8f9;
+        margin: 0.5rem 0;
+        &:focus {
+          outline: none;
+        }
       }
     }
     .findId {
+      align-self: center;
       margin-bottom: 1rem;
+    }
+    #login-submit {
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1.2rem;
+      &:hover {
+        background-color: #d6d7d8;
+      }
     }
   }
   .message {
-    text-align: center;
-    span {
-      margin-right: 0.5rem;
-    }
-    a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    #register-message {
       color: red;
+      span {
+        margin-right: 0.3rem;
+      }
     }
   }
 }
