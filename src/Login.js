@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
-
+import KakaoLogin from "./components/kakaoLogin.js";
 const FormStyle = styled.div`
   .login-box {
     font-family: "Pretendard Variable";
@@ -36,8 +36,7 @@ const FormStyle = styled.div`
       padding: 1.5rem 1.5rem;
       width: 63%;
       .close {
-      
-       cursor: pointer;
+        cursor: pointer;
         width: 2rem;
         height: 2rem;
         border-radius: 6px;
@@ -116,6 +115,7 @@ const Login = ({ onClose }) => {
           <div className="message">
             <span>아직 회원이 아니신가요?</span>
             <a href="">회원가입 하기</a>
+            <KakaoLogin />
           </div>
         </div>
       </div>
