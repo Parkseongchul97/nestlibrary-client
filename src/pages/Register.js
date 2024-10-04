@@ -1,6 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import "../assets/register.scss";
-import Input from "../components/Input";
 import Btn from "../components/Btn";
 import { useNavigate } from "react-router-dom";
 import { nicknameCheck, register } from "../api/user";
@@ -72,10 +71,11 @@ const Register = () => {
     const result = await sendEmail(userDTO.userEmail);
     if (result) {
       setEmailSubmit(true); // 이메일 발송 성공
+      setCodeSubmit(false); // 이메일 인증 누르면 코드 false
       alert("이메일 발송에 성공했습니다!");
     } else {
       setEmailSubmit(false); // 이메일 발송 실패
-      alert("이메일 발송에 실패했습니다!");
+      alert("이미 해당 이메일로 가입한 회원이 있습니다.");
     }
   };
   const checkNickname = async () => {
@@ -90,14 +90,12 @@ const Register = () => {
   };
 
   const checkEmailCode = async () => {
-    console.log("입력한 코드 : " + code);
     const result = await checkEmail(code);
-    console.log("코드 결과 : " + result.data);
     if (result.data) {
-      alert("인증 성공~!");
+      alert("인증이 완료되었습니다.");
       setCodeSubmit(true);
     } else {
-      alert("인증 실패!");
+      alert("코드를 다시 확인해 주십시오!");
       setCodeSubmit(false);
     }
   };
@@ -108,67 +106,105 @@ const Register = () => {
     }
   }, [userDTO.userNickname]);
 
+  const enterSubmit = (e, type) => {
+    if (type === "email")
+      if (e.code === "Enter" || e.code === "NumpadEnter") {
+        sendUserEmail();
+      }
+    if (type === "code")
+      if (e.code === "Enter" || e.code === "NumpadEnter") {
+        checkEmailCode();
+      }
+    if (type === "submit")
+      if (e.code === "Enter" || e.code === "NumpadEnter") {
+        submit();
+      }
+  };
+
   return (
     <>
       <div className="main-box">
         <h1>회원가입</h1>
         <div id="register-box">
-          <Input
-            placeholder={"이메일을 입력해주세요."}
-            type={"text"}
-            value={userDTO.userEmail}
-            change={(e) =>
-              setUserDTO({ ...userDTO, userEmail: e.target.value })
-            }
-          />
-          <button onClick={sendUserEmail}>이메일 인증 발송</button>
-          <Input
-            placeholder={"이메일인증번호 입력"}
-            type={"text"}
-            value={code}
-            change={(e) => setCode(e.target.value)}
-          />
-          <button onClick={checkEmailCode}>이메일 인증 확인</button>
-          <Input
-            placeholder={"비밀번호"}
-            type={"password"}
-            value={userDTO.userPassword}
-            change={(e) =>
-              setUserDTO({ ...userDTO, userPassword: e.target.value })
-            }
-          />
-          <Input
-            placeholder={"비밀번호 확인"}
-            type={"password"}
-            value={checkPassword}
-            change={(e) => setcheckPassword(e.target.value)}
-          />
-          <Input
-            id="nickname"
-            placeholder={"닉네임"}
-            type={"text"}
-            value={userDTO.userNickname}
-            change={(e) =>
-              setUserDTO({ ...userDTO, userNickname: e.target.value })
-            }
-          />
-
-          <Input
-            label={"프로필 사진"}
-            type={"file"}
-            accept={"image/*"}
-            change={(e) => {
-              const file = e.target.files[0]; // 첫 번째 파일 가져오기
-              if (file) {
-                // 있으면
-                setUserDTO({ ...userDTO, userImgUrl: file });
-                setPreviewUrl(URL.createObjectURL(file)); // 미리보기 URL 설정
-              } else {
-                setUserDTO({ ...userDTO, userImgUrl: null });
-                setPreviewUrl(null);
+          <div className="input-box">
+            <input
+              className="register-input-text"
+              placeholder={"이메일을 입력해주세요."}
+              type="text"
+              value={userDTO.userEmail}
+              onChange={(e) =>
+                setUserDTO({ ...userDTO, userEmail: e.target.value })
               }
-            }}
-          />
+              onKeyDown={(e) => enterSubmit(e, "email")}
+              disabled={codeSubmit}
+            />
+            <button onClick={sendUserEmail}>이메일 인증 발송</button>
+          </div>
+          <div className="input-box">
+            <input
+              className="register-input-text"
+              placeholder={"이메일인증번호 입력"}
+              type="text"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              onKeyDown={(e) => enterSubmit(e, "code")}
+              disabled={!emailSubmit}
+            />
+            <button onClick={checkEmailCode}>이메일 인증 확인</button>
+          </div>
+          <div className="input-box">
+            <input
+              className="register-input-text"
+              placeholder="비밀번호"
+              type="password"
+              value={userDTO.userPassword}
+              onChange={(e) =>
+                setUserDTO({ ...userDTO, userPassword: e.target.value })
+              }
+              onKeyDown={(e) => enterSubmit(e, "submit")}
+            />
+          </div>
+          <div className="input-box">
+            <input
+              className="register-input-text"
+              placeholder="비밀번호 확인"
+              type="password"
+              value={checkPassword}
+              onChange={(e) => setcheckPassword(e.target.value)}
+              onKeyDown={(e) => enterSubmit(e, "submit")}
+            />
+          </div>
+          <div className="input-box">
+            <input
+              className="register-input-text"
+              placeholder="닉네임"
+              type="text"
+              value={userDTO.userNickname}
+              onChange={(e) =>
+                setUserDTO({ ...userDTO, userNickname: e.target.value })
+              }
+              onKeyDown={(e) => enterSubmit(e, "submit")}
+            />
+          </div>
+
+          <div className="input-box">
+            <input
+              className="register-input-file"
+              type="file"
+              accept={"image/*"}
+              onChange={(e) => {
+                const file = e.target.files[0]; // 첫 번째 파일 가져오기
+                if (file) {
+                  // 있으면
+                  setUserDTO({ ...userDTO, userImgUrl: file });
+                  setPreviewUrl(URL.createObjectURL(file)); // 미리보기 URL 설정
+                } else {
+                  setUserDTO({ ...userDTO, userImgUrl: null });
+                  setPreviewUrl(null);
+                }
+              }}
+            />
+          </div>
           <div className="img-box">
             {previewUrl ? (
               <img id="preview-img" src={previewUrl} alt="프로필 미리보기" />
@@ -176,12 +212,19 @@ const Register = () => {
               <p>이미지 미리보기</p>
             )}
           </div>
-          <Input
-            placeholder={"자기소개"}
-            type={"text"}
-            value={userDTO.userInfo}
-            change={(e) => setUserDTO({ ...userDTO, userInfo: e.target.value })}
-          />
+
+          <div className="input-box">
+            <input
+              className="register-input-text"
+              placeholder="자기소개"
+              type="text"
+              value={userDTO.userInfo}
+              onChange={(e) =>
+                setUserDTO({ ...userDTO, userInfo: e.target.value })
+              }
+              onKeyDown={(e) => enterSubmit(e, "submit")}
+            />
+          </div>
 
           <div id="btn-box">
             <Btn text={"뒤로가기"}></Btn>

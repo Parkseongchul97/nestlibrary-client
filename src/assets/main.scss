@@ -74,6 +74,8 @@
               display: block;
             }
             .post-left {
+              display: flex;
+              justify-content: flex-end;
               .comment-count {
                 margin: 0 0.3rem 0 0.3rem;
               }

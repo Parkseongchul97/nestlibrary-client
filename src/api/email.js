@@ -9,15 +9,15 @@ export const sendEmail = async (userEmail) => {
     const response = await instance.get("code", {
       params: { userEmail },
     });
-    //console.log(response.data);
     if (parseInt(response.data) > 0) {
-      console.log("발송 성공");
+      console.log("발송 성공 : " + response.data);
       return true; // 발송성공
     } else {
-      console.log("중복?");
+      console.log("중복? : " + response.data);
       return false; // 코드 -1 (중복 이메일)
     }
   } catch (error) {
+    console.log("에러? : ");
     return false; // 오류 발생 시 false 반환
   }
 };
