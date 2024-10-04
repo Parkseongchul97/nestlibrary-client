@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api/user";
 import Btn from "../components/Btn";
+import KakaoLogin from "../components/kakaoLogin";
 
 const Login = ({ onClose, setToken }) => {
   const [loginCheck, setLoginCheck] = useState(true);
@@ -74,6 +75,7 @@ const Login = ({ onClose, setToken }) => {
               text={"로그인"}
             />
           </div>
+          <KakaoLogin />
           <div className="message">
             <Link id="register-message" to={"/register"} onClick={onClose}>
               <span>아직 회원이 아니신가요?</span>
