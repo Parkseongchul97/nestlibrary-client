@@ -1,0 +1,86 @@
+.main {
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 600;
+  background-color: white;
+  padding-top: 55px;
+  width: 100%;
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 55px;
+    width: 100%;
+
+    .channel-list {
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      background: white;
+      .channel-name {
+        display: flex;
+        font-size: 2rem;
+        color: #000;
+        font-weight: 900;
+        margin-bottom: 1rem;
+      }
+      .channel-box {
+        padding: 1rem;
+        margin: 0.5rem;
+        border-radius: 20px;
+        background: #f4f4f4;
+        width: 100%;
+        max-width: 600px;
+        height: 400px;
+        .channel-post {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          margin: 0.5rem 0;
+          .channel-tag {
+            text-wrap: nowrap;
+            align-self: center;
+            padding: 0.3rem;
+            text-align: center;
+            background: black;
+            color: white;
+            border-radius: 10px;
+          }
+          .post-link {
+            justify-content: space-between;
+            display: flex;
+            align-items: center;
+            width: 95%;
+            text-wrap: nowrap;
+            &:hover {
+              .post-text {
+                color: #333;
+                font-weight: bold;
+              }
+            }
+            .post-text {
+              margin-left: 0.3rem;
+              text-wrap: nowrap;
+              font-size: 0.9rem;
+              font-family: -apple-system, BlinkMacSystemFont,
+                "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", arial, 굴림,
+                Gulim, sans-serif;
+              color: gray;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: block;
+            }
+            .post-left {
+              .comment-count {
+                margin: 0 0.3rem 0 0.3rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

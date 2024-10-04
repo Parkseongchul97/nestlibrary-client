@@ -1,0 +1,49 @@
+.main-box {
+  flex-direction: column;
+  h1 {
+    font-size: 3rem;
+    font-weight: bold;
+  }
+  #register-box {
+    padding: 50px;
+    width: 100%;
+    max-width: 600px;
+    min-width: 540px;
+    background-color: antiquewhite;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    .input-box {
+      padding: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-width: 400px;
+      width: 100%;
+      input {
+        padding: 8px;
+        width: 300px;
+      }
+    }
+    .img-box {
+      align-self: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: white;
+      border-radius: 20px;
+      padding: 5px;
+      width: 220px;
+      height: 220px;
+      #preview-img {
+        border-radius: 20px;
+        height: 200px;
+        width: 200px;
+      }
+    }
+    #btn-box {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

@@ -3,12 +3,17 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import "../assets/header.scss";
-import Login from "../Login";
+import Login from "../pages/Login";
+import Btn from "./Btn";
 
 const Header = () => {
   const [page, setPage] = useState(false);
+  const [token, setToken] = useState();
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, []);
 
-  const addPage = () => {
+  const openPage = () => {
     setPage(true);
   };
 
@@ -19,6 +24,10 @@ const Header = () => {
 
   const closeLogin = () => {
     setPage(false);
+  };
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
   };
 
   return (
@@ -43,17 +52,29 @@ const Header = () => {
             <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
           </button>
         </div>
-        <div className="header-right">
-          <a className="info" onClick={addPage}>
-            로그인
-          </a>
-          <a href="/register-page" className="info">
-            회원가입
-          </a>
-        </div>
+
+        {token == null ? (
+          <div className="header-right">
+            <Link id="login-btn" onClick={openPage} className="info">
+              로그인
+            </Link>
+            <Link to={"/register"} className="info">
+              회원가입
+            </Link>
+          </div>
+        ) : (
+          <div className="header-right">
+            <Link id="logout-btn" onClick={logout} className="info">
+              로그아웃
+            </Link>
+            <Link id="mypage-btn" className="info">
+              마이페이지
+            </Link>
+          </div>
+        )}
       </header>
 
-      {page && <Login onClose={closeLogin} />}
+      {page && <Login onClose={closeLogin} setToken={setToken} />}
     </>
   );
 };
