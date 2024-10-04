@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { nicknameCheck, register } from "../api/user";
 import { checkEmail, sendEmail } from "../api/email";
 import { FaCheck } from "react-icons/fa";
-import { HiXMark } from "react-icons/hi2";
 
 const Register = () => {
   const navigate = useNavigate();

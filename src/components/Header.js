@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../assets/header.scss";
 import Login from "../pages/Login";
-import Btn from "./Btn";
 
 const Header = () => {
   const [page, setPage] = useState(false);
@@ -64,7 +63,6 @@ const Header = () => {
           </div>
         ) : (
           <div className="header-right">
-            <p>{localStorage.getItem("token")}</p>
             <Link id="logout-btn" onClick={logout} className="info">
               로그아웃
             </Link>
