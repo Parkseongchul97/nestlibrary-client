@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "../assets/header.scss";
 import Login from "../pages/Login";
 import Btn from "./Btn";
@@ -18,7 +18,7 @@ const Header = () => {
   };
 
   const hidenTogle = () => {
-    const div = document.querySelector("#search-hiden");
+    const div = document.querySelector("#search-hidden");
     div.style = "display: block";
   };
 
@@ -64,6 +64,7 @@ const Header = () => {
           </div>
         ) : (
           <div className="header-right">
+            <p>{localStorage.getItem("token")}</p>
             <Link id="logout-btn" onClick={logout} className="info">
               로그아웃
             </Link>

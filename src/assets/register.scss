@@ -1,18 +1,33 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+
 .main-box {
   flex-direction: column;
-  h1 {
-    font-size: 3rem;
-    font-weight: bold;
-  }
+
   #register-box {
+    .submit-span {
+      color: red;
+      padding-left: 10px;
+    }
+    h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      align-self: center;
+      margin: 10px;
+    }
+    position: relative;
     padding: 50px;
     width: 100%;
-    max-width: 600px;
-    min-width: 540px;
-    background-color: antiquewhite;
+    max-width: 800px;
+    min-width: 550px;
+    background-color: #f4f4f4;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    border-radius: 5rem;
+    #img-file {
+      display: none;
+    }
     .input-box {
       padding: 5px;
       display: flex;
@@ -20,30 +35,78 @@
       align-items: center;
       min-width: 400px;
       width: 100%;
-      input {
+      .register-input-text {
+        border-radius: 1rem;
         padding: 8px;
         width: 300px;
+        border: 2px solid;
       }
     }
     .img-box {
+      position: absolute;
+      right: 50px;
+      bottom: 150px;
       align-self: center;
       display: flex;
       justify-content: center;
       align-items: center;
       background-color: white;
-      border-radius: 20px;
+      border-radius: 50%;
+      border: 2px solid black;
       padding: 5px;
-      width: 220px;
-      height: 220px;
+      width: 102px;
+      height: 102px;
+      cursor: pointer;
+      &:hover {
+        border: 2px solid red;
+        #preview-img {
+          border: 2px solid red;
+        }
+      }
       #preview-img {
-        border-radius: 20px;
-        height: 200px;
-        width: 200px;
+        border-radius: 50%;
+        height: 100px;
+        width: 100px;
+      }
+      p {
+        font-weight: bold;
+        font-size: 1rem;
       }
     }
     #btn-box {
       display: flex;
       justify-content: space-between;
+      padding: 5px;
+      button {
+        background-color: red;
+        &:hover {
+          background-color: #ff000086;
+          color: white;
+        }
+      }
     }
+  }
+}
+#img-delete {
+  position: absolute;
+  right: 50px;
+  bottom: 100px;
+}
+.submit-btn {
+  display: flex;
+  font-family: "Bebas Neue", sans-serif;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 1rem;
+  font-weight: bold;
+  padding: 0.5rem 0.5rem;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  &:hover {
+    background-color: #000000ab;
+    color: white;
   }
 }

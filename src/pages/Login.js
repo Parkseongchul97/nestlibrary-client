@@ -6,7 +6,6 @@ import { login } from "../api/user";
 import Btn from "../components/Btn";
 
 const Login = ({ onClose, setToken }) => {
-  const [loginCheck, setLoginCheck] = useState(true);
   const [user, setUser] = useState({
     userEmail: "",
     userPassword: "",
@@ -20,7 +19,6 @@ const Login = ({ onClose, setToken }) => {
         localStorage.setItem("token", result.data);
         console.log("토큰 : " + result.data); //
         setToken(result.data);
-        setLoginCheck(false);
         alert("로그인 성공!");
         onClose();
       }
@@ -47,7 +45,7 @@ const Login = ({ onClose, setToken }) => {
           <div className="login-form">
             <div className="input-box">
               <input
-                placeholder="아이디"
+                placeholder="이메일 아이디"
                 type="text"
                 value={user.userEmail}
                 onChange={(e) =>
@@ -62,7 +60,7 @@ const Login = ({ onClose, setToken }) => {
                 placeholder="비밀번호"
                 type={"password"}
                 value={user.userPassword}
-                change={(e) =>
+                onChange={(e) =>
                   setUser({ ...user, userPassword: e.target.value })
                 }
                 className={"login-input-text"}

@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import "../assets/register.scss";
-import Btn from "../components/Btn";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { nicknameCheck, register } from "../api/user";
 import { checkEmail, sendEmail } from "../api/email";
+import { FaCheck } from "react-icons/fa";
+import { HiXMark } from "react-icons/hi2";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -20,11 +22,11 @@ const Register = () => {
   const [nicknameSubmit, setnicknameSubmit] = useState(false);
   const [emailSubmit, setEmailSubmit] = useState(false);
   const [codeSubmit, setCodeSubmit] = useState(false);
+  const emailRegExp =
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
+  const pwdRegExp =
+    /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/;
   const submit = async () => {
-    const emailRegExp =
-      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
-    const pwdRegExp =
-      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/;
     if (!nicknameSubmit) {
       alert("중복 닉네임입니다!");
       return;
@@ -66,7 +68,15 @@ const Register = () => {
       navigate("/");
     }
   };
+  const deleteImg = () => {
+    setUserDTO({ ...userDTO, userImgUrl: null });
+    setPreviewUrl(null);
+  };
   const sendUserEmail = async () => {
+    if (!emailRegExp.test(userDTO.userEmail)) {
+      alert("이메일 형식에 맞춰주세요!");
+      return;
+    }
     console.log(userDTO.userEmail);
     const result = await sendEmail(userDTO.userEmail);
     if (result) {
@@ -124,8 +134,8 @@ const Register = () => {
   return (
     <>
       <div className="main-box">
-        <h1>회원가입</h1>
         <div id="register-box">
+          <h1>회원가입</h1>
           <div className="input-box">
             <input
               className="register-input-text"
@@ -138,8 +148,26 @@ const Register = () => {
               onKeyDown={(e) => enterSubmit(e, "email")}
               disabled={codeSubmit}
             />
-            <button onClick={sendUserEmail}>이메일 인증 발송</button>
+
+            <button
+              className="submit-btn"
+              onClick={sendUserEmail}
+              disabled={emailSubmit}
+            >
+              이메일 인증 발송
+            </button>
           </div>
+          <span id="email-span" className="submit-span">
+            {userDTO.userEmail === "" ? (
+              ""
+            ) : !emailRegExp.test(userDTO.userEmail) ? (
+              "이메일 형식에 맞춰주세요"
+            ) : !emailSubmit ? (
+              "인증 버튼을 눌러주세요"
+            ) : (
+              <FaCheck color="green" />
+            )}
+          </span>
           <div className="input-box">
             <input
               className="register-input-text"
@@ -150,8 +178,20 @@ const Register = () => {
               onKeyDown={(e) => enterSubmit(e, "code")}
               disabled={!emailSubmit}
             />
-            <button onClick={checkEmailCode}>이메일 인증 확인</button>
+
+            <button className="submit-btn" onClick={checkEmailCode}>
+              이메일 인증 확인
+            </button>
           </div>
+          <span id="code-span" className="submit-span">
+            {!emailSubmit ? (
+              ""
+            ) : codeSubmit ? (
+              <FaCheck color="green" />
+            ) : (
+              "인증 대기중"
+            )}
+          </span>
           <div className="input-box">
             <input
               className="register-input-text"
@@ -164,6 +204,13 @@ const Register = () => {
               onKeyDown={(e) => enterSubmit(e, "submit")}
             />
           </div>
+          <span id="password-span" className="submit-span">
+            {!pwdRegExp.test(userDTO.userPassword) ? (
+              "영문자,숫자,특수문자를 포함한 8~16자리"
+            ) : (
+              <FaCheck color="green" />
+            )}
+          </span>
           <div className="input-box">
             <input
               className="register-input-text"
@@ -174,6 +221,15 @@ const Register = () => {
               onKeyDown={(e) => enterSubmit(e, "submit")}
             />
           </div>
+          <span id="password-check-span" className="submit-span">
+            {checkPassword === "" ? (
+              ""
+            ) : checkPassword !== userDTO.userPassword ? (
+              "비밀번호가 일치하지 않습니다"
+            ) : (
+              <FaCheck color="green" />
+            )}
+          </span>
           <div className="input-box">
             <input
               className="register-input-text"
@@ -186,32 +242,42 @@ const Register = () => {
               onKeyDown={(e) => enterSubmit(e, "submit")}
             />
           </div>
-
-          <div className="input-box">
-            <input
-              className="register-input-file"
-              type="file"
-              accept={"image/*"}
-              onChange={(e) => {
-                const file = e.target.files[0]; // 첫 번째 파일 가져오기
-                if (file) {
-                  // 있으면
-                  setUserDTO({ ...userDTO, userImgUrl: file });
-                  setPreviewUrl(URL.createObjectURL(file)); // 미리보기 URL 설정
-                } else {
-                  setUserDTO({ ...userDTO, userImgUrl: null });
-                  setPreviewUrl(null);
-                }
-              }}
-            />
-          </div>
-          <div className="img-box">
+          <span id="nickname-span" className="submit-span">
+            {userDTO.userNickname === "" ? (
+              ""
+            ) : !nicknameSubmit ? (
+              "중복 닉네임 입니다."
+            ) : (
+              <FaCheck color="green" />
+            )}
+          </span>
+          <label htmlFor="img-file" className="img-box">
             {previewUrl ? (
               <img id="preview-img" src={previewUrl} alt="프로필 미리보기" />
             ) : (
-              <p>이미지 미리보기</p>
+              <p>프로필 사진</p>
             )}
-          </div>
+          </label>
+          <button className="submit-btn" id="img-delete" onClick={deleteImg}>
+            이미지 삭제
+          </button>
+          <input
+            className="register-input-file"
+            id="img-file"
+            type="file"
+            accept={"image/*"}
+            onChange={(e) => {
+              const file = e.target.files[0]; // 첫 번째 파일 가져오기
+              if (file) {
+                // 있으면
+                setUserDTO({ ...userDTO, userImgUrl: file });
+                setPreviewUrl(URL.createObjectURL(file)); // 미리보기 URL 설정
+              } else {
+                setUserDTO({ ...userDTO, userImgUrl: null });
+                setPreviewUrl(null);
+              }
+            }}
+          />
 
           <div className="input-box">
             <input
@@ -227,8 +293,12 @@ const Register = () => {
           </div>
 
           <div id="btn-box">
-            <Btn text={"뒤로가기"}></Btn>
-            <Btn text={"제출"} click={submit} />
+            <Link to={"/"} className="submit-btn">
+              뒤로가기
+            </Link>
+            <button className="submit-btn" onClick={submit}>
+              제출
+            </button>
           </div>
         </div>
       </div>

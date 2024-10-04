@@ -31,7 +31,7 @@ const Maintest = () => {
                   아이콘은 활동 포인트를 통해 무료로 구매할 수 있으며,
                   탈퇴/강제탈퇴 시 모든 포인트 및 아이콘이 삭제됩니다.
                 </span>
-                <div className="post-left">
+                <div className="post-end">
                   <span className="comment-count">[1]</span>
                   <span className="time">1분전</span>
                 </div>
@@ -51,7 +51,7 @@ const Maintest = () => {
                 <span className="post-text">
                   에이스 vs 2년전 루피 누가이기냐?
                 </span>
-                <div className="post-left">
+                <div className="post-end">
                   <span className="comment-count">[13]</span>
                   <span className="time">3분전</span>
                 </div>
@@ -79,7 +79,7 @@ const Maintest = () => {
                   아이콘은 활동 포인트를 통해 무료로 구매할 수 있으며,
                   탈퇴/강제탈퇴 시 모든 포인트 및 아이콘이 삭제됩니다.
                 </span>
-                <div className="post-left">
+                <div className="post-end">
                   <span className="comment-count">[1]</span>
                   <span className="time">1분전</span>
                 </div>

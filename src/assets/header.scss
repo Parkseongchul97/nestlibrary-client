@@ -1,6 +1,7 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 .header {
+  z-index: 100;
   font-family: "Pretendard Variable";
   width: 100%;
   background-color: #000;
@@ -91,7 +92,7 @@
     }
   }
 }
-.hiden-btn {
+.hidden-btn {
   background-color: #e5e5e5;
   width: 35px;
   height: 35px;
@@ -103,6 +104,11 @@
   svg {
     height: 25px;
     width: 25px;
+  }
+}
+.header-right {
+  p {
+    color: white;
   }
 }
 
