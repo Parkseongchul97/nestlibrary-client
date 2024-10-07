@@ -26,10 +26,16 @@ const Register = () => {
   const pwdRegExp =
     /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/;
   const submit = async () => {
+    console.log(userDTO.userNickname.length);
+    if (userDTO.userNickname.length < 2 || 11 < userDTO.userNickname) {
+      alert("닉네임은 2~10 글자 내로 만들어야 합니다.");
+      return;
+    }
     if (!nicknameSubmit) {
       alert("중복 닉네임입니다!");
       return;
     }
+
     if (!emailRegExp.test(userDTO.userEmail)) {
       alert("이메일 형식에 맞춰주세요!");
       return;
@@ -73,7 +79,7 @@ const Register = () => {
   };
   const sendUserEmail = async () => {
     if (!emailRegExp.test(userDTO.userEmail)) {
-      alert("이메일 형식에 맞춰주세요!");
+      alert("이메일 주소를 형식에 맞춰주세요!");
       return;
     }
     console.log(userDTO.userEmail);
@@ -91,11 +97,7 @@ const Register = () => {
     console.log("닉네임 : " + userDTO.userNickname);
     const result = await nicknameCheck(userDTO.userNickname); // 닉네임 중복 체크 호출
     console.log(result.data);
-    if (result.data) {
-      setnicknameSubmit(true); // 닉네임이 중복이 아님
-    } else {
-      setnicknameSubmit(false); // 닉네임이 중복임
-    }
+    setnicknameSubmit(result.data);
   };
 
   const checkEmailCode = async () => {
@@ -156,13 +158,17 @@ const Register = () => {
               이메일 인증 발송
             </button>
           </div>
+
+          <div className="text-div">
+            아이디를 이메일 형식으로 입력해 주세요. 예: example@naver.com
+          </div>
           <span id="email-span" className="submit-span">
             {userDTO.userEmail === "" ? (
               ""
             ) : !emailRegExp.test(userDTO.userEmail) ? (
-              "이메일 형식에 맞춰주세요"
+              "이메일 주소 형식에 맞춰주세요"
             ) : !emailSubmit ? (
-              "인증 버튼을 눌러주세요"
+              ""
             ) : (
               <FaCheck color="green" />
             )}
@@ -203,13 +209,20 @@ const Register = () => {
               onKeyDown={(e) => enterSubmit(e, "submit")}
             />
           </div>
+          <div className="text-div">
+            영문자,숫자,특수문자를 포함한 8~16자리로 구성된 비밀번호를
+            입력해주십시오.
+          </div>
           <span id="password-span" className="submit-span">
-            {!pwdRegExp.test(userDTO.userPassword) ? (
+            {userDTO.userPassword === "" ? (
+              ""
+            ) : !pwdRegExp.test(userDTO.userPassword) ? (
               "영문자,숫자,특수문자를 포함한 8~16자리"
             ) : (
               <FaCheck color="green" />
             )}
           </span>
+
           <div className="input-box">
             <input
               className="register-input-text"
@@ -220,6 +233,7 @@ const Register = () => {
               onKeyDown={(e) => enterSubmit(e, "submit")}
             />
           </div>
+
           <span id="password-check-span" className="submit-span">
             {checkPassword === "" ? (
               ""
@@ -241,25 +255,49 @@ const Register = () => {
               onKeyDown={(e) => enterSubmit(e, "submit")}
             />
           </div>
+          <div className="text-div">
+            닉네임은 2~10글자 내외로 작성해주십시오.
+          </div>
           <span id="nickname-span" className="submit-span">
             {userDTO.userNickname === "" ? (
               ""
+            ) : userDTO.userNickname.length < 2 ||
+              userDTO.userNickname.length > 10 ? (
+              "2~10글자 내외로 작성하십시오."
             ) : !nicknameSubmit ? (
               "중복 닉네임 입니다."
             ) : (
               <FaCheck color="green" />
             )}
           </span>
-          <label htmlFor="img-file" className="img-box">
-            {previewUrl ? (
-              <img id="preview-img" src={previewUrl} alt="프로필 미리보기" />
-            ) : (
-              <p>프로필 사진</p>
-            )}
-          </label>
-          <button className="submit-btn" id="img-delete" onClick={deleteImg}>
-            이미지 삭제
-          </button>
+          <div className="input-box">
+            <input
+              className="register-input-text"
+              placeholder="나의 한마디"
+              type="text"
+              value={userDTO.userInfo}
+              onChange={(e) =>
+                setUserDTO({ ...userDTO, userInfo: e.target.value })
+              }
+              onKeyDown={(e) => enterSubmit(e, "submit")}
+            />
+          </div>
+          <div id="preview-box">
+            <label htmlFor="img-file" className="img-box">
+              {previewUrl ? (
+                <img id="preview-img" src={previewUrl} alt="프로필 미리보기" />
+              ) : (
+                <img
+                  id="preview-img"
+                  src="http://192.168.10.51:8082/thumbnail/%EA%B8%B0%EB%B3%B8%EC%9D%B4%EB%AF%B8%EC%A7%80.png"
+                  alt="프로필 미리보기"
+                />
+              )}
+            </label>
+            <button className="submit-btn" id="img-delete" onClick={deleteImg}>
+              이미지 삭제
+            </button>
+          </div>
           <input
             className="register-input-file"
             id="img-file"
@@ -277,19 +315,6 @@ const Register = () => {
               }
             }}
           />
-
-          <div className="input-box">
-            <input
-              className="register-input-text"
-              placeholder="자기소개"
-              type="text"
-              value={userDTO.userInfo}
-              onChange={(e) =>
-                setUserDTO({ ...userDTO, userInfo: e.target.value })
-              }
-              onKeyDown={(e) => enterSubmit(e, "submit")}
-            />
-          </div>
 
           <div id="btn-box">
             <Link to={"/"} className="submit-btn">

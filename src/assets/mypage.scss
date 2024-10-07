@@ -1,13 +1,11 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
-
+#img-file {
+  display: none;
+}
 .main-box {
-  flex-direction: column;
-  padding-top: 150px;
-
-  #register-box {
+  #info-change-box {
     height: 800px;
-
     padding: 50px;
     width: 100%;
     max-width: 800px;
@@ -16,6 +14,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    align-items: center;
     border-radius: 5rem;
     .submit-span {
       color: red;
@@ -27,30 +26,21 @@
       align-self: center;
       margin: 10px;
     }
-    #img-file {
-      display: none;
-    }
-    .input-box {
+    .change-input-box {
       padding: 5px;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      min-width: 400px;
       width: 100%;
-      .register-input-text {
+      .change-input-text {
         border-radius: 1rem;
         padding: 8px;
-        width: 500px;
+        width: 300px;
         border: 2px solid;
       }
     }
-    .text-div {
-      margin: 5px;
-      border: 2px solid;
-      border-radius: 1rem;
-      padding: 5px;
-    }
-    .img-box {
+
+    .user-img-box {
       right: 50px;
       bottom: 150px;
       align-self: center;
@@ -92,30 +82,5 @@
         }
       }
     }
-  }
-}
-#preview-box {
-  display: flex;
-  justify-content: flex-end;
-}
-#img-delete {
-  align-self: flex-end;
-}
-.submit-btn {
-  display: flex;
-  font-family: "Bebas Neue", sans-serif;
-  background-color: black;
-  color: white;
-  border: none;
-  border-radius: 1rem;
-  font-weight: bold;
-  padding: 0.5rem 0.5rem;
-  cursor: pointer;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.8rem;
-  &:hover {
-    background-color: #000000ab;
-    color: white;
   }
 }

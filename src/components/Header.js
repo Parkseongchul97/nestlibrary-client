@@ -47,7 +47,7 @@ const Header = () => {
               <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
             </button>
           </div>
-          <button className="hiden-btn" onClick={hidenTogle}>
+          <button className="hidden-btn" onClick={hidenTogle}>
             <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
           </button>
         </div>
@@ -66,7 +66,7 @@ const Header = () => {
             <Link id="logout-btn" onClick={logout} className="info">
               로그아웃
             </Link>
-            <Link id="mypage-btn" className="info">
+            <Link to={"/mypage"} id="mypage-btn" className="info">
               마이페이지
             </Link>
           </div>
