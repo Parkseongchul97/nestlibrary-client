@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import CreateChannel from "./Create-channel";
+import CreateChannel from "./CreateChannel";
 import { nicknameCheck, register } from "../api/user";
 import "../assets/mypage.scss";
 import { useNavigate } from "react-router-dom";

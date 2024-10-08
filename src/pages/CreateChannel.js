@@ -1,8 +1,10 @@
 import { useState } from "react";
-import "../assets/create-channel.scss";
+import "../assets/createChannel.scss";
 import { create as makeChannel } from "../api/channel";
+import { useNavigate } from "react-router-dom";
 
 const CreateChannel = ({ onClose }) => {
+  const navigate = useNavigate();
   const [channelPreviewUrl, setChannelPreviewUrl] = useState(null);
   const [channel, setChannel] = useState({
     channelName: "",
@@ -17,15 +19,20 @@ const CreateChannel = ({ onClose }) => {
     onClose();
   };
   const submitMakeChannel = async () => {
-    const formData = new FormData();
+    let formData = new FormData();
     formData.append("channelName", channel.channelName);
     formData.append("channelInfo", channel.channelInfo);
+    console.log(channel.channelImg);
     if (channel.channelImg !== null)
-      formData.append("channelName", channel.channelImg);
-
-    const response = await makeChannel(formData);
-
-    navigator("/channel/반환된 채널코드로");
+      formData.append("channelImgUrl", channel.channelImg);
+    console.log("submit때 formdata : ");
+    console.log(formData);
+    const result = await makeChannel(formData);
+    console.log(result.data);
+    if (result.status === 200) {
+      // 채널 생성후 바로 해당 채널로 이동
+      navigate(`/channel/${result.data.channelCode}`);
+    }
   };
 
   return (
