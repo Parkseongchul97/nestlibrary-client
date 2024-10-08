@@ -1,0 +1,35 @@
+.create-channel-box {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 600;
+  background-color: #ffffff;
+  width: 1000px;
+  height: 500px;
+  position: fixed;
+  top: 20%;
+  left: 23%;
+  border-radius: 8px;
+  padding: 20px;
+  color: #7e8e9f;
+  opacity: 1;
+  z-index: 20;
+  .channel-input-file {
+    display: none;
+  }
+  #preview-channel-img {
+    width: 800px;
+    height: 200px;
+  }
+}
+#create-channel-bg {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}

@@ -53,7 +53,7 @@
             justify-content: space-between;
             display: flex;
             align-items: center;
-            width: 95%;
+            width: 93%;
             text-wrap: nowrap;
             &:hover {
               .post-text {
@@ -73,7 +73,9 @@
               text-overflow: ellipsis;
               display: block;
             }
-            .post-left {
+            .post-end {
+              display: flex;
+              justify-content: flex-end;
               .comment-count {
                 margin: 0 0.3rem 0 0.3rem;
               }

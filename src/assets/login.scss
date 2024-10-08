@@ -75,6 +75,9 @@
     .findId {
       align-self: center;
       margin-bottom: 1rem;
+      a {
+        color: red;
+      }
     }
     #login-submit {
       cursor: pointer;

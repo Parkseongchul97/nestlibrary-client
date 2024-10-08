@@ -1,15 +1,12 @@
 import { IoIosArrowBack } from "react-icons/io";
 import { Link } from "react-router-dom";
 import "../assets/login.scss";
-import Input from "../components/Input";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { login } from "../api/user";
 import Btn from "../components/Btn";
 import KakaoLogin from "../components/kakaoLogin";
 
 const Login = ({ onClose, setToken }) => {
-  const [loginCheck, setLoginCheck] = useState(true);
   const [user, setUser] = useState({
     userEmail: "",
     userPassword: "",
@@ -23,7 +20,6 @@ const Login = ({ onClose, setToken }) => {
         localStorage.setItem("token", result.data);
         console.log("토큰 : " + result.data); //
         setToken(result.data);
-        setLoginCheck(false);
         alert("로그인 성공!");
         onClose();
       }
@@ -48,22 +44,30 @@ const Login = ({ onClose, setToken }) => {
         </div>
         <div className="login-body">
           <div className="login-form">
-            <Input
-              placeholder="아이디"
-              type={"text"}
-              value={user.userEmail}
-              change={(e) => setUser({ ...user, userEmail: e.target.value })}
-              className={"login-input-text"}
-              onKeyDown={(e) => enterLogin(e)}
-            />
-            <Input
-              placeholder="비밀번호"
-              type={"password"}
-              value={user.userPassword}
-              change={(e) => setUser({ ...user, userPassword: e.target.value })}
-              className={"login-input-text"}
-              onKeyDown={(e) => enterLogin(e)}
-            />
+            <div className="input-box">
+              <input
+                placeholder="이메일 아이디"
+                type="text"
+                value={user.userEmail}
+                onChange={(e) =>
+                  setUser({ ...user, userEmail: e.target.value })
+                }
+                className={"login-input-text"}
+                onKeyDown={(e) => enterLogin(e)}
+              />
+            </div>
+            <div className="input-box">
+              <input
+                placeholder="비밀번호"
+                type={"password"}
+                value={user.userPassword}
+                onChange={(e) =>
+                  setUser({ ...user, userPassword: e.target.value })
+                }
+                className={"login-input-text"}
+                onKeyDown={(e) => enterLogin(e)}
+              />
+            </div>
 
             <div className="findId">
               <Link to={"/"}>비밀번호 찾기</Link>

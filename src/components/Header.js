@@ -1,10 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "../assets/header.scss";
 import Login from "../pages/Login";
-import Btn from "./Btn";
 
 const Header = () => {
   const [page, setPage] = useState(false);
@@ -18,7 +17,7 @@ const Header = () => {
   };
 
   const hidenTogle = () => {
-    const div = document.querySelector("#search-hiden");
+    const div = document.querySelector("#search-hidden");
     div.style = "display: block";
   };
 
@@ -48,7 +47,7 @@ const Header = () => {
               <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
             </button>
           </div>
-          <button className="hiden-btn" onClick={hidenTogle}>
+          <button className="hidden-btn" onClick={hidenTogle}>
             <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
           </button>
         </div>
@@ -67,7 +66,7 @@ const Header = () => {
             <Link id="logout-btn" onClick={logout} className="info">
               로그아웃
             </Link>
-            <Link id="mypage-btn" className="info">
+            <Link to={"/mypage"} id="mypage-btn" className="info">
               마이페이지
             </Link>
           </div>

@@ -4,6 +4,8 @@ import Main from "./pages/Main";
 import Register from "./pages/Register";
 import LoginWait from "./pages/loginWait";
 import KakaLoginSuccess from "./components/KakaoLoginSuccess";
+import Mypage from "./pages/Mypage";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -16,6 +18,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/mypage",
+        element: <Mypage />,
       },
     ],
   },
