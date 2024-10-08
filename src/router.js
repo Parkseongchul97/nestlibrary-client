@@ -3,6 +3,7 @@ import Layout from "./components/Layout";
 import Main from "./pages/Main";
 import Register from "./pages/Register";
 import Mypage from "./pages/Mypage";
+import ChannelDetail from "./pages/ChannelDetail";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: "/mypage",
         element: <Mypage />,
+      },
+      {
+        path: "channel/:channelCode",
+        element: <ChannelDetail />,
       },
     ],
   },

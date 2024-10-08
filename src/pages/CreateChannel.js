@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../assets/createChannel.scss";
-import { create as makeChannel } from "../api/channel";
+import { create as makeChannel, nameCheck } from "../api/channel";
 import { useNavigate } from "react-router-dom";
 
 const CreateChannel = ({ onClose }) => {
   const navigate = useNavigate();
   const [channelPreviewUrl, setChannelPreviewUrl] = useState(null);
+  const [nameSubmit, setNameSubmit] = useState(false);
   const [channel, setChannel] = useState({
     channelName: "",
     channelInfo: "",
@@ -18,7 +19,19 @@ const CreateChannel = ({ onClose }) => {
   const closeChangeInfo = () => {
     onClose();
   };
+
+  const check = async () => {
+    const result = await nameCheck(channel.channelName, 0);
+    // 반환 채널값이 없으면 true
+    if (result.data === "") setNameSubmit(true);
+    // 반환 채널값이 있다면 false
+    else setNameSubmit(false);
+  };
   const submitMakeChannel = async () => {
+    if (!nameSubmit) {
+      alert("채널 이름이 중복입니다!");
+      return;
+    }
     let formData = new FormData();
     formData.append("channelName", channel.channelName);
     formData.append("channelInfo", channel.channelInfo);
@@ -34,6 +47,9 @@ const CreateChannel = ({ onClose }) => {
       navigate(`/channel/${result.data.channelCode}`);
     }
   };
+  useEffect(() => {
+    check();
+  }, [channel.channelName]);
 
   return (
     <>
@@ -54,6 +70,13 @@ const CreateChannel = ({ onClose }) => {
               }
             />
           </div>
+          <span>
+            {channel.channelName === ""
+              ? ""
+              : nameSubmit
+              ? ""
+              : "채널명이 중복입니다."}
+          </span>
           <div className="channel-input-box">
             <input
               className="channel-input-text"
