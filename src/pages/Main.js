@@ -4,20 +4,21 @@ import { allChannel } from "../api/channel";
 import { useEffect, useState } from "react";
 
 const Main = () => {
-  const [channelList, setChannelList] = useState(null);
-  const list = async () => {
+  // 첫 호출때 null
+  const [channelList, setChannelList] = useState([]);
+  const chanList = async () => {
     const result = await allChannel();
     setChannelList(result.data);
+    console.log(channelList);
   };
   useEffect(() => {
-    list();
-  }, []);
+    chanList();
+  }, [channelList.length]);
   return (
     <div className="main-box">
       <div className="main">
         <div className="main-content">
           <div className="sub-title">OUR COMMUNITY</div>
-
           <ul className="channel-list">
             {channelList.map((channel) => (
               <li className="channel-box" key={channel?.channelCode}>
@@ -25,7 +26,7 @@ const Main = () => {
                   to={"/channel/" + channel?.channelCode}
                   className="channel-name"
                 >
-                  원피스 채널
+                  {channel?.channelName} 채널
                 </Link>
                 {/*게시글 반복 5~10개 예정*/}
                 {/*channel.posts.map((post) => ()*/}

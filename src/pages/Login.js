@@ -5,20 +5,31 @@ import { useState } from "react";
 import { login } from "../api/user";
 import Btn from "../components/Btn";
 
-const Login = ({ onClose, setToken }) => {
-  const [user, setUser] = useState({
+const Login = ({ onClose, setToken, setUser }) => {
+  const [loginUser, setLoginUser] = useState({
     userEmail: "",
     userPassword: "",
   });
 
   const submit = async () => {
-    console.log(user);
-    const result = await login(user);
+    console.log(loginUser);
+    const result = await login(loginUser);
     try {
       if (result.status === 200) {
-        localStorage.setItem("token", result.data);
-        console.log("토큰 : " + result.data); //
-        setToken(result.data);
+        localStorage.setItem("token", result.data.token);
+        localStorage.setItem("userEmail", result.data.userEmail);
+        localStorage.setItem("userNickname", result.data.userNickname);
+        localStorage.setItem("userImgUrl", result.data.userImgUrl);
+        localStorage.setItem("userInfo", result.data.userInfo);
+        localStorage.setItem("userPoint", result.data.userPoint);
+        setToken(result.data.token);
+        setUser({
+          userEmail: result.data.userEmail,
+          userNickname: result.data.userNickname,
+          userImgUrl: result.data.userImgUrl,
+          userInfo: result.data.userInfo,
+          userPoint: result.data.userPoint,
+        });
         alert("로그인 성공!");
         onClose();
       }
@@ -47,9 +58,9 @@ const Login = ({ onClose, setToken }) => {
               <input
                 placeholder="이메일 아이디"
                 type="text"
-                value={user.userEmail}
+                value={loginUser.userEmail}
                 onChange={(e) =>
-                  setUser({ ...user, userEmail: e.target.value })
+                  setLoginUser({ ...loginUser, userEmail: e.target.value })
                 }
                 className={"login-input-text"}
                 onKeyDown={(e) => enterLogin(e)}
@@ -59,9 +70,9 @@ const Login = ({ onClose, setToken }) => {
               <input
                 placeholder="비밀번호"
                 type={"password"}
-                value={user.userPassword}
+                value={loginUser.userPassword}
                 onChange={(e) =>
-                  setUser({ ...user, userPassword: e.target.value })
+                  setLoginUser({ ...loginUser, userPassword: e.target.value })
                 }
                 className={"login-input-text"}
                 onKeyDown={(e) => enterLogin(e)}

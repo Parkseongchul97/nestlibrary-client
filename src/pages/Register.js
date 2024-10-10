@@ -8,13 +8,10 @@ import { FaCheck } from "react-icons/fa";
 
 const Register = () => {
   const navigate = useNavigate();
-  const [previewUrl, setPreviewUrl] = useState(null); // 이미지 미리보기
   const [userDTO, setUserDTO] = useState({
     userEmail: "",
     userPassword: "",
     userNickname: "",
-    userImgUrl: null,
-    userInfo: "",
   });
   const [checkPassword, setcheckPassword] = useState("");
   const [code, setCode] = useState("");
@@ -61,8 +58,6 @@ const Register = () => {
     let formData = new FormData();
     formData.append("userEmail", userDTO.userEmail);
     formData.append("userPassword", userDTO.userPassword);
-    if (userDTO.userImgUrl !== null)
-      formData.append("userImgUrl", userDTO.userImgUrl);
     formData.append("userNickname", userDTO.userNickname);
     formData.append("userInfo", userDTO.userInfo);
     const result = await register(formData);
@@ -73,10 +68,7 @@ const Register = () => {
       navigate("/");
     }
   };
-  const deleteImg = () => {
-    setUserDTO({ ...userDTO, userImgUrl: null });
-    setPreviewUrl(null);
-  };
+
   const sendUserEmail = async () => {
     if (!emailRegExp.test(userDTO.userEmail)) {
       alert("이메일 주소를 형식에 맞춰주세요!");
@@ -270,51 +262,6 @@ const Register = () => {
               <FaCheck color="green" />
             )}
           </span>
-          <div className="input-box">
-            <input
-              className="register-input-text"
-              placeholder="나의 한마디"
-              type="text"
-              value={userDTO.userInfo}
-              onChange={(e) =>
-                setUserDTO({ ...userDTO, userInfo: e.target.value })
-              }
-              onKeyDown={(e) => enterSubmit(e, "submit")}
-            />
-          </div>
-          <div id="preview-box">
-            <label htmlFor="img-file" className="img-box">
-              {previewUrl ? (
-                <img id="preview-img" src={previewUrl} alt="프로필 미리보기" />
-              ) : (
-                <img
-                  id="preview-img"
-                  src="http://192.168.10.51:8082/thumbnail/%EA%B8%B0%EB%B3%B8%EC%9D%B4%EB%AF%B8%EC%A7%80.png"
-                  alt="프로필 미리보기"
-                />
-              )}
-            </label>
-            <button className="submit-btn" id="img-delete" onClick={deleteImg}>
-              이미지 삭제
-            </button>
-          </div>
-          <input
-            className="register-input-file"
-            id="img-file"
-            type="file"
-            accept={"image/*"}
-            onChange={(e) => {
-              const file = e.target.files[0]; // 첫 번째 파일 가져오기
-              if (file) {
-                // 있으면
-                setUserDTO({ ...userDTO, userImgUrl: file });
-                setPreviewUrl(URL.createObjectURL(file)); // 미리보기 URL 설정
-              } else {
-                setUserDTO({ ...userDTO, userImgUrl: null });
-                setPreviewUrl(null);
-              }
-            }}
-          />
 
           <div id="btn-box">
             <Link to={"/"} className="submit-btn">
