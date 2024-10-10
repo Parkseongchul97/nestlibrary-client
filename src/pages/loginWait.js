@@ -4,20 +4,23 @@ import { useNavigate } from "react-router-dom";
 
 const LoginWait = () => {
   const kakaoKey = new URL(window.location.href).searchParams.get("code");
-  const navigate = useNavigate();
+
+  console.log(kakaoKey);
   useEffect(() => {
     const kakao = async () => {
       if (kakaoKey) {
         try {
           const result = await kakaologin({ code: kakaoKey }); // 객체 형태로 보내기
           console.log("Login result:", result.status); // 결과 로그
-          console.log(result);
-          console.log(result.data);
-          localStorage.setItem("token", result.data);
-          navigate("/");
+
+          localStorage.setItem("token", result.data.token);
+          localStorage.setItem("email", result.data.userEmail);
+          localStorage.setItem("nickname", result.data.userNickname);
+          localStorage.setItem("img", result.data.img);
+
+          window.location.href = "/";
         } catch (error) {
           console.error("로그인 실패:", error.message);
-          navigate("/login");
         }
       }
     };

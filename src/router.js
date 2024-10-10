@@ -29,9 +29,5 @@ const router = createBrowserRouter([
     path: "/kakao",
     element: <LoginWait />,
   },
-  {
-    path: "/login-success",
-    element: <KakaLoginSuccess />,
-  },
 ]);
 export default router;

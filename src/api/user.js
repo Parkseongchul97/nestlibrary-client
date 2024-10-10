@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 const instance = axios.create({
   baseURL: "http://localhost:8080/api/user/",
@@ -25,4 +26,17 @@ export const login = async (data) => {
   } catch (error) {
     new Error("LOGIN");
   }
+};
+
+//
+
+const authorize = axios.create({
+  baseURL: "http://localhost:8080/api/user/",
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  },
+});
+
+export const userInfo = async () => {
+  return await authorize.get("userInfo");
 };

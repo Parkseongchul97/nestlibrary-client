@@ -4,12 +4,28 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../assets/header.scss";
 import Login from "../pages/Login";
+import { userInfo } from "../api/user";
+import { kakaoLogout } from "../user/kakaoCode";
 
 const Header = () => {
+  const [member, setMember] = useState({
+    userEmail: "",
+    userImgUrl: "",
+    userInfo: null,
+    userNickname: "",
+    userPassword: null,
+    userPoint: 0,
+  });
   const [page, setPage] = useState(false);
-  const [token, setToken] = useState();
+  const [token, setToken] = useState(null);
+
   useEffect(() => {
     setToken(localStorage.getItem("token"));
+    setMember({
+      userEmail: localStorage.getItem("email"),
+      userImgUrl: localStorage.getItem("img"),
+      userNickname: localStorage.getItem("nickname"),
+    });
   }, []);
 
   const openPage = () => {
@@ -24,9 +40,18 @@ const Header = () => {
   const closeLogin = () => {
     setPage(false);
   };
-  const logout = () => {
+  const logout = async () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    localStorage.removeItem("img");
+    localStorage.removeItem("nickname");
+    setMember({
+      userEmail: "",
+      userImgUrl: "",
+      userNickname: "",
+    });
     setToken(null);
+    kakaoLogout();
   };
 
   return (
@@ -69,6 +94,7 @@ const Header = () => {
             <Link to={"/mypage"} id="mypage-btn" className="info">
               마이페이지
             </Link>
+            <p>{member.userNickname}</p>
           </div>
         )}
       </header>
