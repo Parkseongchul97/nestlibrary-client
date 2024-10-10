@@ -92,6 +92,19 @@
     }
   }
 }
+.user-info {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  .user-img {
+    margin: 5px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+}
 .hidden-btn {
   background-color: #e5e5e5;
   width: 35px;

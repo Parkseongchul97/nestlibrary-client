@@ -4,6 +4,12 @@ import { useEffect, useState } from "react";
 const instance = axios.create({
   baseURL: "http://localhost:8080/api/user/",
 });
+const authorize = axios.create({
+  baseURL: "http://localhost:8080/api/private/",
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  },
+});
 export const register = async (data) => {
   // 파라미터로 data 받아서감 (바디로 받음)
 
@@ -27,16 +33,6 @@ export const login = async (data) => {
     new Error("LOGIN");
   }
 };
-
-//
-
-const authorize = axios.create({
-  baseURL: "http://localhost:8080/api/user/",
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-  },
-});
-
-export const userInfo = async () => {
-  return await authorize.get("userInfo");
+export const updateUser = async (data) => {
+  return await authorize.put("update", data);
 };

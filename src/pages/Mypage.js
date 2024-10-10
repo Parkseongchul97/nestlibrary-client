@@ -8,25 +8,41 @@ import { useNavigate } from "react-router-dom";
 const Mypage = () => {
   const navigate = useNavigate();
   const [createPage, setCreatePage] = useState(false);
+  // changeImg : -1 = (기존꺼 그대로), 0 =(변경), 1 =(이미지 삭제만)
+  const [changeImg, setChangeImg] = useState(-1);
   const closeCreateChannel = () => {
     setCreatePage(false);
   };
   const openCreateChannel = () => {
     setCreatePage(true);
   };
-  const [previewUrl, setPreviewUrl] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(
+    "http://192.168.10.51:8083/user/" +
+      localStorage.getItem("userEmail") +
+      "/" +
+      localStorage.getItem("userImgUrl")
+  );
   const [nicknameSubmit, setNicknameSubmit] = useState(true);
   const [userDTO, setUserDTO] = useState({
-    userEmail: "",
-    // 초기값에 기존꺼 val 넣어야함
-    userNickname: "",
+    userEmail: localStorage.getItem("userEmail"),
+    userNickname: localStorage.getItem("userNickname"),
     userImgUrl: null,
-    userInfo: "",
-    userPoint: "",
+    userInfo: localStorage.getItem("userInfo"),
   });
   const deleteImg = () => {
     setUserDTO({ ...userDTO, userImgUrl: null });
     setPreviewUrl(null);
+    setChangeImg(1);
+  };
+  const resetImg = () => {
+    setUserDTO({ ...userDTO, userImgUrl: null });
+    setPreviewUrl(
+      "http://192.168.10.51:8083/user/" +
+        localStorage.getItem("userEmail") +
+        "/" +
+        localStorage.getItem("userImgUrl")
+    );
+    setChangeImg(-1);
   };
 
   useEffect(() => {
@@ -35,8 +51,17 @@ const Mypage = () => {
     }
   }, [userDTO.userNickname]);
 
+  useEffect(() => {
+    if (changeImg === -1) console.log("변경 X");
+    else if (changeImg === 0) console.log("변경 O");
+    else console.log("이미지 삭제로 제출");
+  }, [changeImg]);
   const checkNickname = async () => {
     const result = await nicknameCheck(userDTO.userNickname); // 닉네임 중복
+    if (result.data !== undefined || result.data !== "") {
+      console.log(result.data);
+    }
+    console.log("닉네임 중복 여부 : " + result.data);
     setNicknameSubmit(result.data); // true false 반환 중복여부
   };
   const submit = async () => {
@@ -50,11 +75,14 @@ const Mypage = () => {
     }
     let formData = new FormData();
     formData.append("userEmail", userDTO.userEmail);
+    // 이미지 변경 + 기존 이미지그대로
     if (userDTO.userImgUrl !== null)
       formData.append("userImgUrl", userDTO.userImgUrl);
     formData.append("userNickname", userDTO.userNickname);
     formData.append("userInfo", userDTO.userInfo);
-    // 기존꺼랑 바뀐거랑 비교하는 함수나 조건문 추가
+    // 이미지 변경여부 -1(변경X), 0(변경), 1(이미지 삭제)
+    formData.append("changeImg", changeImg);
+    // 기존꺼랑 바뀐거랑 비교 랑 포인트 소모는 백단에서
     // 무엇을 바꿨냐에 따라서 포인트 소모량 차이나게 담기
     const result = await register(formData);
     if (result.status === 200) {
@@ -113,6 +141,9 @@ const Mypage = () => {
           <button id="user-img-delete" onClick={deleteImg}>
             이미지 삭제
           </button>
+          <button id="user-img-reset" onClick={resetImg}>
+            이미지 되돌리기
+          </button>
           <input
             className="change-input-file"
             id="img-file"
@@ -123,10 +154,13 @@ const Mypage = () => {
               if (file) {
                 // 있으면
                 setUserDTO({ ...userDTO, userImgUrl: file });
-                setPreviewUrl(URL.createObjectURL(file)); // 미리보기 URL 설정
+                setPreviewUrl(URL.createObjectURL(file));
+                setChangeImg(0);
+                // 미리보기 URL 설정
               } else {
                 setUserDTO({ ...userDTO, userImgUrl: null });
                 setPreviewUrl(null);
+                setChangeImg(1);
               }
             }}
           />

@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import LoginWait from "./pages/loginWait";
 import KakaLoginSuccess from "./components/KakaoLoginSuccess";
 import Mypage from "./pages/Mypage";
+import ChannelDetail from "./pages/ChannelDetail";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/mypage",
         element: <Mypage />,
+      },
+      {
+        path: "channel/:channelCode",
+        element: <ChannelDetail />,
       },
     ],
   },
