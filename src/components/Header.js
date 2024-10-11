@@ -1,38 +1,16 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "../assets/header.scss";
 import Login from "../pages/Login";
-import { userInfo } from "../api/user";
 import { kakaoLogout } from "../user/kakaoCode";
+import { useAuth } from "../contexts/AuthContext";
 
 const Header = () => {
   const [page, setPage] = useState(false);
-
-  const [token, setToken] = useState();
-
-  const [user, setUser] = useState({
-    userEmail: localStorage.getItem("userEmail"),
-    userNickname: localStorage.getItem("userNickname"),
-    userImgUrl: localStorage.getItem("userImgUrl"),
-    userInfo: localStorage.getItem("userInfo"),
-    userPoint: localStorage.getItem("userPoint"),
-  });
-
-  useEffect(() => {
-    setToken(localStorage.getItem("token"));
-
-    setUser({
-      userEmail: localStorage.getItem("userEmail"),
-      userNickname: localStorage.getItem("userNickname"),
-      userImgUrl: localStorage.getItem("userImgUrl"),
-      userInfo: localStorage.getItem("userInfo"),
-      userPoint: localStorage.getItem("userPoint"),
-    });
-
-    console.log(user);
-  }, []);
+  const { user, token } = useAuth();
+  const { logout: authLogout } = useAuth();
 
   const openPage = () => {
     setPage(true);
@@ -47,14 +25,7 @@ const Header = () => {
     setPage(false);
   };
   const logout = async () => {
-    localStorage.removeItem("userEmail");
-    localStorage.removeItem("userInfo");
-    localStorage.removeItem("userImgUrl");
-    localStorage.removeItem("userNickname");
-    localStorage.removeItem("userPoint");
-    localStorage.removeItem("token");
-    setToken(null);
-    setUser(null);
+    authLogout();
     kakaoLogout();
   };
 
@@ -93,15 +64,22 @@ const Header = () => {
         ) : (
           <div className="header-right">
             <div className="user-info">
-              <img
-                className="user-img"
-                src={
-                  "http://192.168.10.51:8083/user/" +
-                  user.userEmail +
-                  "/" +
-                  user.userImgUrl
-                }
-              />
+              {user.userImgUrl == null ? (
+                <img
+                  className="user-img"
+                  src="http://192.168.10.51:8083/%EA%B8%B0%EB%B3%B8%EC%9D%B4%EB%AF%B8%EC%A7%80.png"
+                />
+              ) : (
+                <img
+                  className="user-img"
+                  src={
+                    "http://192.168.10.51:8083/user/" +
+                    user.userEmail +
+                    "/" +
+                    user.userImgUrl
+                  }
+                />
+              )}
               {user.userNickname}
             </div>
             <Link id="logout-btn" onClick={logout} className="info">
@@ -115,9 +93,7 @@ const Header = () => {
         )}
       </header>
 
-      {page && (
-        <Login onClose={closeLogin} setToken={setToken} setUser={setUser} />
-      )}
+      {page && <Login onClose={closeLogin} />}
     </>
   );
 };
