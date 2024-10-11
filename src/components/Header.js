@@ -82,15 +82,19 @@ const Header = () => {
         ) : (
           <div className="header-right">
             <div className="user-info">
-              <img
-                className="user-img"
-                src={
-                  "http://192.168.10.51:8083/user/" +
-                  user.userEmail +
-                  "/" +
-                  user.userImgUrl
-                }
-              />
+              {user.userImgUrl === null ? (
+                <img src="http://192.168.10.51:8083/%EA%B8%B0%EB%B3%B8%EC%9D%B4%EB%AF%B8%EC%A7%80.png" />
+              ) : (
+                <img
+                  className="user-img"
+                  src={
+                    "http://192.168.10.51:8083/user/" +
+                    user.userEmail +
+                    "/" +
+                    user.userImgUrl
+                  }
+                />
+              )}
               {user.userNickname}
             </div>
             <Link id="logout-btn" onClick={logout} className="info">
