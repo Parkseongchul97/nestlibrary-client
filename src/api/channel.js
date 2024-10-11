@@ -21,12 +21,14 @@ export const allChannel = async () => {
 export const create = async (data) => {
   // 파라미터로 data 받아서감 (바디로 받음)
 
-  return await instance.post("create", data, {
+  return await authorize.post("create", data, {
     headers: {
       "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
 };
+
 export const nameCheck = async (channelName, channelCode) => {
   return await instance.get(
     `name?channelName=${channelName}&channelCode=${channelCode}`
