@@ -11,6 +11,7 @@ const LoginWait = () => {
       if (kakaoKey) {
         const result = await kakaologin({ code: kakaoKey }); // 객체 형태로 보내기
         authLogin(result.data);
+        window.location.href = "/";
       }
     };
     kakao();
