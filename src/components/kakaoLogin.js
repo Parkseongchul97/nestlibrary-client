@@ -8,7 +8,17 @@ const KakaoLogin = () => {
   };
   return (
     <>
-      <button onClick={loginPage}>카카오 로그인</button>
+      <div className="arther-login">
+        <img
+          className="arther-login-btn"
+          src="http://192.168.10.51:8083/kakao_login_medium_narrow.png"
+          onClick={loginPage}
+        />
+        <img
+          className="arther-login-btn"
+          src="http://192.168.10.51:8083/btnG_%EC%99%84%EC%84%B1%ED%98%95.png"
+        />
+      </div>
     </>
   );
 };

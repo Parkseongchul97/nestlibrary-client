@@ -5,8 +5,10 @@ import { useState } from "react";
 import { login } from "../api/user";
 import Btn from "../components/Btn";
 import KakaoLogin from "../components/kakaoLogin";
+import { useAuth } from "../contexts/AuthContext";
 
-const Login = ({ onClose, setToken, setUser }) => {
+const Login = ({ onClose }) => {
+  const { login: authLogin } = useAuth();
   const [loginUser, setLoginUser] = useState({
     userEmail: "",
     userPassword: "",
@@ -15,28 +17,9 @@ const Login = ({ onClose, setToken, setUser }) => {
   const submit = async () => {
     console.log(loginUser);
     const result = await login(loginUser);
-    try {
-      if (result.status === 200) {
-        localStorage.setItem("token", result.data.token);
-        localStorage.setItem("userEmail", result.data.userEmail);
-        localStorage.setItem("userNickname", result.data.userNickname);
-        localStorage.setItem("userImgUrl", result.data.userImgUrl);
-        localStorage.setItem("userInfo", result.data.userInfo);
-        localStorage.setItem("userPoint", result.data.userPoint);
-        setToken(result.data.token);
-        setUser({
-          userEmail: result.data.userEmail,
-          userNickname: result.data.userNickname,
-          userImgUrl: result.data.userImgUrl,
-          userInfo: result.data.userInfo,
-          userPoint: result.data.userPoint,
-        });
-        alert("로그인 성공!");
-        onClose();
-      }
-    } catch (error) {
-      alert("로그인 실패");
-    }
+    authLogin(result.data);
+    alert("로그인 성공!");
+    onClose();
   };
   const enterLogin = (e) => {
     if (e.code === "Enter" || e.code === "NumpadEnter") {

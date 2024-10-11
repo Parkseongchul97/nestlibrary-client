@@ -4,6 +4,7 @@ import CreateChannel from "./CreateChannel";
 import { nicknameCheck, register } from "../api/user";
 import "../assets/mypage.scss";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 const Mypage = () => {
   const navigate = useNavigate();
@@ -22,12 +23,13 @@ const Mypage = () => {
       "/" +
       localStorage.getItem("userImgUrl")
   );
+  const { user } = useAuth();
   const [nicknameSubmit, setNicknameSubmit] = useState(true);
   const [userDTO, setUserDTO] = useState({
-    userEmail: localStorage.getItem("userEmail"),
-    userNickname: localStorage.getItem("userNickname"),
+    userEmail: user.userEmail,
+    userNickname: user.userNickname,
     userImgUrl: null,
-    userInfo: localStorage.getItem("userInfo"),
+    userInfo: user.userInfo,
   });
   const deleteImg = () => {
     setUserDTO({ ...userDTO, userImgUrl: null });

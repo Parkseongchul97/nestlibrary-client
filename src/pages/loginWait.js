@@ -1,28 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { kakaologin } from "../user/kakaoCode";
+import { useAuth } from "../contexts/AuthContext";
 
 const LoginWait = () => {
   const kakaoKey = new URL(window.location.href).searchParams.get("code");
-
+  const { login: authLogin } = useAuth();
   console.log(kakaoKey);
   useEffect(() => {
     const kakao = async () => {
       if (kakaoKey) {
-        try {
-          const result = await kakaologin({ code: kakaoKey }); // 객체 형태로 보내기
-          console.log("Login result:", result.status); // 결과 로그
-
-          localStorage.setItem("token", result.data.token);
-          localStorage.setItem("userEmail", result.data.userEmail);
-          localStorage.setItem("userNickname", result.data.userNickname);
-          localStorage.setItem("userImgUrl", result.data.userImgUrl);
-          localStorage.setItem("userInfo", result.data.userInfo);
-          localStorage.setItem("userPoint", result.data.userPoint);
-
-          window.location.href = "/";
-        } catch (error) {
-          console.error("로그인 실패:", error.message);
-        }
+        const result = await kakaologin({ code: kakaoKey }); // 객체 형태로 보내기
+        authLogin(result.data);
       }
     };
     kakao();
