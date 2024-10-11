@@ -30,10 +30,12 @@ const ChannelDetail = () => {
         {}
         <img
           src={
-            "http://192.168.10.51:8083/channel/" +
-            channelCode +
-            "/" +
-            Channel?.channelImgUrl
+            Channel?.channelImgUrl != null
+              ? "http://192.168.10.51:8083/channel/" +
+                channelCode +
+                "/" +
+                Channel?.channelImgUrl
+              : "http://192.168.10.51:8083/%EA%B8%B0%EB%B3%B8%EB%8C%80%EB%AC%B8.jpg"
           }
         />
         {Channel?.channelTag.map((channelTag) => (

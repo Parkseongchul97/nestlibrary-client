@@ -17,13 +17,16 @@ const Mypage = () => {
   const openCreateChannel = () => {
     setCreatePage(true);
   };
-  const [previewUrl, setPreviewUrl] = useState(
-    "http://192.168.10.51:8083/user/" +
-      localStorage.getItem("userEmail") +
-      "/" +
-      localStorage.getItem("userImgUrl")
-  );
   const { user } = useAuth();
+  const [previewUrl, setPreviewUrl] = useState(
+    user.userImgUrl != null
+      ? "http://192.168.10.51:8083/user/" +
+          user.userEmail +
+          "/" +
+          user.userImgUrl
+      : null
+  );
+
   const [nicknameSubmit, setNicknameSubmit] = useState(true);
   const [userDTO, setUserDTO] = useState({
     userEmail: user.userEmail,
@@ -39,10 +42,12 @@ const Mypage = () => {
   const resetImg = () => {
     setUserDTO({ ...userDTO, userImgUrl: null });
     setPreviewUrl(
-      "http://192.168.10.51:8083/user/" +
-        localStorage.getItem("userEmail") +
-        "/" +
-        localStorage.getItem("userImgUrl")
+      user.userImgUrl != null
+        ? "http://192.168.10.51:8083/user/" +
+            user.userEmail +
+            "/" +
+            user.userEmail
+        : null
     );
     setChangeImg(-1);
   };
