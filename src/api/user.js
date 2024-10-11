@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 const instance = axios.create({
   baseURL: "http://localhost:8080/api/user/",

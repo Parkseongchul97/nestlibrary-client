@@ -4,10 +4,14 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../assets/header.scss";
 import Login from "../pages/Login";
+import { userInfo } from "../api/user";
+import { kakaoLogout } from "../user/kakaoCode";
 
 const Header = () => {
   const [page, setPage] = useState(false);
+
   const [token, setToken] = useState();
+
   const [user, setUser] = useState({
     userEmail: localStorage.getItem("userEmail"),
     userNickname: localStorage.getItem("userNickname"),
@@ -15,9 +19,10 @@ const Header = () => {
     userInfo: localStorage.getItem("userInfo"),
     userPoint: localStorage.getItem("userPoint"),
   });
+
   useEffect(() => {
     setToken(localStorage.getItem("token"));
-    console.log("해더 유저");
+
     setUser({
       userEmail: localStorage.getItem("userEmail"),
       userNickname: localStorage.getItem("userNickname"),
@@ -25,6 +30,7 @@ const Header = () => {
       userInfo: localStorage.getItem("userInfo"),
       userPoint: localStorage.getItem("userPoint"),
     });
+
     console.log(user);
   }, []);
 
@@ -40,11 +46,16 @@ const Header = () => {
   const closeLogin = () => {
     setPage(false);
   };
-  const logout = () => {
+  const logout = async () => {
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("userImgUrl");
+    localStorage.removeItem("userNickname");
+    localStorage.removeItem("userPoint");
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
     setToken(null);
     setUser(null);
+    kakaoLogout();
   };
 
   return (

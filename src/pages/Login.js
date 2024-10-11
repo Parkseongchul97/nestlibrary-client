@@ -4,6 +4,7 @@ import "../assets/login.scss";
 import { useState } from "react";
 import { login } from "../api/user";
 import Btn from "../components/Btn";
+import KakaoLogin from "../components/kakaoLogin";
 
 const Login = ({ onClose, setToken, setUser }) => {
   const [loginUser, setLoginUser] = useState({
@@ -89,6 +90,7 @@ const Login = ({ onClose, setToken, setUser }) => {
               text={"로그인"}
             />
           </div>
+          <KakaoLogin />
           <div className="message">
             <Link id="register-message" to={"/register"} onClick={onClose}>
               <span>아직 회원이 아니신가요?</span>
