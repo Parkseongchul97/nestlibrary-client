@@ -8,6 +8,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 const Mypage = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [createPage, setCreatePage] = useState(false);
   // changeImg : -1 = (기존꺼 그대로), 0 =(변경), 1 =(이미지 삭제만)
   const [changeImg, setChangeImg] = useState(-1);
@@ -18,12 +19,14 @@ const Mypage = () => {
     setCreatePage(true);
   };
   const [previewUrl, setPreviewUrl] = useState(
-    "http://192.168.10.51:8083/user/" +
-      localStorage.getItem("userEmail") +
-      "/" +
-      localStorage.getItem("userImgUrl")
+    user.userImgUrl
+      ? "http://192.168.10.51:8083/user/" +
+          user.userEmail +
+          "/" +
+          user.userImgUrl
+      : null
   );
-  const { user } = useAuth();
+
   const [nicknameSubmit, setNicknameSubmit] = useState(true);
   const [userDTO, setUserDTO] = useState({
     userEmail: user.userEmail,
@@ -39,10 +42,12 @@ const Mypage = () => {
   const resetImg = () => {
     setUserDTO({ ...userDTO, userImgUrl: null });
     setPreviewUrl(
-      "http://192.168.10.51:8083/user/" +
-        localStorage.getItem("userEmail") +
-        "/" +
-        localStorage.getItem("userImgUrl")
+      user.userImgUrl
+        ? "http://192.168.10.51:8083/user/" +
+            user.userEmail +
+            "/" +
+            user.userImgUrl
+        : null
     );
     setChangeImg(-1);
   };
