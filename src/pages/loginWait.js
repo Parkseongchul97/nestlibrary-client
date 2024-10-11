@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { kakaologin } from "../user/kakaoCode";
-import { useNavigate } from "react-router-dom";
 
 const LoginWait = () => {
   const kakaoKey = new URL(window.location.href).searchParams.get("code");
@@ -14,9 +13,11 @@ const LoginWait = () => {
           console.log("Login result:", result.status); // 결과 로그
 
           localStorage.setItem("token", result.data.token);
-          localStorage.setItem("email", result.data.userEmail);
-          localStorage.setItem("nickname", result.data.userNickname);
-          localStorage.setItem("img", result.data.img);
+          localStorage.setItem("userEmail", result.data.userEmail);
+          localStorage.setItem("userNickname", result.data.userNickname);
+          localStorage.setItem("userImgUrl", result.data.userImgUrl);
+          localStorage.setItem("userInfo", result.data.userInfo);
+          localStorage.setItem("userPoint", result.data.userPoint);
 
           window.location.href = "/";
         } catch (error) {

@@ -8,25 +8,10 @@ import { userInfo } from "../api/user";
 import { kakaoLogout } from "../user/kakaoCode";
 
 const Header = () => {
-  const [member, setMember] = useState({
-    userEmail: "",
-    userImgUrl: "",
-    userInfo: null,
-    userNickname: "",
-    userPassword: null,
-    userPoint: 0,
-  });
   const [page, setPage] = useState(false);
-  const [token, setToken] = useState(null);
 
-  useEffect(() => {
-    setToken(localStorage.getItem("token"));
-    setMember({
-      userEmail: localStorage.getItem("email"),
-      userImgUrl: localStorage.getItem("img"),
-      userNickname: localStorage.getItem("nickname"),
-    });
   const [token, setToken] = useState();
+
   const [user, setUser] = useState({
     userEmail: localStorage.getItem("userEmail"),
     userNickname: localStorage.getItem("userNickname"),
@@ -34,9 +19,10 @@ const Header = () => {
     userInfo: localStorage.getItem("userInfo"),
     userPoint: localStorage.getItem("userPoint"),
   });
+
   useEffect(() => {
     setToken(localStorage.getItem("token"));
-    console.log("해더 유저");
+
     setUser({
       userEmail: localStorage.getItem("userEmail"),
       userNickname: localStorage.getItem("userNickname"),
@@ -44,6 +30,7 @@ const Header = () => {
       userInfo: localStorage.getItem("userInfo"),
       userPoint: localStorage.getItem("userPoint"),
     });
+
     console.log(user);
   }, []);
 
@@ -60,20 +47,15 @@ const Header = () => {
     setPage(false);
   };
   const logout = async () => {
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("userImgUrl");
+    localStorage.removeItem("userNickname");
+    localStorage.removeItem("userPoint");
     localStorage.removeItem("token");
-    localStorage.removeItem("email");
-    localStorage.removeItem("img");
-    localStorage.removeItem("nickname");
-    setMember({
-      userEmail: "",
-      userImgUrl: "",
-      userNickname: "",
-    });
-    setToken(null);
-    kakaoLogout();
-    localStorage.removeItem("user");
     setToken(null);
     setUser(null);
+    kakaoLogout();
   };
 
   return (
@@ -129,7 +111,6 @@ const Header = () => {
             <Link to={"/mypage"} id="mypage-btn" className="info">
               마이페이지
             </Link>
-            <p>{member.userNickname}</p>
           </div>
         )}
       </header>
