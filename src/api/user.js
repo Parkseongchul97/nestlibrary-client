@@ -4,7 +4,7 @@ const instance = axios.create({
   baseURL: "http://localhost:8080/api/user/",
 });
 const authorize = axios.create({
-  baseURL: "http://localhost:8080/api/private/",
+  baseURL: "http://localhost:8080/api/private/user/",
   headers: {
     Authorization: `Bearer ${localStorage.getItem("token")}`,
   },
@@ -15,10 +15,10 @@ export const register = async (data) => {
   return await instance.post("register", data);
 };
 
-export const nicknameCheck = async (nickname) => {
+export const nicknameCheck = async (nickname, userEmail) => {
   try {
     const response = await instance.get("nickname", {
-      params: { nickname },
+      params: { nickname, userEmail },
     });
     return response; // boolean 값 반환
   } catch (error) {
@@ -32,6 +32,15 @@ export const login = async (data) => {
     new Error("LOGIN");
   }
 };
+export const getUserInfo = async (userEmail) => {
+  return await authorize.get("info?userEmail=" + userEmail);
+};
 export const updateUser = async (data) => {
-  return await authorize.put("update", data);
+  console.log(data);
+  return await authorize.put("update", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
 };

@@ -87,7 +87,7 @@ const Register = () => {
   };
   const checkNickname = async () => {
     console.log("닉네임 : " + userDTO.userNickname);
-    const result = await nicknameCheck(userDTO.userNickname); // 닉네임 중복 체크 호출
+    const result = await nicknameCheck(userDTO.userNickname, null); // 닉네임 중복 체크 호출
     console.log(result.data);
     setnicknameSubmit(result.data);
   };

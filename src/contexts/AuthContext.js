@@ -3,7 +3,7 @@
         Context를 이용하면 props를 전달하지 않고도 컴포넌트 전역에 데이터를 공급할 수 있다.
     ContextAPI : Context를 만들고 다루는 리액트 기능
 */
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 
 // 1. 새로운 Context 생성
 const AuthContext = createContext();
@@ -24,7 +24,9 @@ export const AuthPorvider = ({ children }) => {
 
   // 로그인 기능
   const login = (data) => {
-    localStorage.setItem("token", data.token);
+    if (token === null) {
+      localStorage.setItem("token", data.token);
+    }
     localStorage.setItem("userEmail", data.userEmail);
     localStorage.setItem("userNickname", data.userNickname);
     if (data.userImgUrl !== null)
@@ -42,14 +44,17 @@ export const AuthPorvider = ({ children }) => {
   };
 
   // 로그아웃 기능
-  const logout = () => {
+  const logout = (changeCheck) => {
     localStorage.removeItem("userEmail");
-    localStorage.removeItem("userInfo");
-    localStorage.removeItem("userImgUrl");
+    if (userInfo != undefined) localStorage.removeItem("userInfo");
+    if (userImgUrl != undefined) localStorage.removeItem("userImgUrl");
     localStorage.removeItem("userNickname");
     localStorage.removeItem("userPoint");
-    localStorage.removeItem("token");
-    setToken(null);
+    if (!changeCheck) {
+      console.log("토큰날리는 상황");
+      localStorage.removeItem("token");
+      setToken(null);
+    }
     setUser(null);
   };
 
