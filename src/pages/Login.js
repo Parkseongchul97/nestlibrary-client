@@ -18,6 +18,7 @@ const Login = ({ onClose }) => {
     console.log(loginUser);
     const result = await login(loginUser);
     authLogin(result.data);
+    window.location.reload();
     alert("로그인 성공!");
     onClose();
   };

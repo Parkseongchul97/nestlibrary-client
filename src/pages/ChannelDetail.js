@@ -2,8 +2,21 @@ import { useEffect } from "react";
 import { main } from "../api/channel";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
+import { addSub, check, removeSub } from "../api/subscribe";
+import { useAuth } from "../contexts/AuthContext";
+import Login from "./Login";
+
 const ChannelDetail = () => {
+  const openPage = () => {
+    setPage(true);
+  };
+  const [page, setPage] = useState(false);
+  const closeLogin = () => {
+    setPage(false);
+  };
+  const { user } = useAuth();
   const { channelCode } = useParams();
+  const [isSub, setIsSub] = useState("");
   const [Channel, setChannel] = useState({
     channelTag: [
       {
@@ -11,17 +24,40 @@ const ChannelDetail = () => {
       },
     ],
   });
+
   const channelInfo = async () => {
     const result = await main(channelCode);
-    console.log(result.data);
-    console.log(result.data.channelTag.channelTagName);
+
     setChannel(result.data);
   };
+
   useEffect(() => {
     channelInfo();
+    if (localStorage.getItem("token") != null) subCheck();
   }, [channelCode]);
 
-  console.log("채널정보 " + Channel);
+  console.log(isSub);
+  console.log(localStorage.getItem("token"));
+
+  const subCheck = async () => {
+    const result = await check(channelCode);
+    setIsSub(result.data);
+  };
+
+  const sub = async (data) => {
+    if (localStorage.getItem("token") == null) {
+      openPage();
+      return;
+    }
+    await addSub(data);
+    subCheck();
+  };
+
+  const remove = async () => {
+    await removeSub(isSub?.managementCode);
+    subCheck();
+  };
+
   return (
     <>
       <div className="main-box">
@@ -41,6 +77,29 @@ const ChannelDetail = () => {
           <li>{channelTag.channelTagName}</li>
         ))}
       </div>
+
+      {isSub === "" ? (
+        <button
+          onClick={() =>
+            sub({
+              userEmail: user.userEmail,
+              channelCode: channelCode,
+            })
+          }
+        >
+          구독
+        </button>
+      ) : isSub?.managementUserStatus === "host" ? (
+        <button>내 채널</button>
+      ) : isSub?.managementUserStatus === "admin" ? (
+        <button>관리자</button>
+      ) : isSub?.managementUserStatus === "sub" ? (
+        <button onClick={remove}>구독취소</button>
+      ) : null}
+
+      <p>구독자 수 </p>
+
+      {page && <Login onClose={closeLogin} />}
     </>
   );
 };
