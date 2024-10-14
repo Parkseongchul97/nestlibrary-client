@@ -1,16 +1,31 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../assets/header.scss";
 import Login from "../pages/Login";
 import { kakaoLogout } from "../user/kakaoCode";
 import { useAuth } from "../contexts/AuthContext";
-
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getUserInfo } from "../api/user";
 const Header = () => {
   const [page, setPage] = useState(false);
   const { user, token } = useAuth();
   const { logout: authLogout } = useAuth();
+  const [tokenCk, setTokenCk] = useState(false);
+
+  // const queryClient = useQueryClient();
+  // // 댓글 목록
+  // const {
+  //   data: userDTO,
+  //   isLoading,
+  //   error,
+  // } = useQuery({
+  //   // 데이터, 로딩중인지, 에러발생
+  //   queryKey: ["userInfo", localStorage.getItem("userEmail")],
+  //   queryFn: () => getUserInfo(localStorage.getItem("userEmail")),
+  //   refetchInterval: 1000, // 해당 시간마다 데이터갱식하여 실시간 처럼 처리
+  // });
 
   const openPage = () => {
     setPage(true);
@@ -28,6 +43,16 @@ const Header = () => {
     authLogout();
     kakaoLogout();
   };
+  useEffect(() => {
+    if (token === null) setTokenCk(true);
+    else {
+      setTokenCk(false);
+    }
+  }, [token]);
+  // if (isLoading) return <>로딩중...</>;
+
+  // 에러 발생시 처리
+  // if (error) return <>에러발생...</>;
 
   return (
     <>
@@ -67,7 +92,7 @@ const Header = () => {
               {user.userImgUrl == null ? (
                 <img
                   className="user-img"
-                  src="http://192.168.10.51:8083/%EA%B8%B0%EB%B3%B8%EC%9D%B4%EB%AF%B8%EC%A7%80.png"
+                  src="http://192.168.10.51:8083/e0680940917fba1b2350c6563c32ad0c.jpg"
                 />
               ) : (
                 <img

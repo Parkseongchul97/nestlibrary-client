@@ -29,7 +29,7 @@
     .change-input-box {
       padding: 5px;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
       width: 100%;
       .change-input-text {
@@ -50,7 +50,6 @@
       background-color: white;
       border-radius: 50%;
       border: 2px solid black;
-      padding: 5px;
       width: 102px;
       height: 102px;
       cursor: pointer;
@@ -82,5 +81,9 @@
         }
       }
     }
+  }
+  .info-change-text {
+    display: flex;
+    border: 1px solid;
   }
 }

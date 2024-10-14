@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CreateChannel from "./CreateChannel";
-import { nicknameCheck, register } from "../api/user";
+import { nicknameCheck, updateUser, getUserInfo } from "../api/user";
 import "../assets/mypage.scss";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
@@ -17,7 +17,7 @@ const Mypage = () => {
   const openCreateChannel = () => {
     setCreatePage(true);
   };
-  const { user } = useAuth();
+  const { user, login, logout } = useAuth();
   const [previewUrl, setPreviewUrl] = useState(
     user.userImgUrl != null
       ? "http://192.168.10.51:8083/user/" +
@@ -28,12 +28,27 @@ const Mypage = () => {
   );
 
   const [nicknameSubmit, setNicknameSubmit] = useState(true);
+
   const [userDTO, setUserDTO] = useState({
-    userEmail: user.userEmail,
-    userNickname: user.userNickname,
-    userImgUrl: null,
-    userInfo: user.userInfo,
+    // userEmail: user.userEmail,
+    // userNickname: user.userNickname,
+    // userImgUrl: null,
+    // userInfo: user.userInfo,
+    // userPoint: user.userPoint,
   });
+  const findUser = async () => {
+    const result = await getUserInfo(localStorage.getItem("userEmail"));
+    setUserDTO({
+      userEmail: result.data.userEmail,
+      userNickname: result.data.userNickname,
+      userImgUrl: null,
+      userInfo: result.data.userInfo,
+      userPoint: result.data.userPoint,
+    });
+  };
+  useEffect(() => {
+    findUser();
+  }, [localStorage.getItem("userEmail")]);
   const deleteImg = () => {
     setUserDTO({ ...userDTO, userImgUrl: null });
     setPreviewUrl(null);
@@ -64,7 +79,7 @@ const Mypage = () => {
     else console.log("이미지 삭제로 제출");
   }, [changeImg]);
   const checkNickname = async () => {
-    const result = await nicknameCheck(userDTO.userNickname); // 닉네임 중복
+    const result = await nicknameCheck(userDTO.userNickname, userDTO.userEmail); // 닉네임 중복
     if (result.data !== undefined || result.data !== "") {
       console.log(result.data);
     }
@@ -91,10 +106,13 @@ const Mypage = () => {
     formData.append("changeImg", changeImg);
     // 기존꺼랑 바뀐거랑 비교 랑 포인트 소모는 백단에서
     // 무엇을 바꿨냐에 따라서 포인트 소모량 차이나게 담기
-    const result = await register(formData);
+    const result = await updateUser(formData);
     if (result.status === 200) {
       alert("정보수정 완료!");
-      navigate("/mypage");
+      // 유저 정보 수정값 담아줘야함
+      logout(true);
+      login(result.data);
+      navigate("/");
     } else {
       alert("회원정보를 수정할 수 없습니다!");
       navigate("/mypage");
@@ -106,7 +124,8 @@ const Mypage = () => {
         <h1>마이 페이지</h1>
         <div id="info-change-box">
           <div className="change-input-box">
-            <label htmlFor="input-nickname">닉네임 : </label>
+            <div>내 잔여 포인트 : {userDTO.userPoint}</div>
+            <label htmlFor="input-nickname">닉네임</label>
             <input
               id="input-nickname"
               className="change-input-text"
@@ -118,10 +137,12 @@ const Mypage = () => {
               }
             />
           </div>
-          <div>닉네임 변경에는 500pt가 소모됩니다.</div>
+          <div className="info-change-text">
+            닉네임 변경에는 500pt가 소모됩니다.
+          </div>
 
           <div className="change-input-box">
-            <label htmlFor="input-info">나의 한마디 : </label>
+            <label htmlFor="input-info">나의 한마디</label>
             <input
               id="input-info"
               className="change-input-text"
@@ -139,18 +160,22 @@ const Mypage = () => {
             ) : (
               <img
                 id="preview-img"
-                src="http://192.168.10.51:8082/thumbnail/%EA%B8%B0%EB%B3%B8%EC%9D%B4%EB%AF%B8%EC%A7%80.png"
+                src="http://192.168.10.51:8083/e0680940917fba1b2350c6563c32ad0c.jpg"
                 alt="프로필 미리보기"
               />
             )}
           </label>
-          <div>프로필사진 변경에는 100pt가 소모됩니다.</div>
-          <button id="user-img-delete" onClick={deleteImg}>
-            이미지 삭제
-          </button>
-          <button id="user-img-reset" onClick={resetImg}>
-            이미지 되돌리기
-          </button>
+          <div className="info-change-text">
+            프로필사진 변경에는 100pt가 소모됩니다.
+          </div>
+          <div className="btn-box">
+            <button id="user-img-delete" onClick={deleteImg}>
+              이미지 삭제
+            </button>
+            <button id="user-img-reset" onClick={resetImg}>
+              이미지 되돌리기
+            </button>
+          </div>
           <input
             className="change-input-file"
             id="img-file"
