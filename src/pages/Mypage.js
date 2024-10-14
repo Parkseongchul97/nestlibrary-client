@@ -62,7 +62,7 @@ const Mypage = () => {
         ? "http://192.168.10.51:8083/user/" +
             user.userEmail +
             "/" +
-            user.userEmail
+            user.userImgUrl
         : null
     );
     setChangeImg(-1);
@@ -113,7 +113,7 @@ const Mypage = () => {
       // 유저 정보 수정값 담아줘야함
       logout(true);
       login(result.data);
-      navigate("/");
+      window.location.href = "/";
     } else {
       alert("회원정보를 수정할 수 없습니다!");
       navigate("/mypage");

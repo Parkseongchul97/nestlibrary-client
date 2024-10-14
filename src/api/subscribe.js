@@ -7,6 +7,10 @@ const authorize = axios.create({
   },
 });
 
+const instance = axios.create({
+  baseURL: "http://localhost:8080/api",
+});
+
 export const addSub = async (data) => {
   await authorize.post("/subscribe", data);
 };
@@ -17,4 +21,8 @@ export const check = async (channelCode) => {
 
 export const removeSub = async (managementCode) => {
   await authorize.delete(`/subscribe/${managementCode}`);
+};
+
+export const countSub = async (channelCode) => {
+  return await instance.get(`/subscribe/${channelCode}`);
 };

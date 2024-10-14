@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { main } from "../api/channel";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { addSub, check, removeSub } from "../api/subscribe";
+import { addSub, check, removeSub, countSub } from "../api/subscribe";
 import { useAuth } from "../contexts/AuthContext";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Login from "./Login";
 
 const ChannelDetail = () => {
@@ -17,6 +18,7 @@ const ChannelDetail = () => {
   const { user } = useAuth();
   const { channelCode } = useParams();
   const [isSub, setIsSub] = useState("");
+  const [count, setCount] = useState();
   const [Channel, setChannel] = useState({
     channelTag: [
       {
@@ -31,6 +33,20 @@ const ChannelDetail = () => {
     setChannel(result.data);
   };
 
+  const queryClient = useQueryClient();
+
+  // 무조건 data를 쓰고 이름을 바꾸고 싶으면 ( data : 변수명 )
+  // 구독자 수 띄우기 연습
+  const {
+    data: subs,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["subs", channelCode],
+    queryFn: () => countSub(channelCode),
+    refetchInterval: 1000, // 1초 -> 데이터 갱신을 해줌
+  });
+
   useEffect(() => {
     channelInfo();
     if (localStorage.getItem("token") != null) subCheck();
@@ -38,6 +54,11 @@ const ChannelDetail = () => {
 
   console.log(isSub);
   console.log(localStorage.getItem("token"));
+
+  const subCount = async () => {
+    const result = await countSub(channelCode);
+    setCount(result.data);
+  };
 
   const subCheck = async () => {
     const result = await check(channelCode);
@@ -50,13 +71,21 @@ const ChannelDetail = () => {
       return;
     }
     await addSub(data);
+
     subCheck();
+    // subCount();
   };
 
   const remove = async () => {
     await removeSub(isSub?.managementCode);
+    //subCount();
     subCheck();
   };
+
+  if (isLoading) return <>로딩중...</>;
+
+  // 에러 발생 했을 때 처리
+  if (error) return <>에러 발생...</>;
 
   return (
     <>
@@ -97,7 +126,7 @@ const ChannelDetail = () => {
         <button onClick={remove}>구독취소</button>
       ) : null}
 
-      <p>구독자 수 </p>
+      <p> 구독자 수 : {subs.data} 명 </p>
 
       {page && <Login onClose={closeLogin} />}
     </>
