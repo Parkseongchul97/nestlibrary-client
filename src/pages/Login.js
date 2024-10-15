@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import "../assets/login.scss";
 import { useState } from "react";
 import { login } from "../api/user";
-import Btn from "../components/Btn";
 import KakaoLogin from "../components/kakaoLogin";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -66,12 +65,9 @@ const Login = ({ onClose }) => {
             <div className="findId">
               <Link to={"/"}>비밀번호 찾기</Link>
             </div>
-            <Btn
-              id="login-submit"
-              type="submit"
-              click={submit}
-              text={"로그인"}
-            />
+            <button id="login-submit" type="submit" onClick={submit}>
+              로그인
+            </button>
           </div>
           <KakaoLogin />
           <div className="message">

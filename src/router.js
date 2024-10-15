@@ -6,6 +6,7 @@ import LoginWait from "./pages/loginWait";
 
 import Mypage from "./pages/Mypage";
 import ChannelDetail from "./pages/ChannelDetail";
+import PostDetail from "./pages/PostDetail";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "channel/:channelCode",
         element: <ChannelDetail />,
+      },
+      {
+        path: "/post/:postCode",
+        element: <PostDetail />,
       },
     ],
   },

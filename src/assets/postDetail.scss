@@ -1,0 +1,53 @@
+.post-detail {
+  padding: 100px;
+}
+.user-profile {
+  width: 100px;
+  height: 20px;
+  .user-profile-nickname {
+    font-weight: bold;
+  }
+  .user-profile-img {
+    width: 20px;
+    height: 20px;
+  }
+}
+.comment-list {
+  margin: 20px 0;
+  margin-left: -40px;
+}
+.comment-content {
+  margin-left: 40px;
+}
+.comment-content h4 {
+  font-weight: bold;
+}
+.comment-content p {
+  margin: 10px 0;
+}
+.comment-content > button {
+  color: blue;
+  margin-right: 5px;
+}
+.comment-content input {
+  margin-left: 30px;
+  border-bottom: 1px solid #ddd;
+  width: 90%;
+  margin: 10px 5px;
+}
+.comment-content input:focus {
+  outline: none;
+  border-color: #999;
+}
+.reply-add-status {
+  display: flex;
+  justify-content: flex-end;
+  width: 90%;
+  margin-left: 30px;
+}
+.reply-add-status button {
+  border-radius: 15px;
+  padding: 10px;
+  background-color: #ddd;
+  margin: 10px 5px;
+}
