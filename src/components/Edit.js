@@ -1,15 +1,18 @@
 import React, { useState, useRef, useMemo, useEffect } from "react";
 import JoditEditor from "jodit-react";
 import { useParams } from "react-router-dom";
-import { add } from "../api/post";
+import { add, write } from "../api/post";
 import "../assets/edit.scss";
 import { main } from "../api/channel";
 import { useAuth } from "../contexts/AuthContext";
 
 const Example = ({ placeholder }) => {
   const { user } = useAuth();
+
   const { channelCode } = useParams();
+
   const editor = useRef(null);
+
   const [post, setPost] = useState({
     postContent: "",
     postTitle: "",
@@ -17,6 +20,7 @@ const Example = ({ placeholder }) => {
     channelCode: channelCode,
     channelTagCode: "",
   });
+
   const [Channel, setChannel] = useState({
     channelTag: [
       {
@@ -28,7 +32,7 @@ const Example = ({ placeholder }) => {
   });
 
   const channelInfo = async () => {
-    const result = await main(channelCode);
+    const result = await write(channelCode);
 
     setChannel(result.data);
   };
@@ -36,6 +40,19 @@ const Example = ({ placeholder }) => {
   useEffect(() => {
     channelInfo();
   }, []);
+
+  useEffect(() => {
+    const firstTag = Channel.channelTag.find(
+      (item) => item.channelTagName === "일반"
+    );
+    if (firstTag) {
+      setPost({
+        ...post,
+        channelTagCode: String(firstTag.channelTagCode),
+      });
+    }
+  }, [Channel]);
+
   console.log(channelCode);
   console.log(Channel);
   console.log(post);
@@ -74,7 +91,8 @@ const Example = ({ placeholder }) => {
     if (post.postContent.trim().length == 0) {
       alert("내용을 입력해주세요");
     }
-    await add(post);
+    const response = await add(post);
+    window.location.href = "/post/" + response.data.postCode;
   };
 
   return (
@@ -89,9 +107,11 @@ const Example = ({ placeholder }) => {
         id="tag"
         onChange={(e) => setPost({ ...post, channelTagCode: e.target.value })}
       >
-        <option value={0}>채널태그</option>
         {Channel?.channelTag.map((channelTag) => (
-          <option value={channelTag.channelTagCode}>
+          <option
+            value={channelTag.channelTagCode}
+            selected={channelTag.channelTagName === "일반" ? true : false}
+          >
             {channelTag.channelTagName}
           </option>
         ))}
