@@ -15,7 +15,7 @@ const Main = () => {
         allPost: channel.allPost || [],
       }))
     );
-    console.log(channelList);
+    
   };
   useEffect(() => {
     chanList();
@@ -34,9 +34,6 @@ const Main = () => {
                 >
                   {channel?.channelName} 채널
                 </Link>
-                {/*게시글 반복 5~10개 예정*/}
-                {/*channel.posts.map((post) => ()*/}
-
                 {channel.allPost.map((post) => (
                   <PostListComponent post={post} key={post?.postCode} />
                 ))}

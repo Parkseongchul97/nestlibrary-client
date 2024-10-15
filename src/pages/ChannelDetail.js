@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { main } from "../api/channel";
+import { main , sub as subPost} from "../api/channel";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { addSub, check, removeSub, countSub } from "../api/subscribe";
@@ -7,6 +7,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Login from "./Login";
 import PostEditor from "../components/Edit";
+import PostListComponent from "../components/PostListComponent";
 
 const ChannelDetail = () => {
   const openPage = () => {
@@ -17,7 +18,7 @@ const ChannelDetail = () => {
     setPage(false);
   };
   const { user } = useAuth();
-  const { channelCode } = useParams();
+  const { channelCode , channelTagCode} = useParams();
   const [isSub, setIsSub] = useState("");
   const [count, setCount] = useState();
   const [Channel, setChannel] = useState({
@@ -29,14 +30,26 @@ const ChannelDetail = () => {
       },
     ],
   });
+  const [postList, setPostList] = useState({  
+    channelTagCode: 0,
+    channelTagName: "",
+    posts : [],    
+  })
 
-  console.log(Channel);
+
 
   const channelInfo = async () => {
     const result = await main(channelCode);
 
     setChannel(result.data);
   };
+
+  const channelsubInfo = async () =>{
+    const result = await subPost(channelCode, channelTagCode)
+    setPostList(result.data);
+    console.log("채널 태그도 왔음")
+    console.log(postList)
+  }
 
   const write = () => {
     window.location.href = "/write/" + channelCode;
@@ -56,12 +69,17 @@ const ChannelDetail = () => {
   });
 
   useEffect(() => {
-    channelInfo();
+    if(channelTagCode === undefined){
+      channelInfo();
+      console.log("태그안옴")
+    } else{
+      channelsubInfo();
+      console.log("태그옴")
+    }
     if (localStorage.getItem("token") != null) subCheck();
   }, [channelCode]);
 
-  console.log(isSub);
-  console.log(localStorage.getItem("token"));
+
 
   const subCount = async () => {
     const result = await countSub(channelCode);
@@ -71,6 +89,7 @@ const ChannelDetail = () => {
   const subCheck = async () => {
     const result = await check(channelCode);
     setIsSub(result.data);
+
   };
 
   const sub = async (data) => {
@@ -86,7 +105,6 @@ const ChannelDetail = () => {
 
   const remove = async () => {
     await removeSub(isSub?.managementCode);
-    //subCount();
     subCheck();
   };
 
@@ -97,8 +115,12 @@ const ChannelDetail = () => {
 
   return (
     <>
+
       <div className="main-box">
         !!채널메인!!
+        {postList !== null ?  postList?.posts.map((post) => (
+                  <PostListComponent post={post} key={post?.postCode} />
+                )): <p>게시글이 읍서요</p>}
         <p>{Channel?.channelName}</p>
         <img
           src={

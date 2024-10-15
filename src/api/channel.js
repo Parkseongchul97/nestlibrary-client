@@ -9,13 +9,16 @@ const authorize = axios.create({
     Authorization: `Bearer ${localStorage.getItem("token")}`,
   },
 });
-export const main = async (channelCode, channelTagCode) => {
-  console.log("이동경로 코드 : " + channelCode);
+export const main = async (channelCode) => {
+  return await instance.get(
+    `${channelCode}`
+  );
+};
+
+export const sub = async (channelCode, channelTagCode) => {
 
   return await instance.get(
-    `${channelCode}?channelTagCode=${
-      channelTagCode === undefined ? 0 : channelTagCode
-    }`
+    `${channelCode}/${channelTagCode}`
   );
 };
 
