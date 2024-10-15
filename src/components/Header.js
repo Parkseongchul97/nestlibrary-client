@@ -12,20 +12,6 @@ const Header = () => {
   const [page, setPage] = useState(false);
   const { user, token } = useAuth();
   const { logout: authLogout } = useAuth();
-  const [tokenCk, setTokenCk] = useState(false);
-
-  // const queryClient = useQueryClient();
-  // // 댓글 목록
-  // const {
-  //   data: userDTO,
-  //   isLoading,
-  //   error,
-  // } = useQuery({
-  //   // 데이터, 로딩중인지, 에러발생
-  //   queryKey: ["userInfo", localStorage.getItem("userEmail")],
-  //   queryFn: () => getUserInfo(localStorage.getItem("userEmail")),
-  //   refetchInterval: 1000, // 해당 시간마다 데이터갱식하여 실시간 처럼 처리
-  // });
 
   const openPage = () => {
     setPage(true);
@@ -43,16 +29,6 @@ const Header = () => {
     authLogout();
     kakaoLogout();
   };
-  useEffect(() => {
-    if (token === null) setTokenCk(true);
-    else {
-      setTokenCk(false);
-    }
-  }, [token]);
-  // if (isLoading) return <>로딩중...</>;
-
-  // 에러 발생시 처리
-  // if (error) return <>에러발생...</>;
 
   return (
     <>
@@ -77,7 +53,7 @@ const Header = () => {
           </button>
         </div>
 
-        {token == null ? (
+        {token === null ? (
           <div className="header-right">
             <Link id="login-btn" onClick={openPage} className="info">
               로그인
