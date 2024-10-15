@@ -2,6 +2,7 @@ import "../assets/main.scss";
 import { Link } from "react-router-dom";
 import { allChannel } from "../api/channel";
 import { useEffect, useState } from "react";
+import PostList from "../components/PostList";
 
 const Main = () => {
   // 첫 호출때 null
@@ -30,6 +31,7 @@ const Main = () => {
                 </Link>
                 {/*게시글 반복 5~10개 예정*/}
                 {/*channel.posts.map((post) => ()*/}
+
                 <div className="channel-post">
                   <Link
                     className="channel-tag"
@@ -48,26 +50,6 @@ const Main = () => {
                     <div className="post-end">
                       <span className="comment-count">[1]</span>
                       <span className="time">1분전</span>
-                    </div>
-                  </Link>
-                </div>
-                <div className="channel-post">
-                  <Link
-                    className="channel-tag"
-                    to={"/channel/채널코드/채널태그코드"}
-                  >
-                    토론
-                  </Link>
-                  <Link
-                    className="post-link"
-                    to={"/channel/채널코드/채널태그코드/게시글코드"}
-                  >
-                    <span className="post-text">
-                      에이스 vs 2년전 루피 누가이기냐?
-                    </span>
-                    <div className="post-end">
-                      <span className="comment-count">[13]</span>
-                      <span className="time">3분전</span>
                     </div>
                   </Link>
                 </div>
