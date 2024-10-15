@@ -6,6 +6,7 @@ import { addSub, check, removeSub, countSub } from "../api/subscribe";
 import { useAuth } from "../contexts/AuthContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Login from "./Login";
+import PostEditor from "../components/Edit";
 
 const ChannelDetail = () => {
   const openPage = () => {
@@ -23,9 +24,13 @@ const ChannelDetail = () => {
     channelTag: [
       {
         channelTagName: "",
+        channelTagCode: "",
+        channelCode: "",
       },
     ],
   });
+
+  console.log(Channel);
 
   const channelInfo = async () => {
     const result = await main(channelCode);
@@ -33,6 +38,9 @@ const ChannelDetail = () => {
     setChannel(result.data);
   };
 
+  const write = () => {
+    window.location.href = "/write/" + channelCode;
+  };
   const queryClient = useQueryClient();
 
   // 무조건 data를 쓰고 이름을 바꾸고 싶으면 ( data : 변수명 )
@@ -129,6 +137,7 @@ const ChannelDetail = () => {
       <p> 구독자 수 : {subs.data} 명 </p>
 
       {page && <Login onClose={closeLogin} />}
+      <button onClick={write}>글쓰기</button>
     </>
   );
 };
