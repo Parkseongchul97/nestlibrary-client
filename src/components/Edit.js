@@ -3,7 +3,6 @@ import JoditEditor from "jodit-react";
 import { useParams } from "react-router-dom";
 import { add, write } from "../api/post";
 import "../assets/edit.scss";
-import { main } from "../api/channel";
 import { useAuth } from "../contexts/AuthContext";
 
 const Example = ({ placeholder }) => {
