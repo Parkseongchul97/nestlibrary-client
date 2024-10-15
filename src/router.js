@@ -8,6 +8,8 @@ import Mypage from "./pages/Mypage";
 import ChannelDetail from "./pages/ChannelDetail";
 import PostDetail from "./pages/PostDetail";
 
+import Example from "./components/Edit";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -38,6 +40,10 @@ const router = createBrowserRouter([
   {
     path: "/kakao",
     element: <LoginWait />,
+  },
+  {
+    path: "/write/:channelCode",
+    element: <Example />,
   },
 ]);
 export default router;

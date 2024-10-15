@@ -13,8 +13,9 @@ const Header = () => {
   const { user, token } = useAuth();
   const { logout: authLogout } = useAuth();
 
-  const openPage = () => {
+  const openPage = (event) => {
     setPage(true);
+    event.preventDefault();
   };
 
   const hidenTogle = () => {
@@ -58,6 +59,7 @@ const Header = () => {
             <Link id="login-btn" onClick={openPage} className="info">
               로그인
             </Link>
+
             <Link to={"/register"} className="info">
               회원가입
             </Link>

@@ -11,6 +11,7 @@ const authorize = axios.create({
 });
 export const main = async (channelCode) => {
   console.log("이동경로 코드 : " + channelCode);
+
   return await instance.get(`${channelCode}`);
 };
 
