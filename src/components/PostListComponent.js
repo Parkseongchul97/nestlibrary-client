@@ -12,7 +12,7 @@ const PostListComponent = ({ post }) => {
           to={
             "/channel/" +
             post?.channelCode +
-            "/" +
+            "?channelTagCode=" +
             post?.channelTag?.channelTagCode
           }
         >
