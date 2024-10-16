@@ -8,7 +8,7 @@ import {
 } from "../api/comment";
 import TimeFormat from "./TimeFormat";
 import "../assets/comment.scss";
-const CommentComponent = ({ comment, postCode }) => {
+const CommentComponent = ({ comment, postCode , id}) => {
   const { user, token } = useAuth();
   const [newReComment, setNewReComment] = useState({
     commentContent: "",
@@ -25,7 +25,6 @@ const CommentComponent = ({ comment, postCode }) => {
   });
 
   const [isChange, setIsChange] = useState(0); // 수정 체크
-  const [isRecom, setIsRecom] = useState(0);
   const queryClient = useQueryClient();
 
   const addMutation = useMutation({
@@ -80,8 +79,18 @@ const CommentComponent = ({ comment, postCode }) => {
       });
     }
   };
+  const enterSubmit = (e ,type) =>{
+    if (type === "add")
+      if (e.code === "Enter" || e.code === "NumpadEnter") {
+        addReComment();
+      }
+    if (type === "update")
+      if (e.code === "Enter" || e.code === "NumpadEnter") {
+        updateComment();
+      }
+  }
   return (
-    <div className="comment-content-box">
+    <div className="comment-content-box" id={"comment-code-"+ id}>
       {comment?.commentContent === null ? (
         <div className="comment-content">
           <p className="none-comment">삭제된 댓글입니다...</p>
@@ -121,6 +130,7 @@ const CommentComponent = ({ comment, postCode }) => {
                         commentContent: e.target.value,
                       })
                     }
+                    onKeyDown={(e) => enterSubmit(e, "update")}
                   />
                   <button onClick={() => setIsChange(0)}>수정취소</button>
                   <button onClick={updateComment}>수정</button>
@@ -159,10 +169,11 @@ const CommentComponent = ({ comment, postCode }) => {
 
       {newReComment.commentParentsCode === comment.commentCode && (
         <>
-          <div className="recommnet-form">
+          <div className="re-comment-form">
             <input
               type="text"
               placeholder="답글 추가.."
+              className="re-comment-add"
               value={newReComment.commentContent}
               onChange={(e) =>
                 setNewReComment({
@@ -171,9 +182,10 @@ const CommentComponent = ({ comment, postCode }) => {
                   commentParentsCode: comment.commentCode,
                 })
               }
+              onKeyDown={(e) => enterSubmit(e, "add")}
             />
-            <div className="re-add-status">
-              <button onClick={addReComment}>답글</button>
+            <div className="re-comment-add-status">
+              <button className="re-comment-submit" onClick={addReComment}>등록</button>
             </div>
           </div>
         </>

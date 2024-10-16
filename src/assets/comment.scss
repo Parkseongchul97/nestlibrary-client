@@ -67,3 +67,33 @@
     }
   }
 }
+
+.re-comment-form{
+  display: flex;
+  padding: 10px;
+  background-color: #eee;
+  height: 50px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  .re-comment-add{
+    padding-left: 10px;
+    width: 80%;
+    height: 40px;
+  }
+  .re-comment-add-status{
+    display: flex;
+    justify-content: flex-end;
+    .re-comment-submit{
+      text-wrap: nowrap;
+      background-color: #ddd;
+      cursor: pointer;
+      padding: 5px 10px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 10px;
+      margin: 0px 3px;
+    }
+  }
+}

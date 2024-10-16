@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import CommentComponent from "../components/CommentComponent";
@@ -15,14 +15,14 @@ import TimeFormat from "../components/TimeFormat";
 const PostDetail = () => {
   const { postCode } = useParams();
   const { user, token } = useAuth();
-
-  const [isComment, setIsComment] = useState(false);
   const [newComment, setNewComment] = useState({
     commentContent: "",
     postCode: postCode,
     userEmail: user?.userEmail,
   });
   const [post, setPost] = useState(null);
+
+ 
 
   const queryClient = useQueryClient();
   // 댓글 목록
@@ -40,15 +40,19 @@ const PostDetail = () => {
   // 댓글 추가
   const addmutation = useMutation({
     mutationFn: addCommentAPI,
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["comment", postCode] });
-    },
+      // 스크롤 이벤트가 안댐...
+      const scrollTarget = document.querySelector("#comment-code-" + data.data?.commentCode);
+      console.log(data.data?.commentCode)
+      scrollTarget.scrollIntoView({ behavior: "smooth" });
+  },
   });
 
   // 댓글추가
   const addComment = () => {
     addmutation.mutate(newComment); // 리액트쿼리
-    setIsComment(false);
+  
     setNewComment({ ...newComment, commentContent: "" });
   };
   const loadingPost = async () => {
@@ -104,6 +108,12 @@ const PostDetail = () => {
       likeCount: post?.likeCount - 1,
     });
   };
+  const enter = (e) =>{
+    if (e.code === "Enter" || e.code === "NumpadEnter") {
+      addComment();
+    }
+  }
+
   useEffect(() => {
     loadingPost();
   }, []);
@@ -117,6 +127,7 @@ const PostDetail = () => {
   if (likeError) return <>에러발생...</>;
 
   return (
+    <div className="post-detail-box">
     <div className="post-detail">
       <h1 className="post-title">{post?.postTitle}</h1>
       <TimeFormat time={post?.postCreatedAt} />
@@ -135,36 +146,33 @@ const PostDetail = () => {
       )}
       <div className="comment">
         {token && (
+          <>
+          <div className="comment-form">
           <input
             className="comment-add"
             type="text"
             placeholder="댓글 추가.."
             value={newComment.commentContent}
-            onClick={() => setIsComment(true)}
             onChange={(e) => {
               setNewComment({ ...newComment, commentContent: e.target.value });
             }}
+            onKeyDown={(e) => enter(e)}
           />
-        )}
-        {isComment && (
           <div className="comment-add-status">
-            <button
-              className="comment-submit"
-              onClick={() => setIsComment(false)}
-            >
-              취소
-            </button>
             <button className="comment-submit" onClick={addComment}>
-              댓글 등록
+              등록
             </button>
           </div>
-        )}
-        <div className="comment-list">
+          </div>
+          </>
+       )}
+        <div className="comment-list" >
           {isLoading && likeLoading && Array.isArray(commentList.data) ? (
             <p>댓글이 없습니당</p>
           ) : (
             commentList.data.map((comment) => (
               <CommentComponent
+                id={comment.commentCode}
                 comment={comment}
                 postCode={postCode}
                 key={comment.commentCode}
@@ -173,6 +181,7 @@ const PostDetail = () => {
           )}
         </div>
       </div>
+    </div>
     </div>
   );
 };
