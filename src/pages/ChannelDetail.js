@@ -6,6 +6,7 @@ import { addSub, check, removeSub, countSub } from "../api/subscribe";
 import { useAuth } from "../contexts/AuthContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Login from "./Login";
+import { Link } from "react-router-dom";
 import PostEditor from "../components/Edit";
 
 const ChannelDetail = () => {
@@ -138,6 +139,7 @@ const ChannelDetail = () => {
 
       {page && <Login onClose={closeLogin} />}
       <button onClick={write}>글쓰기</button>
+      <Link to={`/update/${channelCode}`}>채널수정</Link>
     </>
   );
 };

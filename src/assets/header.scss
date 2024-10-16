@@ -126,23 +126,46 @@
   }
 }
 
-@media screen and (min-width: 100px) {
+@media screen and (min-width: 1000px) {
   .header-center-search input {
     width: 90%;
   }
 }
 
-@media screen and (max-width: 1000px) {
-  .header-center-search {
+@media screen and (max-width: 700px) {
+  .user-nickname {
     display: none;
   }
-  .hiden-btn {
+  #logout-btn {
+    display: none;
+  }
+  #mypage-btn {
+    display: none;
+  }
+  .header-center {
+    width: 370%;
+  }
+  #search {
+    display: none;
+  }
+  .hidden-btn {
     display: block;
+    background-color: black;
+
     svg {
       width: 40px;
       height: 80%;
       cursor: pointer;
       border-radius: 100%;
+      color: white;
     }
   }
+  .header-left a {
+    margin-left: 20px;
+  }
 }
+
+/*
+@media screen and (max-width: 700px) {
+
+}*/

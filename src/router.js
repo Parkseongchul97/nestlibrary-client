@@ -9,6 +9,7 @@ import ChannelDetail from "./pages/ChannelDetail";
 import PostDetail from "./pages/PostDetail";
 
 import Example from "./components/Edit";
+import ChannelUpdate from "./pages/ChannelUpdate";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
   {
     path: "/write/:channelCode",
     element: <Example />,
+  },
+  {
+    path: "/update/:channelCode",
+    element: <ChannelUpdate />,
   },
 ]);
 export default router;

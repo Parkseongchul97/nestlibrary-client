@@ -35,3 +35,27 @@ export const nameCheck = async (channelName, channelCode) => {
     `name?channelName=${channelName}&channelCode=${channelCode}`
   );
 };
+
+export const updateInfo = async (channelCode) => {
+  return await authorize.get(`/update/${channelCode}`);
+};
+
+export const addTags = async (data) => {
+  return await authorize.post("/tag", data);
+};
+
+export const removeTags = async (channelTagCode) => {
+  await authorize.delete(`/tag/${channelTagCode}`);
+};
+
+export const infoUpdate = async (data) => {
+  await authorize.put("/update", data);
+};
+
+export const addImg = async (data) => {
+  await authorize.put("/channelImg", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
