@@ -56,6 +56,7 @@ export const addImg = async (data) => {
   await authorize.put("/channelImg", data, {
     headers: {
       "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
 };

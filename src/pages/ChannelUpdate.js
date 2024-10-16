@@ -143,7 +143,7 @@ const ChannelUpdate = () => {
       <p>이미지 </p>
       추가:
       <input
-        className="change-input-file"
+        
         type="file"
         accept={"image/*"}
         onChange={(e) => {
