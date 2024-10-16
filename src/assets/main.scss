@@ -86,3 +86,33 @@
     }
   }
 }
+.none-post-box {
+  padding: 1rem;
+  margin: 0.5rem;
+  border-radius: 20px;
+  background: #f4f4f4;
+  width: 100%;
+  max-width: 600px;
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  div {
+    color: #413f3fb9;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #413f3fb9;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-size: 3rem;
+  }
+  p {
+    color: #413f3fb9;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+}

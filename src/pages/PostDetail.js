@@ -9,10 +9,12 @@ import "../assets/postDetail.scss";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { addComment as addCommentAPI, viewComment } from "../api/comment";
 import { viewPost } from "../api/post";
+import { likeState as state, like, unLike } from "../api/postLike";
+import TimeFormat from "../components/TimeFormat";
 
 const PostDetail = () => {
   const { postCode } = useParams();
-  const { user } = useAuth();
+  const { user, token } = useAuth();
 
   const [isComment, setIsComment] = useState(false);
   const [newComment, setNewComment] = useState({
@@ -47,11 +49,60 @@ const PostDetail = () => {
   const addComment = () => {
     addmutation.mutate(newComment); // 리액트쿼리
     setIsComment(false);
-    setNewComment({ ...newComment, commnetText: "" });
+    setNewComment({ ...newComment, commentContent: "" });
   };
   const loadingPost = async () => {
     const response = await viewPost(postCode);
     setPost(response.data);
+  };
+  // 좋아요 확인
+  const {
+    data: likeState,
+    isLoading: likeLoading,
+    error: likeError,
+  } = useQuery({
+    queryKey: ["likeState", postCode],
+    queryFn: () => (token ? state(postCode) : null), // 토큰이 없으면 호출하지 않음
+    enabled: !!token,
+  });
+
+  // 좋아요
+  const likeMutation = useMutation({
+    mutationFn: like,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["likeState", postCode]);
+    },
+  });
+
+  // 좋아요 취소
+  const unLikeMutation = useMutation({
+    mutationFn: unLike,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["likeState", postCode]);
+    },
+  });
+  const likeSubmit = () => {
+    // 게시글 코드와 유저 정보 보내서 추천 테이블에 추가
+    if (token !== null) {
+      const postLike = {
+        postCode: postCode,
+        userEmail: user?.userEmail,
+      };
+      likeMutation.mutate(postLike);
+    }
+    setPost({
+      ...post,
+      likeCount: post?.likeCount + 1,
+    });
+  };
+
+  const unLikeSubmit = () => {
+    // 게시글 추천 코드 보내서 테이블에서 삭제
+    unLikeMutation.mutate(likeState.data?.postLikeCode);
+    setPost({
+      ...post,
+      likeCount: post?.likeCount - 1,
+    });
   };
   useEffect(() => {
     loadingPost();
@@ -60,14 +111,15 @@ const PostDetail = () => {
 
   // 데이터 로딩중일 때 처리
   if (isLoading) return <>로딩중...</>;
-
+  if (likeLoading) return <>로딩중...</>;
   // 에러 발생시 처리
   if (error) return <>에러발생...</>;
+  if (likeError) return <>에러발생...</>;
 
   return (
     <div className="post-detail">
       <h1 className="post-title">{post?.postTitle}</h1>
-      <span>작성시각 :{post?.postCreatedAt} </span>
+      <TimeFormat time={post?.postCreatedAt} />
       <div>조회수 :{post?.postViews} </div>
       <div>작성자 :{post?.user?.userNickname} </div>
 
@@ -75,17 +127,25 @@ const PostDetail = () => {
         className="post-content"
         dangerouslySetInnerHTML={{ __html: post?.postContent }}
       />
+      <div>추천수 : {post?.likeCount}</div>
+      {!token ? null : likeState.data ? (
+        <button onClick={unLikeSubmit}>추천취소</button>
+      ) : (
+        <button onClick={likeSubmit}>추천</button>
+      )}
       <div className="comment">
-        <input
-          className="comment-add"
-          type="text"
-          placeholder="댓글 추가.."
-          value={newComment.commentContent}
-          onClick={() => setIsComment(true)}
-          onChange={(e) => {
-            setNewComment({ ...newComment, commentContent: e.target.value });
-          }}
-        />
+        {token && (
+          <input
+            className="comment-add"
+            type="text"
+            placeholder="댓글 추가.."
+            value={newComment.commentContent}
+            onClick={() => setIsComment(true)}
+            onChange={(e) => {
+              setNewComment({ ...newComment, commentContent: e.target.value });
+            }}
+          />
+        )}
         {isComment && (
           <div className="comment-add-status">
             <button
@@ -100,7 +160,7 @@ const PostDetail = () => {
           </div>
         )}
         <div className="comment-list">
-          {isLoading && Array.isArray(commentList.data) ? (
+          {isLoading && likeLoading && Array.isArray(commentList.data) ? (
             <p>댓글이 없습니당</p>
           ) : (
             commentList.data.map((comment) => (
@@ -116,4 +176,5 @@ const PostDetail = () => {
     </div>
   );
 };
+
 export default PostDetail;

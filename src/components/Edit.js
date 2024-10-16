@@ -5,7 +5,7 @@ import { add, write } from "../api/post";
 import "../assets/edit.scss";
 import { useAuth } from "../contexts/AuthContext";
 
-const Example = ({ placeholder }) => {
+const Example = () => {
   const { user } = useAuth();
 
   const { channelCode } = useParams();

@@ -33,11 +33,11 @@ const router = createBrowserRouter([
         children: [
           {
             path: ":channelTagCode",
-            element: <ChannelDetail />, 
-          }
-        ]
+            element: <ChannelDetail />,
+          },
+        ],
       },
-    
+
       {
         path: "/post/:postCode",
         element: <PostDetail />,
