@@ -68,7 +68,7 @@
   }
 }
 
-.re-comment-form{
+.re-comment-form {
   display: flex;
   padding: 10px;
   background-color: #eee;
@@ -76,15 +76,15 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 5px;
-  .re-comment-add{
+  .re-comment-add {
     padding-left: 10px;
     width: 80%;
     height: 40px;
   }
-  .re-comment-add-status{
+  .re-comment-add-status {
     display: flex;
     justify-content: flex-end;
-    .re-comment-submit{
+    .re-comment-submit {
       text-wrap: nowrap;
       background-color: #ddd;
       cursor: pointer;
@@ -95,5 +95,23 @@
       border-radius: 10px;
       margin: 0px 3px;
     }
+  }
+}
+.edit-comment-form {
+  display: felx;
+  align-items: center;
+  .edit-comment-add {
+    padding-left: 20px;
+    width: 80%;
+    height: 30px;
+  }
+  button {
+    text-wrap: nowrap;
+    background-color: #eee;
+    cursor: pointer;
+    padding: 2px 5px;
+    border: none;
+    border-radius: 20px;
+    margin: 0px 3px;
   }
 }

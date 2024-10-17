@@ -8,7 +8,7 @@ import {
 } from "../api/comment";
 import TimeFormat from "./TimeFormat";
 import "../assets/comment.scss";
-const CommentComponent = ({ comment, postCode , id}) => {
+const CommentComponent = ({ comment, postCode, id }) => {
   const { user, token } = useAuth();
   const [newReComment, setNewReComment] = useState({
     commentContent: "",
@@ -66,7 +66,7 @@ const CommentComponent = ({ comment, postCode , id}) => {
   const deleteComment = (commentCode) => {
     removeMutation.mutate(commentCode);
   };
-  const recommentTogle = () => {
+  const recommentToggle = () => {
     if (newReComment.commentParentsCode === 0)
       setNewReComment({
         ...newReComment,
@@ -79,7 +79,8 @@ const CommentComponent = ({ comment, postCode , id}) => {
       });
     }
   };
-  const enterSubmit = (e ,type) =>{
+
+  const enterSubmit = (e, type) => {
     if (type === "add")
       if (e.code === "Enter" || e.code === "NumpadEnter") {
         addReComment();
@@ -88,9 +89,9 @@ const CommentComponent = ({ comment, postCode , id}) => {
       if (e.code === "Enter" || e.code === "NumpadEnter") {
         updateComment();
       }
-  }
+  };
   return (
-    <div className="comment-content-box" id={"comment-code-"+ id}>
+    <div className="comment-content-box" id={"comment-code-" + id}>
       {comment?.commentContent === null ? (
         <div className="comment-content">
           <p className="none-comment">삭제된 댓글입니다...</p>
@@ -120,8 +121,9 @@ const CommentComponent = ({ comment, postCode , id}) => {
             user !== undefined &&
             user.userEmail === comment?.user?.userEmail ? (
               <>
-                <div className="edit-content">
+                <div className="edit-comment-form">
                   <input
+                    className="edit-comment-add"
                     type="text"
                     value={changeComment.commentContent}
                     onChange={(e) =>
@@ -132,8 +134,7 @@ const CommentComponent = ({ comment, postCode , id}) => {
                     }
                     onKeyDown={(e) => enterSubmit(e, "update")}
                   />
-                  <button onClick={() => setIsChange(0)}>수정취소</button>
-                  <button onClick={updateComment}>수정</button>
+                  <button onClick={updateComment}>변경</button>
                 </div>
               </>
             ) : (
@@ -143,25 +144,29 @@ const CommentComponent = ({ comment, postCode , id}) => {
               {/*이거나 관리자인 경우*/}
               {user.userEmail === comment?.user?.userEmail && (
                 <>
-                  <button
-                    onClick={() => {
-                      setIsChange(comment.commentCode);
-                      setChangeComment({
-                        ...changeComment,
-                        commentCode: comment.commentCode,
-                        commentContent: comment.commentContent,
-                        commentParentsCode: comment.commentParentsCode,
-                      });
-                    }}
-                  >
-                    수정하기
-                  </button>
+                  {isChange !== 0 ? (
+                    <button onClick={() => setIsChange(0)}>취소</button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        setIsChange(comment.commentCode);
+                        setChangeComment({
+                          ...changeComment,
+                          commentCode: comment.commentCode,
+                          commentContent: comment.commentContent,
+                          commentParentsCode: comment.commentParentsCode,
+                        });
+                      }}
+                    >
+                      수정
+                    </button>
+                  )}
                   <button onClick={() => deleteComment(comment.commentCode)}>
                     삭제
                   </button>
                 </>
               )}
-              {token && <button onClick={recommentTogle}>ㄴ답글</button>}
+              {token && <button onClick={recommentToggle}>ㄴ답글</button>}
             </div>
           </div>
         </>
@@ -185,7 +190,9 @@ const CommentComponent = ({ comment, postCode , id}) => {
               onKeyDown={(e) => enterSubmit(e, "add")}
             />
             <div className="re-comment-add-status">
-              <button className="re-comment-submit" onClick={addReComment}>등록</button>
+              <button className="re-comment-submit" onClick={addReComment}>
+                등록
+              </button>
             </div>
           </div>
         </>

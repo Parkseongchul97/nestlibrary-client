@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import CommentComponent from "../components/CommentComponent";
 import "../assets/postDetail.scss";
@@ -11,18 +11,20 @@ import { addComment as addCommentAPI, viewComment } from "../api/comment";
 import { viewPost } from "../api/post";
 import { likeState as state, like, unLike } from "../api/postLike";
 import TimeFormat from "../components/TimeFormat";
+import Page from "../components/Page";
 
 const PostDetail = () => {
   const { postCode } = useParams();
   const { user, token } = useAuth();
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const page = query.get("page") || 1;
   const [newComment, setNewComment] = useState({
     commentContent: "",
     postCode: postCode,
     userEmail: user?.userEmail,
   });
   const [post, setPost] = useState(null);
-
- 
 
   const queryClient = useQueryClient();
   // 댓글 목록
@@ -32,29 +34,28 @@ const PostDetail = () => {
     error,
   } = useQuery({
     // 데이터, 로딩중인지, 에러발생
-    queryKey: ["comment", postCode],
-    queryFn: () => viewComment(postCode),
+    queryKey: ["comment", postCode, page],
+    queryFn: () => viewComment(postCode, page),
     refetchInterval: 1000, // 해당 시간마다 데이터갱식하여 실시간 처럼 처리
   });
 
   // 댓글 추가
   const addmutation = useMutation({
     mutationFn: addCommentAPI,
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comment", postCode] });
       // 스크롤 이벤트가 안댐...
-      const scrollTarget = document.querySelector("#comment-code-" + data.data?.commentCode);
-      console.log(data.data?.commentCode)
-      scrollTarget.scrollIntoView({ behavior: "smooth" });
-  },
+    },
   });
 
   // 댓글추가
   const addComment = () => {
-    addmutation.mutate(newComment); // 리액트쿼리
-  
-    setNewComment({ ...newComment, commentContent: "" });
+    if (newComment.commentContent !== "") {
+      addmutation.mutate(newComment); // 리액트쿼리
+      setNewComment({ ...newComment, commentContent: "" });
+    }
   };
+
   const loadingPost = async () => {
     const response = await viewPost(postCode);
     setPost(response.data);
@@ -108,11 +109,16 @@ const PostDetail = () => {
       likeCount: post?.likeCount - 1,
     });
   };
-  const enter = (e) =>{
+  const enterAdd = (e) => {
     if (e.code === "Enter" || e.code === "NumpadEnter") {
       addComment();
     }
-  }
+    //if (e.code === "Enter" || e.code === "NumpadEnter") {
+    //alert("!!");
+    //  console.log("엔터옴");
+    //
+    //}
+  };
 
   useEffect(() => {
     loadingPost();
@@ -128,60 +134,73 @@ const PostDetail = () => {
 
   return (
     <div className="post-detail-box">
-    <div className="post-detail">
-      <h1 className="post-title">{post?.postTitle}</h1>
-      <TimeFormat time={post?.postCreatedAt} />
-      <div>조회수 :{post?.postViews} </div>
-      <div>작성자 :{post?.user?.userNickname} </div>
+      <div className="post-detail">
+        <h1 className="post-title">{post?.postTitle}</h1>
+        <TimeFormat time={post?.postCreatedAt} />
+        <div>조회수 :{post?.postViews} </div>
+        <div>작성자 :{post?.user?.userNickname} </div>
 
-      <div
-        className="post-content"
-        dangerouslySetInnerHTML={{ __html: post?.postContent }}
-      />
-      <div>추천수 : {post?.likeCount}</div>
-      {!token ? null : likeState.data ? (
-        <button onClick={unLikeSubmit}>추천취소</button>
-      ) : (
-        <button onClick={likeSubmit}>추천</button>
-      )}
-      <div className="comment">
-        {token && (
-          <>
-          <div className="comment-form">
-          <input
-            className="comment-add"
-            type="text"
-            placeholder="댓글 추가.."
-            value={newComment.commentContent}
-            onChange={(e) => {
-              setNewComment({ ...newComment, commentContent: e.target.value });
-            }}
-            onKeyDown={(e) => enter(e)}
-          />
-          <div className="comment-add-status">
-            <button className="comment-submit" onClick={addComment}>
-              등록
-            </button>
-          </div>
-          </div>
-          </>
-       )}
-        <div className="comment-list" >
-          {isLoading && likeLoading && Array.isArray(commentList.data) ? (
-            <p>댓글이 없습니당</p>
-          ) : (
-            commentList.data.map((comment) => (
-              <CommentComponent
-                id={comment.commentCode}
-                comment={comment}
-                postCode={postCode}
-                key={comment.commentCode}
-              />
-            ))
+        <div
+          className="post-content"
+          dangerouslySetInnerHTML={{ __html: post?.postContent }}
+        />
+        <div>추천수 : {post?.likeCount}</div>
+        {!token ? null : likeState.data ? (
+          <button onClick={unLikeSubmit}>추천취소</button>
+        ) : (
+          <button onClick={likeSubmit}>추천</button>
+        )}
+        <div className="comment">
+          {token && (
+            <>
+              <div className="comment-form">
+                <input
+                  className="comment-add"
+                  type="text"
+                  placeholder="댓글 추가.."
+                  value={newComment.commentContent}
+                  onChange={(e) => {
+                    setNewComment({
+                      ...newComment,
+                      commentContent: e.target.value,
+                    });
+                  }}
+                  onKeyUp={(e) => enterAdd(e)}
+                />
+                <div className="comment-add-status">
+                  <button
+                    type="button"
+                    className="comment-submit"
+                    onClick={addComment}
+                  >
+                    등록
+                  </button>
+                </div>
+              </div>
+            </>
           )}
+          <div className="comment-list">
+            {isLoading &&
+            likeLoading &&
+            Array.isArray(commentList.data.commentList) ? (
+              <p>댓글이 없습니당</p>
+            ) : (
+              commentList.data.commentList.map((comment) => (
+                <CommentComponent
+                  id={comment.commentCode}
+                  comment={comment}
+                  postCode={postCode}
+                  key={comment.commentCode}
+                />
+              ))
+            )}
+          </div>
+          <Page
+            page={page}
+            totalPages={parseInt(commentList.data?.paging.totalPage / 10)}
+          />
         </div>
       </div>
-    </div>
     </div>
   );
 };
