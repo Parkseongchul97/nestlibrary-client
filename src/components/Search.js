@@ -9,6 +9,10 @@ const Search = ({
 }) => {
   const enterSearchSubmit = (e) => {
     if (e.code === "Enter" || e.code === "NumpadEnter") {
+      if (searchKeyword.length <= 1) {
+        alert("2글자 이상 입력해야 합니다!");
+        return;
+      }
       onSubmit();
     }
   };
@@ -18,9 +22,10 @@ const Search = ({
         type="text"
         value={searchKeyword}
         onChange={(e) => setSearchKeyword(e.target.value)}
-        placeholder="검색어를 입력하세요"
-        onKeyDown={(e) => enterSearchSubmit(e)}
+        placeholder="2글자 이상 입력하세요"
+        onKeyUp={(e) => enterSearchSubmit(e)}
       />
+      {/*2번 호출되는 상황 또발생 */}
       <select
         value={searchTarget}
         onChange={(e) => setSearchTarget(e.target.value)}

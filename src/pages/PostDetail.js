@@ -113,11 +113,6 @@ const PostDetail = () => {
     if (e.code === "Enter" || e.code === "NumpadEnter") {
       addComment();
     }
-    //if (e.code === "Enter" || e.code === "NumpadEnter") {
-    //alert("!!");
-    //  console.log("엔터옴");
-    //
-    //}
   };
 
   useEffect(() => {

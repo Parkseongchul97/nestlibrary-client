@@ -51,7 +51,6 @@ export const AuthPorvider = ({ children }) => {
     localStorage.removeItem("userNickname");
     localStorage.removeItem("userPoint");
     if (!changeCheck) {
-      console.log("토큰날리는 상황");
       localStorage.removeItem("token");
       setToken(null);
     }

@@ -24,7 +24,6 @@ const Page = ({ page, totalPages }) => {
       setStart(start + pageCount);
       // 11페이지로 스타팅을 바꿈
     }
-    console.log(start);
   };
 
   const lastPage = () => {
@@ -36,7 +35,6 @@ const Page = ({ page, totalPages }) => {
     } else {
       setStart(totalPages - (num - 1));
     }
-    console.log(start);
   };
 
   return (

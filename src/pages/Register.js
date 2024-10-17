@@ -23,7 +23,6 @@ const Register = () => {
   const pwdRegExp =
     /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/;
   const submit = async () => {
-    console.log(userDTO.userNickname.length);
     if (userDTO.userNickname.length < 2 || 11 < userDTO.userNickname) {
       alert("닉네임은 2~10 글자 내로 만들어야 합니다.");
       return;
@@ -74,7 +73,7 @@ const Register = () => {
       alert("이메일 주소를 형식에 맞춰주세요!");
       return;
     }
-    console.log(userDTO.userEmail);
+
     const result = await sendEmail(userDTO.userEmail);
     if (result) {
       setEmailSubmit(true); // 이메일 발송 성공
@@ -86,9 +85,8 @@ const Register = () => {
     }
   };
   const checkNickname = async () => {
-    console.log("닉네임 : " + userDTO.userNickname);
     const result = await nicknameCheck(userDTO.userNickname, null); // 닉네임 중복 체크 호출
-    console.log(result.data);
+
     setnicknameSubmit(result.data);
   };
 

@@ -52,9 +52,6 @@ const Example = () => {
     }
   }, [Channel]);
 
-  console.log(channelCode);
-  console.log(Channel);
-  console.log(post);
   const config = {
     readonly: false,
     toolbar: [

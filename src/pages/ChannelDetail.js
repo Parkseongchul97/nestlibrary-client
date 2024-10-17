@@ -24,8 +24,6 @@ const ChannelDetail = () => {
   const [searchTarget, setSearchTarget] = useState("title"); // 기본 검색 대상: 제목
   const fetch = async () => {
     const info = await channelInfo(channelCode);
-    console.log(searchKeyword);
-    console.log(searchTarget);
     setChannel(info.data);
     const channelPosts =
       channelTagCode !== undefined
@@ -82,6 +80,11 @@ const ChannelDetail = () => {
     });
   };
   const searchSubmit = () => {
+    if (searchKeyword.length <= 1) {
+      alert("2글자 이상 입력해야 합니다!");
+      return;
+    }
+
     fetch();
   };
 

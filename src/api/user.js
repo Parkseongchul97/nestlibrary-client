@@ -36,7 +36,6 @@ export const getUserInfo = async (userEmail) => {
   return await authorize.get("info?userEmail=" + userEmail);
 };
 export const updateUser = async (data) => {
-  console.log(data);
   return await authorize.put("update", data, {
     headers: {
       "Content-Type": "multipart/form-data",
