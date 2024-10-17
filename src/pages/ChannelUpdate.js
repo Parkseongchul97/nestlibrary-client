@@ -7,13 +7,15 @@ import {
   infoUpdate,
   addImg,
 } from "../api/channel";
+import { original } from "@reduxjs/toolkit";
 
 const ChannelUpdate = () => {
   const { channelCode } = useParams();
   const [previewUrl, setPreviewUrl] = useState("");
   const [chan, setChan] = useState({
     channelCode: channelCode,
-    channelImgUrl: "",
+    channelImgUrl: null,
+    change: "",
   });
 
   //  업데이트 전  채널 정보들
@@ -39,7 +41,6 @@ const ChannelUpdate = () => {
 
   useEffect(() => {
     update();
-    formData.append("channelCode", channelCode);
   }, []);
 
   const [tags, setTags] = useState({
@@ -64,24 +65,52 @@ const ChannelUpdate = () => {
 
   const infoSubmit = async () => {
     await infoUpdate(channelInfos);
+    update();
   };
   let formData = new FormData();
 
   const imgUpdate = async () => {
-    formData.append("channelImgUrl", chan.channelImgUrl);
-    await addImg(formData);
+    if (chan.channelImgUrl !== null) {
+      console.log("이미지 전송");
+      formData.append("channelImgUrl", chan.channelImgUrl);
+      formData.append("channelCode", channelCode);
+      formData.append("change", chan.change);
+      await addImg(formData);
+      update();
+    } else {
+      console.log("코드만 전송");
+      formData.append("channelCode", channelCode);
+      formData.append("change", chan.change);
+      await addImg(formData);
+      update();
+    }
   };
 
-  // 필요한것 벤 리스트 O  , 관리자 리스트  O, (현재가진 태그 목록 O  + 태그 추가 / 삭제 기능 O ) , 사진변경 , 소개 변경
+  // 필요한것 벤 리스트 O  , 관리자 리스트  O, (현재가진 태그 목록 O  + 태그 추가 / 삭제 기능 O ) , 사진변경 O , 소개 변경 O
   // 수정되는 부분을 같은 vo가 처리하는 부분끼리 나누기
-  // img => ?
+  // img => channelDTO
   // info => channel
   // tag  => channelTag
   // ban , admin  => management
 
   const reset = () => {
-    setPreviewUrl(null);
-    setChannelInfos({ ...channelInfos, channelImg: null });
+    if (channelInfos.channelImg != null) {
+      setPreviewUrl(
+        `http://192.168.10.51:8083/channel/${channelCode}/${channelInfos.channelImg}`
+      );
+    } else {
+      setPreviewUrl(null);
+    }
+    setChan({ ...chan, channelImgUrl: null, change: 0 });
+    document.querySelector(".change-input-file").value = "";
+  };
+
+  const regular = () => {
+    setPreviewUrl(
+      "http://192.168.10.51:8083/%EA%B8%B0%EB%B3%B8%EB%8C%80%EB%AC%B8.jpg"
+    );
+    setChan({ ...chan, channelImgUrl: null, change: -1 });
+    document.querySelector(".change-input-file").value = "";
   };
 
   console.log(formData);
@@ -97,7 +126,7 @@ const ChannelUpdate = () => {
           )
         )}
       </ul>
-      클럽소개 :{" "}
+      채널소개 :{" "}
       <input
         value={channelInfos.channelInfo}
         onChange={(e) =>
@@ -151,15 +180,17 @@ const ChannelUpdate = () => {
           if (file) {
             console.log("사진선택");
             setPreviewUrl(URL.createObjectURL(file));
-            setChan({ ...chan, channelImgUrl: file });
+            setChan({ ...chan, channelImgUrl: file, change: 1 });
           } else {
             console.log("사진선택안함");
             setPreviewUrl(false);
+            setChan({ ...chan, channelImgUrl: null, change: 0 });
           }
         }}
       />
       <button onClick={imgUpdate}>사진 수정</button>
-      <button onClick={() => reset()}>사진 삭제 </button>
+      <button onClick={reset}>기존 사진 </button>
+      <button onClick={regular}>기본 사진</button>
       <img
         src={
           previewUrl ||

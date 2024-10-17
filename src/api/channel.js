@@ -15,8 +15,13 @@ export const main = async (channelCode) => {
   return await instance.get(`${channelCode}`);
 };
 
-export const allChannel = async () => {
-  return await instance.get("main");
+export const allChannel = async (page, keyword = "") => {
+  return await instance.get("main", {
+    params: {
+      page,
+      keyword, // 키,값이 명칭이 같을 경우 생략가능
+    },
+  });
 };
 
 export const create = async (data) => {

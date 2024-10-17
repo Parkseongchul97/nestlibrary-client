@@ -9,7 +9,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getUserInfo } from "../api/user";
 
-const Header = () => {
+const Header = ({ onSearch }) => {
   const [page, setPage] = useState(false);
   const { user, token } = useAuth();
   const { logout: authLogout } = useAuth();
@@ -40,6 +40,12 @@ const Header = () => {
   const handleClickOutside = (event) => {
     if (searchRef.current && !searchRef.current.contains(event.target)) {
       setIsSearch(false);
+    }
+  };
+
+  const enter = (e) => {
+    if (e.key === "Enter") {
+      onSearch(keyword);
     }
   };
 
@@ -88,9 +94,14 @@ const Header = () => {
                   placeholder="찾기"
                   onChange={(e) => setKeyword(e.target.value)}
                   value={keyword}
+                  onKeyDown={enter}
                 />
                 <button id="channel-search">
-                  <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
+                  <FontAwesomeIcon
+                    icon={faMagnifyingGlass}
+                    size="1x"
+                    onClick={() => onSearch(keyword)}
+                  />
                 </button>
               </div>
               <button className="hidden-btn" onClick={hidenTogle}>
@@ -108,8 +119,9 @@ const Header = () => {
                   placeholder="찾기"
                   onChange={(e) => setKeyword(e.target.value)}
                   value={keyword}
+                  onKeyDown={enter}
                 />
-                <button id="channel-search">
+                <button id="channel-search" onClick={() => onSearch(keyword)}>
                   <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
                 </button>
               </div>
