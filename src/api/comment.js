@@ -11,8 +11,10 @@ const authorize = axios.create({
 });
 
 // 게시글의 댓글 보여주기, (페이징 처리 추가 필요)
-export const viewComment = async (postCode) => {
-  return await instance.get(`post/${postCode}/comment`);
+export const viewComment = async (postCode, page) => {
+  return await instance.get(
+    `post/${postCode}/comment?page=${page !== undefined ? page : 1}`
+  );
 };
 
 // 댓글 달기

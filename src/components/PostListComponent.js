@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "../assets/main.scss";
+import TimeFormat from "./TimeFormat";
 const PostListComponent = ({ post }) => {
   if (!post) {
     return null;
@@ -22,7 +23,7 @@ const PostListComponent = ({ post }) => {
           <span className="post-text">{post?.postTitle}</span>
           <div className="post-end">
             <span className="comment-count">[{post?.commentCount}]</span>
-            <span className="time">{post?.postCreatedAt}</span>
+            <TimeFormat time={post?.postCreatedAt} />
           </div>
         </Link>
       </div>

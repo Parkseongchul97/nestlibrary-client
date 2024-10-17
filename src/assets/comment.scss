@@ -1,0 +1,117 @@
+.none-comment {
+  color: #ddd;
+  font-weight: bold;
+}
+
+.reply-add-status {
+  display: flex;
+  justify-content: flex-end;
+  width: 90%;
+  margin-left: 30px;
+}
+.reply-add-status button {
+  border-radius: 15px;
+  padding: 10px;
+  background-color: #ddd;
+  margin: 10px 5px;
+}
+.comment-list {
+  margin: 20px 0;
+  margin-left: -40px;
+}
+.comment-content-box {
+  margin-left: 40px;
+  border-left: 0.5px solid #ddd;
+}
+.comment-content {
+  display: flex;
+  padding: 10px;
+  flex-direction: column;
+  background-color: #ddd;
+  margin-bottom: 10px;
+
+  .user-profile {
+    display: flex;
+    height: 50px;
+    .user-profile-nickname {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      font-weight: bold;
+      .time {
+        font-weight: bold;
+      }
+    }
+    .user-profile-img {
+      align-self: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+  }
+  .comment-text {
+    padding-left: 20px;
+  }
+  .btn-box {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    button {
+      cursor: pointer;
+      padding: 2px 5px;
+      border: none;
+      border-radius: 10px;
+      margin: 0px 3px;
+    }
+  }
+}
+
+.re-comment-form {
+  display: flex;
+  padding: 10px;
+  background-color: #eee;
+  height: 50px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  .re-comment-add {
+    padding-left: 10px;
+    width: 80%;
+    height: 40px;
+  }
+  .re-comment-add-status {
+    display: flex;
+    justify-content: flex-end;
+    .re-comment-submit {
+      text-wrap: nowrap;
+      background-color: #ddd;
+      cursor: pointer;
+      padding: 5px 10px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 10px;
+      margin: 0px 3px;
+    }
+  }
+}
+.edit-comment-form {
+  display: felx;
+  align-items: center;
+  .edit-comment-add {
+    padding-left: 20px;
+    width: 80%;
+    height: 30px;
+  }
+  button {
+    text-wrap: nowrap;
+    background-color: #eee;
+    cursor: pointer;
+    padding: 2px 5px;
+    border: none;
+    border-radius: 20px;
+    margin: 0px 3px;
+  }
+}

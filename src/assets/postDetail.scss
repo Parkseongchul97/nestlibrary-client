@@ -1,53 +1,43 @@
-.post-detail {
-  padding: 100px;
-}
-.user-profile {
-  width: 100px;
-  height: 20px;
-  .user-profile-nickname {
-    font-weight: bold;
-  }
-  .user-profile-img {
-    width: 20px;
-    height: 20px;
-  }
-}
-.comment-list {
-  margin: 20px 0;
-  margin-left: -40px;
-}
-.comment-content {
-  margin-left: 40px;
-}
-.comment-content h4 {
-  font-weight: bold;
-}
-.comment-content p {
-  margin: 10px 0;
-}
-.comment-content > button {
-  color: blue;
-  margin-right: 5px;
-}
-.comment-content input {
-  margin-left: 30px;
-  border-bottom: 1px solid #ddd;
-  width: 90%;
-  margin: 10px 5px;
-}
-.comment-content input:focus {
-  outline: none;
-  border-color: #999;
-}
-.reply-add-status {
+.post-detail-box{
   display: flex;
-  justify-content: flex-end;
-  width: 90%;
-  margin-left: 30px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .post-detail {
+
+    padding: 100px;
+    width: 100%;
+    max-width: 1000px;
+  }
+
 }
-.reply-add-status button {
-  border-radius: 15px;
+
+.comment-form{
+  display: flex;
   padding: 10px;
-  background-color: #ddd;
-  margin: 10px 5px;
+  background-color: #eee;
+  height: 50px;
+  justify-content: space-between;
+  align-items: center;
+  .comment-add{
+    padding-left: 10px;
+    width: 80%;
+    height: 40px;
+  }
+  .comment-add-status{
+    display: flex;
+    justify-content: flex-end;
+    .comment-submit{
+      text-wrap: nowrap;
+      background-color: #ddd;
+      cursor: pointer;
+      padding: 5px 10px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 10px;
+      margin: 0px 3px;
+    }
+  }
+ 
 }

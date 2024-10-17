@@ -1,5 +1,5 @@
 import "../assets/footer.scss";
-
+import { GoMoveToTop, GoMoveToBottom } from "react-icons/go";
 const Footer = () => {
   return (
     <>
@@ -22,6 +22,14 @@ const Footer = () => {
             </a>
           </ul>
         </div>
+      </div>
+      <div id="moving-btn-box">
+        <button className="btn-top">
+          <GoMoveToTop />
+        </button>
+        <button className="btn-bottom">
+          <GoMoveToBottom />
+        </button>
       </div>
     </>
   );

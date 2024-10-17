@@ -18,7 +18,6 @@ const Main = () => {
         allPost: channel.allPost || [],
       }))
     );
-    console.log(channelList);
   };
   useEffect(() => {
     chanList();
@@ -57,12 +56,17 @@ const Main = () => {
                 >
                   {channel?.channelName} 채널
                 </Link>
-                {/*게시글 반복 5~10개 예정*/}
-                {/*channel.posts.map((post) => ()*/}
-
-                {channel.allPost.map((post) => (
-                  <PostListComponent post={post} key={post?.postCode} />
-                ))}
+                {channel.allPost !== undefined &&
+                channel.allPost.length !== 0 ? (
+                  channel.allPost.map((post) => (
+                    <PostListComponent post={post} key={post?.postCode} />
+                  ))
+                ) : (
+                  <div className="none-post-box">
+                    <div>!</div>
+                    <p>게시글이 없습니다.</p>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
