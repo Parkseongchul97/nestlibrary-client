@@ -30,27 +30,6 @@
   background-color: #ddd;
   margin-bottom: 10px;
 
-  .user-profile {
-    display: flex;
-    height: 50px;
-    .user-profile-nickname {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      font-weight: bold;
-      .time {
-        font-weight: bold;
-      }
-    }
-    .user-profile-img {
-      align-self: center;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      margin-right: 5px;
-    }
-  }
   .comment-text {
     padding-left: 20px;
   }

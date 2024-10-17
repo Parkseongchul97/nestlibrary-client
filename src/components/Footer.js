@@ -24,10 +24,21 @@ const Footer = () => {
         </div>
       </div>
       <div id="moving-btn-box">
-        <button className="btn-top">
+        <button
+          className="btn-top"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
           <GoMoveToTop />
         </button>
-        <button className="btn-bottom">
+        <button
+          className="btn-bottom"
+          onClick={() =>
+            window.scrollTo({
+              top: document.documentElement.scrollHeight - 500,
+              behavior: "smooth",
+            })
+          }
+        >
           <GoMoveToBottom />
         </button>
       </div>

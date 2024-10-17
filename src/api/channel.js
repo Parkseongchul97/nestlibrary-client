@@ -17,12 +17,18 @@ export const channelInfo = async (channelCode) => {
 // 전체 게시글 API
 export const allPosts = async (channelCode, page, target, keyword) => {
   console.log("호출됨 !! 페이지 : " + page);
+  // 검색어와 타겟이 있어도 페이지 1페이지 호출해야함
   const response = await instance.get(
     `/${channelCode}?page=${
       page === undefined || page === null ? 1 : page
-    }&target=${target === undefined || target === null ? "" : target}&keyword=${
-      keyword === undefined || keyword === null ? "" : keyword
-    }`
+    }&target=${
+      keyword === undefined ||
+      keyword === null ||
+      target === undefined ||
+      target === null
+        ? ""
+        : target
+    }&keyword=${keyword === undefined || keyword === null ? "" : keyword}`
   );
   return response; // 모든 게시글 데이터 반환
 };

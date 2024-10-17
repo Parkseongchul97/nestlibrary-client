@@ -8,6 +8,7 @@ import { kakaoLogout } from "../user/kakaoCode";
 import { useAuth } from "../contexts/AuthContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getUserInfo } from "../api/user";
+import UserMenu from "./UserMenu";
 const Header = () => {
   const [page, setPage] = useState(false);
   const { user, token } = useAuth();
@@ -66,25 +67,8 @@ const Header = () => {
           </div>
         ) : (
           <div className="header-right">
-            <div className="user-info">
-              {user.userImgUrl == null ? (
-                <img
-                  className="user-img"
-                  src="http://192.168.10.51:8083/e0680940917fba1b2350c6563c32ad0c.jpg"
-                />
-              ) : (
-                <img
-                  className="user-img"
-                  src={
-                    "http://192.168.10.51:8083/user/" +
-                    user.userEmail +
-                    "/" +
-                    user.userImgUrl
-                  }
-                />
-              )}
-              {user.userNickname}
-            </div>
+            <UserMenu user={user} />
+
             <Link id="logout-btn" onClick={logout} className="info">
               로그아웃
             </Link>
