@@ -6,6 +6,7 @@ import "../assets/header.scss";
 import Login from "../pages/Login";
 import { kakaoLogout } from "../user/kakaoCode";
 import { useAuth } from "../contexts/AuthContext";
+import { mySub } from "../api/subscribe";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getUserInfo } from "../api/user";
 import UserMenu from "./UserMenu";
@@ -31,6 +32,18 @@ const Header = () => {
     authLogout();
     kakaoLogout();
   };
+  const queryClient = useQueryClient();
+  const {
+    data: subList,// 구독중 리스트
+    isLoading: subLoading,
+    error: subError,
+  } = useQuery({
+    queryKey: ["mySubList" ,token],
+    queryFn: () => (token ? mySub() : null), // 토큰이 없으면 호출하지 않음
+    enabled: !!token,
+  });
+  if(subLoading) return <>로딩중...</>;
+if(subError) return <>에러...</>;
 
   return (
     <>
