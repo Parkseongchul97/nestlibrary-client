@@ -85,6 +85,7 @@ const ChannelUpdate = () => {
   let formData = new FormData();
 
   const imgUpdate = async () => {
+    console.log(chan);
     if (chan.channelImgUrl !== null) {
       console.log("이미지 전송");
       formData.append("channelImgUrl", chan.channelImgUrl);
@@ -193,6 +194,7 @@ const ChannelUpdate = () => {
           <p>이미지 </p>
           추가:
           <input
+            className="change-input-file"
             type="file"
             accept={"image/*"}
             onChange={(e) => {

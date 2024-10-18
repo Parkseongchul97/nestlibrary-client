@@ -57,7 +57,7 @@ export const allChannel = async (page, keyword = "") => {
 export const create = async (data) => {
   // 파라미터로 data 받아서감 (바디로 받음)
 
-  return await authorize.post("channel/create", data, {
+  return await authorize.post("/create", data, {
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
