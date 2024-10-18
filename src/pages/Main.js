@@ -56,9 +56,8 @@ const Main = () => {
                 >
                   {channel?.channelName} 채널
                 </Link>
-                {channel.allPost !== undefined &&
-                channel.allPost.length !== 0 ? (
-                  channel.allPost.map((post) => (
+                {channel.posts !== undefined && channel.posts.length !== 0 ? (
+                  channel.posts.map((post) => (
                     <PostListComponent post={post} key={post?.postCode} />
                   ))
                 ) : (

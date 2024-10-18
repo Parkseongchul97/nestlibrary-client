@@ -66,7 +66,10 @@ const ChannelDetail = () => {
     if (token !== null) {
       const subContent = {
         userEmail: user.userEmail,
-        channelCode: channelCode,
+        //channelCode: channelCode,
+        channel: {
+          channelCode: channelCode,
+        },
       };
       addSubMutation.mutate(subContent);
     }

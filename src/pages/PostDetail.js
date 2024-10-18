@@ -42,8 +42,13 @@ const PostDetail = () => {
   // 댓글 추가
   const addmutation = useMutation({
     mutationFn: addCommentAPI,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["comment", postCode] });
+    onSuccess: (result) => {
+      console.log(result.data);
+      if (result.data != "실패") {
+        queryClient.invalidateQueries({ queryKey: ["comment", postCode] });
+      } else {
+        alert("댓글 작성이 제한된 상태입니다");
+      }
       // 스크롤 이벤트가 안댐...
     },
   });
@@ -53,6 +58,7 @@ const PostDetail = () => {
     if (newComment.commentContent !== "") {
       addmutation.mutate(newComment); // 리액트쿼리
       setNewComment({ ...newComment, commentContent: "" });
+      console.log(newComment);
     }
   };
 
