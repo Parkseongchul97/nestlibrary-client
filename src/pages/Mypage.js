@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CreateChannel from "./CreateChannel";
 import { nicknameCheck, updateUser, getUserInfo } from "../api/user";
+import { myChannel } from "../api/channel";
 import "../assets/mypage.scss";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 const Mypage = () => {
   const navigate = useNavigate();
+  const [channel, setChannel] = useState([]);
 
   const [createPage, setCreatePage] = useState(false);
   // changeImg : -1 = (기존꺼 그대로), 0 =(변경), 1 =(이미지 삭제만)
@@ -49,6 +51,7 @@ const Mypage = () => {
   };
   useEffect(() => {
     findUser();
+    myChannelInfo();
   }, [localStorage.getItem("userEmail")]);
   const deleteImg = () => {
     setUserDTO({ ...userDTO, userImgUrl: null });
@@ -119,6 +122,12 @@ const Mypage = () => {
       navigate("/mypage");
     }
   };
+
+  const myChannelInfo = async () => {
+    const response = await myChannel(user.userEmail);
+    setChannel(response.data);
+  };
+
   return (
     <>
       <div className="main-box">
@@ -200,6 +209,12 @@ const Mypage = () => {
           <button id="change-submit" onClick={submit}>
             변경사항 수정
           </button>
+          <p>내 채널들</p>
+          {channel.map((channels) => (
+            <Link to={`/update/${channels.channelCode}`}>
+              {channels.channelName}
+            </Link>
+          ))}
         </div>
         <button onClick={openCreateChannel}>채널생성</button>
       </div>

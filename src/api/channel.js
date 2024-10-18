@@ -65,28 +65,30 @@ export const create = async (data) => {
   });
 };
 
+// 이름체크
 export const nameCheck = async (channelName, channelCode) => {
   return await instance.get(
     `channel/name?channelName=${channelName}&channelCode=${channelCode}`
   );
 };
 
+// 채널  수정시 정보 불러오기
 export const updateInfo = async (channelCode) => {
   return await authorize.get(`/update/${channelCode}`);
 };
-
+// 채널 태그 추가
 export const addTags = async (data) => {
   return await authorize.post("/tag", data);
 };
-
+// 채널 태그 삭제
 export const removeTags = async (channelTagCode) => {
   await authorize.delete(`/tag/${channelTagCode}`);
 };
-
+// 채널 소개 수정
 export const infoUpdate = async (data) => {
   await authorize.put("/update", data);
 };
-
+// 이미지 변경
 export const addImg = async (data) => {
   await authorize.put("/channelImg", data, {
     headers: {
@@ -94,4 +96,15 @@ export const addImg = async (data) => {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
+};
+
+// 채널 삭제
+export const removeChannel = async (channelCode) => {
+  await authorize.delete(`/${channelCode}`);
+};
+
+// 내 채널
+
+export const myChannel = async (userEmail) => {
+  return await authorize.get(`${userEmail}`);
 };

@@ -6,6 +6,7 @@ import {
   removeTags,
   infoUpdate,
   addImg,
+  removeChannel,
 } from "../api/channel";
 import { original } from "@reduxjs/toolkit";
 
@@ -30,13 +31,21 @@ const ChannelUpdate = () => {
     channelTag: [{}],
     channelImg: "",
   });
-
+  const [error, setError] = useState(null);
   console.log(channelInfos);
 
   // 업데이트전 채널 정보 불러옴
   const update = async () => {
-    const result = await updateInfo(channelCode);
-    setChannelInfos(result.data);
+    try {
+      const result = await updateInfo(channelCode);
+      setChannelInfos(result.data);
+    } catch (err) {
+      if (err.response && err.response.status === 404) {
+        setError("채널을 찾을 수 없습니다.");
+      } else {
+        setError("서버에 문제가 발생했습니다.");
+      }
+    }
   };
 
   useEffect(() => {
@@ -67,6 +76,12 @@ const ChannelUpdate = () => {
     await infoUpdate(channelInfos);
     update();
   };
+
+  const remove = async () => {
+    await removeChannel(channelCode);
+    window.location.href = "/";
+  };
+
   let formData = new FormData();
 
   const imgUpdate = async () => {
@@ -116,89 +131,97 @@ const ChannelUpdate = () => {
   console.log(formData);
   return (
     <>
-      <ul>
-        관리자들
-        {channelInfos.adminList.map((admins, index) =>
-          index === 0 ? (
-            <li key={admins.userEmail}>호스트 : {admins.userEmail}</li>
-          ) : (
-            <li key={admins.userEmail}>관리자 : {admins.userEmail}</li>
-          )
-        )}
-      </ul>
-      채널소개 :{" "}
-      <input
-        value={channelInfos.channelInfo}
-        onChange={(e) =>
-          setChannelInfos({ ...channelInfos, channelInfo: e.target.value })
-        }
-      />
-      <button onClick={infoSubmit}> 변경 </button>
-      <ul>
-        차단 리스트
-        {channelInfos.banList.map((bans) => (
-          <li key={bans.userEmail}>{bans.userEmail}</li>
-        ))}
-      </ul>
-      <div>
-        <ul>
-          태그 리스트
-          {channelInfos.channelTag.map((channelTags, index) => (
-            <>
-              <li key={channelTags.channelTagCode}>
-                {channelTags.channelTagName}
-              </li>
-              {!(
-                channelTags.channelTagName == "일반" ||
-                channelTags.channelTagName == "공지"
-              ) ? (
-                <button
-                  key={index}
-                  onClick={() => tagDelete(channelTags.channelTagCode)}
-                >
-                  삭제
-                </button>
-              ) : null}
-            </>
-          ))}
-        </ul>
-        <input
-          type="text"
-          value={tags.channelTagName}
-          onChange={(e) => setTags({ ...tags, channelTagName: e.target.value })}
-        />
-        <button onClick={getTag}>추가</button>
-      </div>
-      <p>이미지 </p>
-      추가:
-      <input
-        
-        type="file"
-        accept={"image/*"}
-        onChange={(e) => {
-          const file = e.target.files[0];
-          if (file) {
-            console.log("사진선택");
-            setPreviewUrl(URL.createObjectURL(file));
-            setChan({ ...chan, channelImgUrl: file, change: 1 });
-          } else {
-            console.log("사진선택안함");
-            setPreviewUrl(false);
-            setChan({ ...chan, channelImgUrl: null, change: 0 });
-          }
-        }}
-      />
-      <button onClick={imgUpdate}>사진 수정</button>
-      <button onClick={reset}>기존 사진 </button>
-      <button onClick={regular}>기본 사진</button>
-      <img
-        src={
-          previewUrl ||
-          (channelInfos.channelImg === null
-            ? "http://192.168.10.51:8083/%EA%B8%B0%EB%B3%B8%EB%8C%80%EB%AC%B8.jpg"
-            : `http://192.168.10.51:8083/channel/${channelCode}/${channelInfos.channelImg}`)
-        }
-      />
+      {error ? (
+        <div className="error-message">{error}</div>
+      ) : (
+        <>
+          <ul>
+            관리자들
+            {channelInfos.adminList.map((admins, index) =>
+              index === 0 ? (
+                <li key={admins.userEmail}>호스트 : {admins.userEmail}</li>
+              ) : (
+                <li key={admins.userEmail}>관리자 : {admins.userEmail}</li>
+              )
+            )}
+          </ul>
+          채널소개 :{" "}
+          <input
+            value={channelInfos.channelInfo}
+            onChange={(e) =>
+              setChannelInfos({ ...channelInfos, channelInfo: e.target.value })
+            }
+          />
+          <button onClick={infoSubmit}> 변경 </button>
+          <ul>
+            차단 리스트
+            {channelInfos.banList.map((bans) => (
+              <li key={bans.userEmail}>{bans.userEmail}</li>
+            ))}
+          </ul>
+          <div>
+            <ul>
+              태그 리스트
+              {channelInfos.channelTag.map((channelTags, index) => (
+                <>
+                  <li key={channelTags.channelTagCode}>
+                    {channelTags.channelTagName}
+                  </li>
+                  {!(
+                    channelTags.channelTagName == "일반" ||
+                    channelTags.channelTagName == "공지"
+                  ) ? (
+                    <button
+                      key={index}
+                      onClick={() => tagDelete(channelTags.channelTagCode)}
+                    >
+                      삭제
+                    </button>
+                  ) : null}
+                </>
+              ))}
+            </ul>
+            <input
+              type="text"
+              value={tags.channelTagName}
+              onChange={(e) =>
+                setTags({ ...tags, channelTagName: e.target.value })
+              }
+            />
+            <button onClick={getTag}>추가</button>
+          </div>
+          <p>이미지 </p>
+          추가:
+          <input
+            type="file"
+            accept={"image/*"}
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                console.log("사진선택");
+                setPreviewUrl(URL.createObjectURL(file));
+                setChan({ ...chan, channelImgUrl: file, change: 1 });
+              } else {
+                console.log("사진선택안함");
+                setPreviewUrl(false);
+                setChan({ ...chan, channelImgUrl: null, change: 0 });
+              }
+            }}
+          />
+          <button onClick={imgUpdate}>사진 수정</button>
+          <button onClick={reset}>기존 사진 </button>
+          <button onClick={regular}>기본 사진</button>
+          <img
+            src={
+              previewUrl ||
+              (channelInfos.channelImg === null
+                ? "http://192.168.10.51:8083/%EA%B8%B0%EB%B3%B8%EB%8C%80%EB%AC%B8.jpg"
+                : `http://192.168.10.51:8083/channel/${channelCode}/${channelInfos.channelImg}`)
+            }
+          />
+          <button onClick={remove}>채널삭제</button>
+        </>
+      )}
     </>
   );
 };
