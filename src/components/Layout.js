@@ -1,7 +1,7 @@
 import Header from "./Header";
 import Footer from "./Footer";
 import { allChannel } from "../api/channel";
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Outlet } from "react-router-dom";
 
 const Layout = () => {
@@ -11,28 +11,11 @@ const Layout = () => {
 
   const chanList = useCallback(async (page, keyword) => {
     const result = await allChannel(page, keyword);
-    if (page === 1 && keyword == "") {
-      setChannelList(
-        result.data.map((channel) => ({
-          ...channel,
-          allPost: channel.allPost || [],
-        }))
-      );
-    } else if (page > 1 && keyword == "") {
-      setChannelList(() => [
-        ...result.data.map((channel) => ({
-          ...channel,
-          allPost: channel.allPost || [],
-        })),
-      ]);
-    } else if (page >= 1 && keyword != "") {
-      setChannelList((prev) => [
-        ...prev,
-        ...result.data.map((channel) => ({
-          ...channel,
-          allPost: channel.allPost || [],
-        })),
-      ]);
+
+    if (page == 1) {
+      setChannelList(result.data);
+    } else {
+      setChannelList((prev) => [...prev, ...result.data]);
     }
   }, []);
   /*
@@ -41,6 +24,7 @@ const Layout = () => {
   }, [channelList.length]);
 */
   console.log(page);
+  console.log(channelList);
   useEffect(() => {
     chanList(page, keyword);
   }, [keyword, page]);

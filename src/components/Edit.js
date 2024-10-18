@@ -16,8 +16,10 @@ const Example = () => {
     postContent: "",
     postTitle: "",
     userEmail: user.userEmail,
-    channelCode: channelCode,
-    channelTagCode: "",
+    channel: { channelCode: channelCode },
+    channelTag: {
+      channelTagCode: "",
+    },
   });
 
   const [Channel, setChannel] = useState({
@@ -47,7 +49,7 @@ const Example = () => {
     if (firstTag) {
       setPost({
         ...post,
-        channelTagCode: String(firstTag.channelTagCode),
+        channelTag: { channelTagCode: String(firstTag.channelTagCode) },
       });
     }
   }, [Channel]);
@@ -90,7 +92,12 @@ const Example = () => {
     if (post.postContent.trim().length == 0) {
       alert("내용을 입력해주세요");
     }
+
     const response = await add(post);
+    if (response.data.managementUserStatus === "ban") {
+      alert("글쓰기가 제한되어있습니다");
+      return;
+    }
     window.location.href = "/post/" + response.data.postCode;
   };
 
@@ -104,7 +111,9 @@ const Example = () => {
       />
       <select
         id="tag"
-        onChange={(e) => setPost({ ...post, channelTagCode: e.target.value })}
+        onChange={(e) =>
+          setPost({ ...post, channelTag: { channelTagCode: e.target.value } })
+        }
       >
         {Channel?.channelTag.map((channelTag) => (
           <option

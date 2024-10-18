@@ -33,6 +33,7 @@ const CommentComponent = ({ comment, postCode, id }) => {
       queryClient.invalidateQueries({ queryKey: ["comment", postCode] });
     },
   });
+
   const upadteMutation = useMutation({
     mutationFn: updateAPI,
     onSuccess: () => {
@@ -47,12 +48,15 @@ const CommentComponent = ({ comment, postCode, id }) => {
   });
   const addReComment = () => {
     addMutation.mutate(newReComment);
+
     setNewReComment({
       ...newReComment,
       commentContent: "",
       commentParentsCode: 0,
     });
+    console.log(newReComment);
   };
+
   const updateComment = () => {
     upadteMutation.mutate(changeComment);
     setChangeComment({
