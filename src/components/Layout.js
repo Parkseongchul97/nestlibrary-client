@@ -11,21 +11,21 @@ const Layout = () => {
 
   const chanList = useCallback(async (page, keyword) => {
     const result = await allChannel(page, keyword);
-    if (page === 1) {
+    if (page === 1 && keyword == "") {
       setChannelList(
         result.data.map((channel) => ({
           ...channel,
           allPost: channel.allPost || [],
         }))
       );
-    } else if (page > 1) {
-      setChannelList((prev) => [
+    } else if (page > 1 && keyword == "") {
+      setChannelList(() => [
         ...result.data.map((channel) => ({
           ...channel,
           allPost: channel.allPost || [],
         })),
       ]);
-    } else if (page > 1 && keyword != "" && keyword != null) {
+    } else if (page >= 1 && keyword != "") {
       setChannelList((prev) => [
         ...prev,
         ...result.data.map((channel) => ({

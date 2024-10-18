@@ -46,7 +46,7 @@ export const tagPosts = async (
 };
 
 export const allChannel = async (page, keyword = "") => {
-  return await instance.get("main", {
+  return await instance.get("channel/main", {
     params: {
       page,
       keyword, // 키,값이 명칭이 같을 경우 생략가능

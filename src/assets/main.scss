@@ -14,6 +14,7 @@
     width: 100%;
 
     .channel-list {
+      width: 90%;
       justify-content: center;
       align-items: center;
       display: flex;
@@ -31,8 +32,9 @@
         margin: 0.5rem;
         border-radius: 20px;
         background: #f4f4f4;
-        width: 100%;
-        max-width: 600px;
+
+        width: 500px;
+        min-width: 400px;
         height: 400px;
         .channel-post {
           display: flex;
