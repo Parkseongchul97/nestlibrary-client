@@ -10,10 +10,12 @@ import { mySub } from "../api/subscribe";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getUserInfo } from "../api/user";
 import UserMenu from "./UserMenu";
+import ChannelList from "./ChannelList";
 const Header = () => {
   const [page, setPage] = useState(false);
   const { user, token } = useAuth();
   const { logout: authLogout } = useAuth();
+  const [subOpen, setSubOpen] = useState();
 
   const openPage = (event) => {
     setPage(true);
@@ -55,6 +57,7 @@ if(subError) return <>에러...</>;
         <div className="header-center">
           <div className="header-center-menu">
             <div className="channel-menu">구독 채널</div>
+            {/* <ChannelList isOpen={subOpen} listTitle={"구독 채널"} subList={subList} /> */}
             <div className="channel-menu">모든 채널</div>
           </div>
           <div className="header-center-search">
