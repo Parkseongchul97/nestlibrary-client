@@ -15,7 +15,6 @@ const Header = () => {
   const [page, setPage] = useState(false);
   const { user, token } = useAuth();
   const { logout: authLogout } = useAuth();
-  const [subOpen, setSubOpen] = useState();
 
   const openPage = (event) => {
     setPage(true);
@@ -34,18 +33,6 @@ const Header = () => {
     authLogout();
     kakaoLogout();
   };
-  const queryClient = useQueryClient();
-  const {
-    data: subList,// 구독중 리스트
-    isLoading: subLoading,
-    error: subError,
-  } = useQuery({
-    queryKey: ["mySubList" ,token],
-    queryFn: () => (token ? mySub() : null), // 토큰이 없으면 호출하지 않음
-    enabled: !!token,
-  });
-  if(subLoading) return <>로딩중...</>;
-if(subError) return <>에러...</>;
 
   return (
     <>
@@ -57,7 +44,7 @@ if(subError) return <>에러...</>;
         <div className="header-center">
           <div className="header-center-menu">
             <div className="channel-menu">구독 채널</div>
-            {/* <ChannelList isOpen={subOpen} listTitle={"구독 채널"} subList={subList} /> */}
+
             <div className="channel-menu">모든 채널</div>
           </div>
           <div className="header-center-search">
