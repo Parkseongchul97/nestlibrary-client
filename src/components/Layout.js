@@ -1,6 +1,6 @@
 import Header from "./Header";
 import Footer from "./Footer";
-import { allChannel } from "../api/channel";
+import { allChannel, subChannel } from "../api/channel";
 import { useEffect, useState, useCallback } from "react";
 import { Outlet } from "react-router-dom";
 
@@ -11,21 +11,25 @@ const Layout = () => {
   const [subCheck, setSubCheck] = useState(0);
 
   const chanList = useCallback(async (page, keyword, subCheck) => {
-    const result = await allChannel(page, keyword, subCheck);
+    const result = await allChannel(page, keyword);
+    console.log("섭체크 " + subCheck);
+    if (subCheck == 0) {
+      if (page == 1) {
+        setChannelList(result.data);
+      } else {
+        setChannelList((prev) => [...prev, ...result.data]);
+      }
+    } else if (subCheck == 1) {
+      const result2 = await subChannel(page, keyword);
 
-    if (page == 1) {
-      setChannelList(result.data);
-    } else {
-      setChannelList((prev) => [...prev, ...result.data]);
+      if (page == 1) {
+        setChannelList(result2.data);
+      } else {
+        setChannelList((prev) => [...prev, ...result2.data]);
+      }
     }
   }, []);
-  /*
-  useEffect(() => {
-    chanList();
-  }, [channelList.length]);
-*/
-  console.log(page);
-  console.log(channelList);
+
   useEffect(() => {
     chanList(page, keyword, subCheck);
   }, [keyword, page, subCheck]);
@@ -38,15 +42,21 @@ const Layout = () => {
   };
 
   const onSub = () => {
-    setPage(1); // 검색하면 1페이지로
-    setChannelList([]); // 비디오들도 초기상태로 해놓고 다시 불러야함
-    setSubCheck(1);
+    if (localStorage.getItem("token") != null) {
+      setSubCheck(1);
+      setPage(1);
+    }
+  };
+
+  const all = () => {
+    setSubCheck(0);
+    setPage(1);
   };
 
   return (
     <>
-      <Header onSearch={onSearch} onsub={onSub} />
-      <Outlet context={{ channelList, setPage }} />
+      <Header onSearch={onSearch} onsub={onSub} all={all} />
+      <Outlet context={{ channelList, setPage, subCheck }} />
       <Footer />
     </>
   );

@@ -68,6 +68,7 @@ const ChannelDetail = () => {
       queryClient.invalidateQueries(["subscribe", channelCode]);
     },
   });
+
   const addSubSubmit = () => {
     if (token !== null) {
       const subContent = {
@@ -84,6 +85,7 @@ const ChannelDetail = () => {
       favoriteCount: channel?.favoriteCount + 1,
     });
   };
+
   const searchSubmit = () => {
     if (searchKeyword.length <= 1) {
       alert("2글자 이상 입력해야 합니다!");
@@ -193,8 +195,9 @@ const ChannelDetail = () => {
           </div>
         </div>
       </div>
-
-      <Link to={`/update/${channelCode}`}>채널수정</Link>
+      {channel?.host.userEmail == user.userEmail && (
+        <Link to={`/update/${channelCode}`}>채널수정</Link>
+      )}
     </>
   );
 };

@@ -9,12 +9,15 @@ import { useAuth } from "../contexts/AuthContext";
 
 import UserMenu from "./UserMenu";
 import ChannelList from "./ChannelList";
-const Header = ({ onSearch, onsub }) => {
+import { allChannel } from "../api/channel";
+const Header = ({ onSearch, onsub, all }) => {
   const [page, setPage] = useState(false);
   const { user, token } = useAuth();
   const { logout: authLogout } = useAuth();
   const [isSearch, setIsSearch] = useState(false);
   const [keyword, setKeyword] = useState("");
+  const [click, setClick] = useState("");
+  const [click1, setClick1] = useState("");
   const searchRef = useRef(null);
 
   const openPage = (event) => {
@@ -51,6 +54,14 @@ const Header = ({ onSearch, onsub }) => {
 
   const subCheck = () => {
     onsub();
+    setClick("subs");
+    setClick1("");
+  };
+
+  const allChannel = () => {
+    all();
+    setClick1("all");
+    setClick("");
   };
 
   // 검색창 페이징 처리  미완성 10-16 성일
@@ -88,10 +99,12 @@ const Header = ({ onSearch, onsub }) => {
           <>
             <div ref={searchRef} className="header-center">
               <div className="header-center-menu">
-                <div className="channel-menu" onClick={subCheck}>
+                <div className="channel-menu" id={click} onClick={subCheck}>
                   구독 채널
                 </div>
-                <div className="channel-menu">모든 채널</div>
+                <div className="channel-menu" id={click1} onClick={allChannel}>
+                  모든 채널
+                </div>
               </div>
               <div id="search" className="header-center-search">
                 <input

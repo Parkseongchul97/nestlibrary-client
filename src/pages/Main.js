@@ -4,28 +4,12 @@ import { allChannel } from "../api/channel";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import PostListComponent from "../components/PostListComponent";
+import { addSub } from "../api/subscribe";
 
 const Main = () => {
-  const { channelList, setPage } = useOutletContext();
-  // 첫 호출때 null
-  /*
-  const [channelList, setChannelList] = useState([]);
-  const chanList = async () => {
-    const result = await allChannel();
-    setChannelList(
-      result.data.map((channel) => ({
-        ...channel,
-        allPost: channel.allPost || [],
-      }))
-    );
-  };
-  useEffect(() => {
-    chanList();
-  }, [channelList.length]);
+  const { channelList, setPage, subCheck } = useOutletContext();
 
-
-  */
-
+  console.log(subCheck);
   const scroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
@@ -56,7 +40,7 @@ const Main = () => {
                 >
                   {channel?.channelName} 채널
                 </Link>
-
+                <button onClick={addSub}>구독 </button>
                 {channel.allPost !== undefined &&
                 channel.allPost.length !== 0 ? (
                   <div className="post-box">

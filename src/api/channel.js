@@ -50,12 +50,20 @@ export const tagPosts = async (
   return response; // 특정 태그의 게시글 데이터 반환
 };
 
-export const allChannel = async (page, keyword = "", subCheck = "") => {
+export const allChannel = async (page, keyword = "") => {
   return await instance.get("channel/main", {
     params: {
       page,
       keyword, // 키,값이 명칭이 같을 경우 생략가능
-      subCheck,
+    },
+  });
+};
+
+export const subChannel = async (page, keyword = "") => {
+  return await authorize.get("/main", {
+    params: {
+      page,
+      keyword, // 키,값이 명칭이 같을 경우 생략가능
     },
   });
 };
