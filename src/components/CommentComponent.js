@@ -8,6 +8,7 @@ import {
 } from "../api/comment";
 import TimeFormat from "./TimeFormat";
 import "../assets/comment.scss";
+import UserMenu from "./UserMenu";
 const CommentComponent = ({ comment, postCode, id }) => {
   const { user, token } = useAuth();
   const [newReComment, setNewReComment] = useState({
@@ -104,7 +105,8 @@ const CommentComponent = ({ comment, postCode, id }) => {
         <>
           {" "}
           <div className="comment-content">
-            <div className="user-profile">
+            <UserMenu user={comment?.user} time={comment?.commentCreatedAt} />
+            {/* <div className="user-profile">
               <img
                 className="user-profile-img"
                 src={
@@ -120,7 +122,7 @@ const CommentComponent = ({ comment, postCode, id }) => {
                 {comment?.user?.userNickname}
                 <TimeFormat time={comment.commentCreatedAt} />
               </p>
-            </div>
+            </div> */}
             {isChange === comment.commentCode &&
             user !== undefined &&
             user.userEmail === comment?.user?.userEmail ? (

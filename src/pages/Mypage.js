@@ -77,17 +77,11 @@ const Mypage = () => {
     }
   }, [userDTO.userNickname]);
 
-  useEffect(() => {
-    if (changeImg === -1) console.log("변경 X");
-    else if (changeImg === 0) console.log("변경 O");
-    else console.log("이미지 삭제로 제출");
-  }, [changeImg]);
   const checkNickname = async () => {
     const result = await nicknameCheck(userDTO.userNickname, userDTO.userEmail); // 닉네임 중복
     if (result.data !== undefined || result.data !== "") {
-      console.log(result.data);
     }
-    console.log("닉네임 중복 여부 : " + result.data);
+
     setNicknameSubmit(result.data); // true false 반환 중복여부
   };
   const submit = async () => {

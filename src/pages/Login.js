@@ -14,7 +14,6 @@ const Login = ({ onClose }) => {
   });
 
   const submit = async () => {
-    console.log(loginUser);
     const result = await login(loginUser);
     authLogin(result.data);
     window.location.reload();

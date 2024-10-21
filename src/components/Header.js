@@ -6,10 +6,12 @@ import "../assets/header.scss";
 import Login from "../pages/Login";
 import { kakaoLogout } from "../user/kakaoCode";
 import { useAuth } from "../contexts/AuthContext";
+import { mySub } from "../api/subscribe";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getUserInfo } from "../api/user";
-
-const Header = ({ onSearch }) => {
+import UserMenu from "./UserMenu";
+import ChannelList from "./ChannelList";
+const Header = () => {
   const [page, setPage] = useState(false);
   const { user, token } = useAuth();
   const { logout: authLogout } = useAuth();
@@ -80,54 +82,22 @@ const Header = ({ onSearch }) => {
           <Link to={"/"}>Nest Library</Link>
         </div>
 
-        {!isSearch ? (
-          <>
-            <div ref={searchRef} className="header-center">
-              <div className="header-center-menu">
-                <div className="channel-menu">구독 채널</div>
-                <div className="channel-menu">모든 채널</div>
-              </div>
-              <div id="search" className="header-center-search">
-                <input
-                  className="search"
-                  type="text"
-                  placeholder="찾기"
-                  onChange={(e) => setKeyword(e.target.value)}
-                  value={keyword}
-                  onKeyDown={enter}
-                />
-                <button id="channel-search">
-                  <FontAwesomeIcon
-                    icon={faMagnifyingGlass}
-                    size="1x"
-                    onClick={() => onSearch(keyword)}
-                  />
-                </button>
-              </div>
-              <button className="hidden-btn" onClick={hidenTogle}>
-                <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
-              </button>
-            </div>
-          </>
-        ) : (
-          <>
-            <div ref={searchRef} className="header-center">
-              <div id="hidden-search" className="header-center-search">
-                <input
-                  className="search"
-                  type="text"
-                  placeholder="찾기"
-                  onChange={(e) => setKeyword(e.target.value)}
-                  value={keyword}
-                  onKeyDown={enter}
-                />
-                <button id="channel-search" onClick={() => onSearch(keyword)}>
-                  <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
-                </button>
-              </div>
-            </div>
-          </>
-        )}
+        <div className="header-center">
+          <div className="header-center-menu">
+            <div className="channel-menu">구독 채널</div>
+
+            <div className="channel-menu">모든 채널</div>
+          </div>
+          <div className="header-center-search">
+            <input className="search" type="text" placeholder="찾기" />
+            <button id="channel-search">
+              <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
+            </button>
+          </div>
+          <button className="hidden-btn" onClick={hidenTogle}>
+            <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
+          </button>
+        </div>
 
         {token === null ? (
           <div className="header-right">
@@ -141,25 +111,8 @@ const Header = ({ onSearch }) => {
           </div>
         ) : (
           <div className="header-right">
-            <div className="user-info">
-              {user.userImgUrl == null ? (
-                <img
-                  className="user-img"
-                  src="http://192.168.10.51:8083/e0680940917fba1b2350c6563c32ad0c.jpg"
-                />
-              ) : (
-                <img
-                  className="user-img"
-                  src={
-                    "http://192.168.10.51:8083/user/" +
-                    user.userEmail +
-                    "/" +
-                    user.userImgUrl
-                  }
-                />
-              )}
-              <span className="user-nickname">{user.userNickname}</span>
-            </div>
+            <UserMenu user={user} />
+
             <Link id="logout-btn" onClick={logout} className="info">
               로그아웃
             </Link>

@@ -5,7 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 const LoginWait = () => {
   const kakaoKey = new URL(window.location.href).searchParams.get("code");
   const { login: authLogin } = useAuth();
-  console.log(kakaoKey);
+
   useEffect(() => {
     const kakao = async () => {
       if (kakaoKey) {

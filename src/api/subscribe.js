@@ -21,3 +21,8 @@ export const removeSub = async (managementCode) => {
   const response = await authorize.delete(`subscribe/${managementCode}`);
   return response;
 };
+
+export const mySub = async () => {
+  const response = await authorize.get("subscribe/channel");
+  return response;
+};

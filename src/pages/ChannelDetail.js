@@ -11,6 +11,7 @@ import PostListComponent from "../components/PostListComponent";
 import "../assets/channelDetail.scss";
 import "../assets/main.scss";
 import Page from "../components/Page";
+import Search from "../components/Search";
 
 const ChannelDetail = () => {
   const { user, token } = useAuth(); // 로그인 유저
@@ -21,14 +22,21 @@ const ChannelDetail = () => {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const page = query.get("page") || 1;
+  const [searchKeyword, setSearchKeyword] = useState(""); // 검색어
+  const [searchTarget, setSearchTarget] = useState("title"); // 기본 검색 대상: 제목
   const fetch = async () => {
     const info = await channelInfo(channelCode);
-
     setChannel(info.data);
     const channelPosts =
       channelTagCode !== undefined
-        ? await tagPosts(channelCode, channelTagCode, page) // 태그가 있으면 태그별 게시글 가져오기
-        : await allPosts(channelCode, page); // 태그가 없으면 모든 게시글 가져오기
+        ? await tagPosts(
+            channelCode,
+            channelTagCode,
+            page,
+            searchTarget,
+            searchKeyword
+          ) // 태그가 있으면 태그별 게시글 가져오기
+        : await allPosts(channelCode, page, searchTarget, searchKeyword); // 태그가 없으면 모든 게시글 가져오기
     setPosts(channelPosts.data);
   };
 
@@ -38,8 +46,6 @@ const ChannelDetail = () => {
 
   useEffect(() => {
     fetch();
-    console.log(posts.postList);
-    console.log(posts.paging);
   }, [channelCode, channelTagCode, page]);
 
   const { data, isLoading, error } = useQuery({
@@ -77,6 +83,14 @@ const ChannelDetail = () => {
       ...channel,
       favoriteCount: channel?.favoriteCount + 1,
     });
+  };
+  const searchSubmit = () => {
+    if (searchKeyword.length <= 1) {
+      alert("2글자 이상 입력해야 합니다!");
+      return;
+    }
+
+    fetch();
   };
 
   const removeSubSubmit = () => {
@@ -168,6 +182,13 @@ const ChannelDetail = () => {
                 />
               </div>
             )}
+            <Search
+              searchKeyword={searchKeyword}
+              setSearchKeyword={setSearchKeyword}
+              searchTarget={searchTarget}
+              setSearchTarget={setSearchTarget}
+              onSubmit={searchSubmit}
+            />
           </div>
         </div>
       </div>

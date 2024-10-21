@@ -35,13 +35,12 @@ const CreateChannel = ({ onClose }) => {
     let formData = new FormData();
     formData.append("channelName", channel.channelName);
     formData.append("channelInfo", channel.channelInfo);
-    console.log(channel.channelImg);
+
     if (channel.channelImg !== null)
       formData.append("channelImgUrl", channel.channelImg);
-    console.log("submit때 formdata : ");
-    console.log(formData);
+
     const result = await makeChannel(formData);
-    console.log(result.data);
+
     if (result.status === 200) {
       // 채널 생성후 바로 해당 채널로 이동
       navigate(`/channel/${result.data.channelCode}`);

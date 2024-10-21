@@ -56,11 +56,14 @@ const Main = () => {
                 >
                   {channel?.channelName} 채널
                 </Link>
+
                 {channel.allPost !== undefined &&
                 channel.allPost.length !== 0 ? (
-                  channel.allPost.map((post) => (
-                    <PostListComponent post={post} key={post?.postCode} />
-                  ))
+                  <div className="post-box">
+                    {channel.allPost.map((post) => (
+                      <PostListComponent post={post} key={post?.postCode} />
+                    ))}
+                  </div>
                 ) : (
                   <div className="none-post-box">
                     <div>!</div>
