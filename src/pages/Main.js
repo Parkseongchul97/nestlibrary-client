@@ -7,26 +7,9 @@ import PostListComponent from "../components/PostListComponent";
 import UserMenu from "../components/UserMenu";
 
 const Main = () => {
-  const { channelList, setPage } = useOutletContext();
-  // 첫 호출때 null
-  /*
-  const [channelList, setChannelList] = useState([]);
-  const chanList = async () => {
-    const result = await allChannel();
-    setChannelList(
-      result.data.map((channel) => ({
-        ...channel,
-        allPost: channel.allPost || [],
-      }))
-    );
-  };
-  useEffect(() => {
-    chanList();
-  }, [channelList.length]);
+  const { channelList, setPage, subCheck } = useOutletContext();
 
-
-  */
-
+  console.log(subCheck);
   const scroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop >=

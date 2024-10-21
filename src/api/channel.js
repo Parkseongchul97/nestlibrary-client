@@ -59,6 +59,15 @@ export const allChannel = async (page, keyword = "") => {
   });
 };
 
+export const subChannel = async (page, keyword = "") => {
+  return await authorize.get("/main", {
+    params: {
+      page,
+      keyword, // 키,값이 명칭이 같을 경우 생략가능
+    },
+  });
+};
+
 export const create = async (data) => {
   // 파라미터로 data 받아서감 (바디로 받음)
 

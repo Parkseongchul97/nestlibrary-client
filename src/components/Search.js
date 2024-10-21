@@ -6,6 +6,7 @@ const Search = ({
   searchTarget,
   setSearchTarget,
   onSubmit,
+  isPost,
 }) => {
   // 조합문자인지 아닌지
   const [isComposing, setIsComposing] = useState(false);
@@ -31,10 +32,18 @@ const Search = ({
         value={searchTarget}
         onChange={(e) => setSearchTarget(e.target.value)}
       >
-        {/*이것도 나중에 파라미터 객체로 받아서 반복문 돌린후 어디서든 사용?*/}
-        <option value="title">글 제목 검색</option>
-        <option value="content">글 내용 검색</option>
-        <option value="user">닉네임 검색</option>
+        {!isPost ? (
+          <>
+            <option value="channel">채널 이름 검색</option>
+            <option value="host">채널 호스트 검색</option>
+          </>
+        ) : (
+          <>
+            <option value="title">글 제목 검색</option>
+            <option value="content">글 내용 검색</option>
+            <option value="user">닉네임 검색</option>
+          </>
+        )}
       </select>
       <button onClick={onSubmit}>검색</button>
     </div>
