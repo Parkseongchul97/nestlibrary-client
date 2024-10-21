@@ -188,6 +188,7 @@ const ChannelDetail = () => {
               searchTarget={searchTarget}
               setSearchTarget={setSearchTarget}
               onSubmit={searchSubmit}
+              isPost={true}
             />
           </div>
         </div>

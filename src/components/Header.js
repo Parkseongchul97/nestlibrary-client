@@ -9,7 +9,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 import UserMenu from "./UserMenu";
 import ChannelList from "./ChannelList";
-const Header = ({ onSearch }) => {
+const Header = ({ onSearch, onsub }) => {
   const [page, setPage] = useState(false);
   const { user, token } = useAuth();
   const { logout: authLogout } = useAuth();
@@ -49,6 +49,10 @@ const Header = ({ onSearch }) => {
     }
   };
 
+  const subCheck = () => {
+    onsub();
+  };
+
   // 검색창 페이징 처리  미완성 10-16 성일
   useEffect(() => {
     const handleResize = () => {
@@ -84,7 +88,9 @@ const Header = ({ onSearch }) => {
           <>
             <div ref={searchRef} className="header-center">
               <div className="header-center-menu">
-                <div className="channel-menu">구독 채널</div>
+                <div className="channel-menu" onClick={subCheck}>
+                  구독 채널
+                </div>
                 <div className="channel-menu">모든 채널</div>
               </div>
               <div id="search" className="header-center-search">
