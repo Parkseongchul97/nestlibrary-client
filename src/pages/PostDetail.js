@@ -36,7 +36,7 @@ const PostDetail = () => {
     // 데이터, 로딩중인지, 에러발생
     queryKey: ["comment", postCode, page],
     queryFn: () => viewComment(postCode, page),
-    refetchInterval: 1000, // 해당 시간마다 데이터갱식하여 실시간 처럼 처리
+    // refetchInterval: 1000, // 해당 시간마다 데이터갱식하여 실시간 처럼 처리
   });
 
   // 댓글 추가
