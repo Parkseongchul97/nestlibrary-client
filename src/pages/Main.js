@@ -93,7 +93,7 @@ const Main = () => {
                   {channel?.channelName} 채널
                 </Link>
 
-                {data[index].data !== "" ? (
+                {token != null && data[index].data !== "" ? (
                   <>
                     <button
                       onClick={() =>
