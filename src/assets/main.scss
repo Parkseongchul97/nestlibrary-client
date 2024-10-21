@@ -20,13 +20,18 @@
       display: flex;
       flex-wrap: wrap;
       background: white;
-      .channel-name {
-        display: flex;
-        font-size: 2rem;
-        color: #000;
-        font-weight: 900;
-        margin-bottom: 1rem;
-      }
     }
+  }
+}
+.channel-main-header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  .channel-name {
+    display: flex;
+    font-size: 2rem;
+    color: #000;
+    font-weight: 900;
+    margin-bottom: 1rem;
   }
 }

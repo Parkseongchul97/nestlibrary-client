@@ -10,6 +10,8 @@ import PostDetail from "./pages/PostDetail";
 
 import PostWrite from "./components/PostWrite";
 import ChannelUpdate from "./pages/ChannelUpdate";
+import Messages from "./pages/Messages";
+import MessageWrite from "./components/MessageWrite";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +29,14 @@ const router = createBrowserRouter([
       {
         path: "/mypage",
         element: <Mypage />,
+      },
+      {
+        path: "/messages",
+        element: <Messages />,
+      },
+      {
+        path: "/message/write",
+        element: <MessageWrite />,
       },
       {
         path: "channel/:channelCode",

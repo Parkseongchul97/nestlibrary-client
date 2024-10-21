@@ -1,6 +1,5 @@
 import "../assets/main.scss";
 import { Link } from "react-router-dom";
-import { allChannel } from "../api/channel";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import PostListComponent from "../components/PostListComponent";
@@ -34,14 +33,15 @@ const Main = () => {
           <ul className="channel-list">
             {channelList.map((channel) => (
               <li className="channel-box" key={channel?.channelCode}>
-                <Link
-                  to={"/channel/" + channel?.channelCode}
-                  className="channel-name"
-                >
-                  {channel?.channelName} 채널
-                </Link>
-                <UserMenu user={channel?.user} />
-
+                <div className="channel-main-header">
+                  <Link
+                    to={"/channel/" + channel?.channelCode}
+                    className="channel-name"
+                  >
+                    {channel?.channelName} 채널
+                  </Link>
+                  <UserMenu user={channel?.host} />
+                </div>
                 {channel.allPost !== undefined &&
                 channel.allPost.length !== 0 ? (
                   <div className="post-box">

@@ -7,8 +7,7 @@ import Login from "../pages/Login";
 import { kakaoLogout } from "../user/kakaoCode";
 import { useAuth } from "../contexts/AuthContext";
 import UserMenu from "./UserMenu";
-import ChannelList from "./ChannelList";
-import { allChannel } from "../api/channel";
+
 const Header = ({ onSearch, onsub, all }) => {
   const [page, setPage] = useState(false);
   const { user, token } = useAuth();
