@@ -1,6 +1,5 @@
 import "../assets/main.scss";
 import { Link } from "react-router-dom";
-import { allChannel } from "../api/channel";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import PostListComponent from "../components/PostListComponent";
@@ -8,6 +7,7 @@ import PostListComponent from "../components/PostListComponent";
 import { useAuth } from "../contexts/AuthContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { addSub, checkSub, removeSub } from "../api/subscribe";
+import UserMenu from "../components/UserMenu";
 
 const Main = () => {
   const { channelList, setPage, subCheck } = useOutletContext();

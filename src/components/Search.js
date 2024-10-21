@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 
 const Search = ({
   searchKeyword,
@@ -8,12 +8,11 @@ const Search = ({
   onSubmit,
   isPost,
 }) => {
+  // 조합문자인지 아닌지
+  const [isComposing, setIsComposing] = useState(false);
+
   const enterSearchSubmit = (e) => {
-    if (e.code === "Enter" || e.code === "NumpadEnter") {
-      if (searchKeyword.length <= 1) {
-        alert("2글자 이상 입력해야 합니다!");
-        return;
-      }
+    if ((e.code === "Enter" || e.code === "NumpadEnter") && !isComposing) {
       onSubmit();
     }
   };
@@ -24,7 +23,9 @@ const Search = ({
         value={searchKeyword}
         onChange={(e) => setSearchKeyword(e.target.value)}
         placeholder="2글자 이상 입력하세요"
-        onKeyUp={(e) => enterSearchSubmit(e)}
+        onKeyDown={enterSearchSubmit}
+        onCompositionStart={() => setIsComposing(true)}
+        onCompositionEnd={() => setIsComposing(false)}
       />
       {/*2번 호출되는 상황 또발생 */}
       <select

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import CommentComponent from "../components/CommentComponent";
 import "../assets/postDetail.scss";
@@ -12,7 +12,7 @@ import { viewPost } from "../api/post";
 import { likeState as state, like, unLike } from "../api/postLike";
 import TimeFormat from "../components/TimeFormat";
 import Page from "../components/Page";
-
+import { remove } from "../api/post";
 const PostDetail = () => {
   const { postCode } = useParams();
   const { user, token } = useAuth();
@@ -43,8 +43,7 @@ const PostDetail = () => {
   const addmutation = useMutation({
     mutationFn: addCommentAPI,
     onSuccess: (result) => {
-      console.log(result.data);
-      if (result.data != "실패") {
+      if (result.data !== "실패") {
         queryClient.invalidateQueries({ queryKey: ["comment", postCode] });
       } else {
         alert("댓글 작성이 제한된 상태입니다");
@@ -58,7 +57,6 @@ const PostDetail = () => {
     if (newComment.commentContent !== "") {
       addmutation.mutate(newComment); // 리액트쿼리
       setNewComment({ ...newComment, commentContent: "" });
-      console.log(newComment);
     }
   };
 
@@ -120,6 +118,17 @@ const PostDetail = () => {
       addComment();
     }
   };
+  const removePost = async () => {
+    if (window.confirm("정말로 삭제하시겠습니까?")) {
+      await remove(postCode);
+      // 삭제후 해당 게시판으로 이동
+      window.location.href =
+        "/channel/" +
+        post?.channelCode +
+        "/" +
+        post?.channelTag?.channelTagCode;
+    }
+  };
 
   useEffect(() => {
     loadingPost();
@@ -140,7 +149,17 @@ const PostDetail = () => {
         <TimeFormat time={post?.postCreatedAt} />
         <div>조회수 :{post?.postViews} </div>
         <div>작성자 :{post?.user?.userNickname} </div>
-
+        <Link
+          className="channel-tag"
+          to={
+            "/channel/" +
+            post?.channelCode +
+            "/" +
+            post?.channelTag?.channelTagCode
+          }
+        >
+          {post?.channelTag?.channelTagName}
+        </Link>
         <div
           className="post-content"
           dangerouslySetInnerHTML={{ __html: post?.postContent }}
@@ -151,6 +170,18 @@ const PostDetail = () => {
         ) : (
           <button onClick={likeSubmit}>추천</button>
         )}
+        {token && post?.user?.userEmail === user.userEmail && (
+          <>
+            <Link
+              to="/write"
+              state={{ isPost: post, isChannelCode: post?.channelCode }}
+            >
+              수정
+            </Link>
+            <button onClick={removePost}>삭제</button>
+          </>
+        )}
+
         <div className="comment">
           {token && (
             <>
@@ -198,7 +229,7 @@ const PostDetail = () => {
           </div>
           <Page
             page={page}
-            totalPages={parseInt(commentList.data?.paging.totalPage / 10)}
+            totalPages={Math.ceil(commentList.data?.paging.totalPage / 10)}
           />
         </div>
       </div>

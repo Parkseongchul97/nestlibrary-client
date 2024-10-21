@@ -35,6 +35,7 @@ const Footer = () => {
           onClick={() =>
             window.scrollTo({
               top: document.documentElement.scrollHeight - 500,
+              // div footer의 높이를 기준으로 변경?
               behavior: "smooth",
             })
           }

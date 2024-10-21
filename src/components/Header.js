@@ -6,7 +6,6 @@ import "../assets/header.scss";
 import Login from "../pages/Login";
 import { kakaoLogout } from "../user/kakaoCode";
 import { useAuth } from "../contexts/AuthContext";
-
 import UserMenu from "./UserMenu";
 
 const Header = ({ onSearch, onsub, all }) => {

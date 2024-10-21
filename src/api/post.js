@@ -15,8 +15,16 @@ export const add = async (data) => {
   return await authorize.post("/post", data);
 };
 
+export const update = async (data) => {
+  return await authorize.put("/post", data);
+};
+
 export const write = async (channelCode) => {
   return await authorize.get(`/post/${channelCode}`);
+};
+
+export const remove = async (postCode) => {
+  return await authorize.delete(`/post/${postCode}`);
 };
 
 // 게시글의 댓글 보여주기, (페이징 처리 추가 필요)

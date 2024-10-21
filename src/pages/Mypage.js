@@ -203,6 +203,7 @@ const Mypage = () => {
           <button id="change-submit" onClick={submit}>
             변경사항 수정
           </button>
+          <Link to="/messages">쪽지함</Link>
           <p>내 채널들</p>
           {channel.map((channels) => (
             <Link to={`/update/${channels.channelCode}`}>
