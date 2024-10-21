@@ -92,8 +92,8 @@ const Main = () => {
                 >
                   {channel?.channelName} 채널
                 </Link>
-
-                {token != null && data[index].data !== "" ? (
+              {token === null|| token === undefined?  null :
+                 data[index].data !== "" ? (
                   <>
                     <button
                       onClick={() =>
