@@ -4,6 +4,7 @@ import { allChannel } from "../api/channel";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import PostListComponent from "../components/PostListComponent";
+import UserMenu from "../components/UserMenu";
 
 const Main = () => {
   const { channelList, setPage } = useOutletContext();
@@ -56,6 +57,7 @@ const Main = () => {
                 >
                   {channel?.channelName} 채널
                 </Link>
+                <UserMenu user={channel?.user} />
 
                 {channel.allPost !== undefined &&
                 channel.allPost.length !== 0 ? (

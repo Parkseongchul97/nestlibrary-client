@@ -5,8 +5,6 @@ import { useState } from "react";
 import { addSub, checkSub, removeSub } from "../api/subscribe";
 import { useAuth } from "../contexts/AuthContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import Login from "./Login";
-
 import PostListComponent from "../components/PostListComponent";
 import "../assets/channelDetail.scss";
 import "../assets/main.scss";
@@ -39,10 +37,6 @@ const ChannelDetail = () => {
           ) // 태그가 있으면 태그별 게시글 가져오기
         : await allPosts(channelCode, page, searchTarget, searchKeyword); // 태그가 없으면 모든 게시글 가져오기
     setPosts(channelPosts.data);
-  };
-
-  const write = () => {
-    window.location.href = "/write/" + channelCode;
   };
 
   useEffect(() => {

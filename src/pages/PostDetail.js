@@ -119,10 +119,15 @@ const PostDetail = () => {
     }
   };
   const removePost = async () => {
-    await remove(postCode);
-    // 삭제후 해당 게시판으로 이동
-    window.location.href =
-      "/channel/" + post?.channelCode + "/" + post?.channelTag?.channelTagCode;
+    if (window.confirm("정말로 삭제하시겠습니까?")) {
+      await remove(postCode);
+      // 삭제후 해당 게시판으로 이동
+      window.location.href =
+        "/channel/" +
+        post?.channelCode +
+        "/" +
+        post?.channelTag?.channelTagCode;
+    }
   };
 
   useEffect(() => {
