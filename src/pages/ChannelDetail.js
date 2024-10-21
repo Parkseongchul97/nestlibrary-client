@@ -21,7 +21,8 @@ const ChannelDetail = () => {
   const queryClient = useQueryClient();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
-  const page = query.get("page") || 1;
+  let page = query.get("page") || 1;
+
   const [searchKeyword, setSearchKeyword] = useState(""); // 검색어
   const [searchTarget, setSearchTarget] = useState("title"); // 기본 검색 대상: 제목
   const fetch = async () => {
@@ -89,7 +90,9 @@ const ChannelDetail = () => {
       alert("2글자 이상 입력해야 합니다!");
       return;
     }
-
+    // 검색 할시 페이지를 1로 설정해야함
+    query.set("page", 1);
+    page = query.get("page") || 1;
     fetch();
   };
 
@@ -113,7 +116,11 @@ const ChannelDetail = () => {
             ) : (
               <button onClick={addSubSubmit}>구독</button>
             )}
-            {token && <button onClick={write}>글쓰기</button>}
+            {token && (
+              <Link to="/write" state={{ isChannelCode: channelCode }}>
+                글쓰기
+              </Link>
+            )}
             <h1>{channel?.channelName}</h1>
             <p>구독자수 : {channel?.favoriteCount}</p>
             <img
@@ -178,7 +185,7 @@ const ChannelDetail = () => {
               <div className="page-btn">
                 <Page
                   page={posts?.paging.page}
-                  totalPages={parseInt(posts?.paging.totalPage / 10)}
+                  totalPages={Math.ceil(posts?.paging.totalPage / 10)}
                 />
               </div>
             )}

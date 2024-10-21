@@ -55,7 +55,6 @@ const CommentComponent = ({ comment, postCode, id }) => {
       commentContent: "",
       commentParentsCode: 0,
     });
-    console.log(newReComment);
   };
 
   const updateComment = () => {
@@ -106,23 +105,6 @@ const CommentComponent = ({ comment, postCode, id }) => {
           {" "}
           <div className="comment-content">
             <UserMenu user={comment?.user} time={comment?.commentCreatedAt} />
-            {/* <div className="user-profile">
-              <img
-                className="user-profile-img"
-                src={
-                  comment?.user?.userImgUrl != null
-                    ? "http://192.168.10.51:8083/user/" +
-                      comment?.user?.userEmail +
-                      "/" +
-                      comment?.user?.userImgUrl
-                    : "http://192.168.10.51:8083/e0680940917fba1b2350c6563c32ad0c.jpg"
-                }
-              />
-              <p className="user-profile-nickname">
-                {comment?.user?.userNickname}
-                <TimeFormat time={comment.commentCreatedAt} />
-              </p>
-            </div> */}
             {isChange === comment.commentCode &&
             user !== undefined &&
             user.userEmail === comment?.user?.userEmail ? (

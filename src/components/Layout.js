@@ -18,13 +18,7 @@ const Layout = () => {
       setChannelList((prev) => [...prev, ...result.data]);
     }
   }, []);
-  /*
-  useEffect(() => {
-    chanList();
-  }, [channelList.length]);
-*/
-  console.log(page);
-  console.log(channelList);
+
   useEffect(() => {
     chanList(page, keyword);
   }, [keyword, page]);

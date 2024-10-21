@@ -8,7 +8,7 @@ import Mypage from "./pages/Mypage";
 import ChannelDetail from "./pages/ChannelDetail";
 import PostDetail from "./pages/PostDetail";
 
-import Example from "./components/Edit";
+import PostWrite from "./components/PostWrite";
 import ChannelUpdate from "./pages/ChannelUpdate";
 
 const router = createBrowserRouter([
@@ -50,8 +50,8 @@ const router = createBrowserRouter([
     element: <LoginWait />,
   },
   {
-    path: "/write/:channelCode",
-    element: <Example />,
+    path: "/write",
+    element: <PostWrite />,
   },
   {
     path: "/update/:channelCode",

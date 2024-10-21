@@ -1,24 +1,27 @@
 import React, { useState, useRef, useMemo, useEffect } from "react";
 import JoditEditor from "jodit-react";
-import { useParams } from "react-router-dom";
-import { add, write } from "../api/post";
+import { useLocation, useParams } from "react-router-dom";
+import { add, update, write } from "../api/post";
 import "../assets/edit.scss";
 import { useAuth } from "../contexts/AuthContext";
 
-const Example = () => {
+const PostWrite = () => {
   const { user } = useAuth();
-
-  const { channelCode } = useParams();
-
+  const location = useLocation(); // 추가된 부분
+  const isChannelCode = location.state?.isChannelCode; // 추가된 부분
+  const isPost = location.state?.isPost;
   const editor = useRef(null);
 
   const [post, setPost] = useState({
-    postContent: "",
-    postTitle: "",
+    postCode: isPost?.postCode ? isPost.postCode : 0,
+    postContent: isPost?.postContent,
+    postTitle: isPost?.postTitle,
     userEmail: user.userEmail,
-    channel: { channelCode: channelCode },
+    channel: { channelCode: isChannelCode },
     channelTag: {
-      channelTagCode: "",
+      channelTagName: isPost?.channelTag?.channelTagName,
+      channelTagCode: isPost?.channelTag?.channelTagCode,
+      channelCode: isPost?.channelTag?.channelCode,
     },
   });
 
@@ -33,7 +36,7 @@ const Example = () => {
   });
 
   const channelInfo = async () => {
-    const result = await write(channelCode);
+    const result = await write(isChannelCode);
 
     setChannel(result.data);
   };
@@ -43,13 +46,19 @@ const Example = () => {
   }, []);
 
   useEffect(() => {
-    const firstTag = Channel.channelTag.find(
-      (item) => item.channelTagName === "일반"
-    );
+    console.log(post?.channelTag?.channelTagName);
+    const firstTag =
+      post?.channelTag?.channelTagName !== undefined
+        ? Channel.channelTag.find(
+            (item) => item.channelTagName === post?.channelTag.channelTagName
+          )
+        : Channel.channelTag.find((item) => item.channelTagName === "일반");
     if (firstTag) {
       setPost({
         ...post,
-        channelTag: { channelTagCode: String(firstTag.channelTagCode) },
+        channelTag: {
+          channelTagCode: String(firstTag.channelTagCode),
+        },
       });
     }
   }, [Channel]);
@@ -81,9 +90,10 @@ const Example = () => {
     minHeight: 200,
     // 필요에 따라 추가 설정
   };
-  const con = async () => {
-    if (post.postTitle.trim().length == 0) {
-      alert("제목을 입력해주세요");
+  // 작성
+  const addPost = async () => {
+    if (post.postTitle.trim().length <= 1) {
+      alert("제목은 2글자 이상이여야 합니다");
       return;
     }
     if (post.postContent.trim().length == 0) {
@@ -91,6 +101,23 @@ const Example = () => {
     }
 
     const response = await add(post);
+    if (response.data.managementUserStatus === "ban") {
+      alert("글쓰기가 제한되어있습니다");
+      return;
+    }
+    window.location.href = "/post/" + response.data.postCode;
+  };
+  // 수정
+  const updatePost = async () => {
+    if (post.postTitle.trim().length <= 1) {
+      alert("제목은 2글자 이상이여야 합니다");
+      return;
+    }
+    if (post.postContent.trim().length == 0) {
+      alert("내용을 입력해주세요");
+    }
+
+    const response = await update(post);
     if (response.data.managementUserStatus === "ban") {
       alert("글쓰기가 제한되어있습니다");
       return;
@@ -105,17 +132,20 @@ const Example = () => {
         type="text"
         value={post.postTitle}
         onChange={(e) => setPost({ ...post, postTitle: e.target.value })}
+        key={post.postCode}
       />
+
       <select
         id="tag"
         onChange={(e) =>
           setPost({ ...post, channelTag: { channelTagCode: e.target.value } })
         }
+        value={post.channelTag.channelTagCode}
       >
         {Channel?.channelTag.map((channelTag) => (
           <option
             value={channelTag.channelTagCode}
-            selected={channelTag.channelTagName === "일반" ? true : false}
+            key={channelTag.channelTagCode}
           >
             {channelTag.channelTagName}
           </option>
@@ -129,9 +159,13 @@ const Example = () => {
         onBlur={(newContent) => setPost({ ...post, postContent: newContent })}
         onChange={(newContent) => {}}
       />
-      <button onClick={con}>작성</button>
+      {isPost !== undefined ? (
+        <button onClick={updatePost}>수정</button>
+      ) : (
+        <button onClick={addPost}>작성</button>
+      )}
     </>
   );
 };
 
-export default Example;
+export default PostWrite;

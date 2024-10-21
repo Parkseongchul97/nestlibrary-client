@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../assets/page.scss";
 import { Link } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -7,6 +7,7 @@ const Page = ({ page, totalPages }) => {
   // 페이지 현제 페이지 토탈은 총 몇페이지인지
   const pageCount = 10; // 화면에 보이는 페이지 숫자
   let num = totalPages % 10; // 페이지 좌표 한계점 ex 토탈 173개의 개시글이면 토탈 18p? 2번째부턴 8페이지가끝
+
   const [start, setStart] = useState(1); // 시작점
 
   const prevClick = () => {
