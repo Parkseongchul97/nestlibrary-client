@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TimeFormat from "./TimeFormat";
 import "../assets/userMenu.scss";
 
-const UserMenu = ({ user, time }) => {
+const UserMenu = ({ user, time, noneMenu }) => {
   const [isOpen, setIsOpen] = useState(false);
   const accordion = () => {
     setIsOpen(!isOpen);
@@ -27,7 +27,7 @@ const UserMenu = ({ user, time }) => {
           {time !== undefined && <TimeFormat time={time} />}
         </p>
       </div>
-      {isOpen && (
+      {!noneMenu && isOpen && (
         <div className="profile-actions">
           <a>쪽지 보내기</a>
           <a>게시글 검색</a>

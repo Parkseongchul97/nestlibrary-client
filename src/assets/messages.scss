@@ -9,5 +9,11 @@
   width: 100%;
   .messages-header {
     display: flex;
+    .messages-type {
+      padding: 5px;
+      border-radius: 20px;
+      background-color: beige;
+      margin: 5px;
+    }
   }
 }

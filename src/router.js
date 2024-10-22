@@ -35,6 +35,20 @@ const router = createBrowserRouter([
       {
         path: "/messages",
         element: <Messages />,
+        children: [
+          {
+            path: "to",
+            element: <Messages />,
+          },
+          {
+            path: "from",
+            element: <Messages />,
+          },
+          {
+            path: "all",
+            element: <Messages />,
+          },
+        ],
       },
       {
         path: "/message/write",
