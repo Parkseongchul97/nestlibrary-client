@@ -104,21 +104,30 @@ const Messages = () => {
         <Link
           className="messages-type"
           to="#"
-          onClick={() => setViewType("all")}
+          onClick={() => {
+            setViewType("all");
+            setSearchKeyword("");
+          }}
         >
           모든 메시지
         </Link>
         <Link
           className="messages-type"
           to="#"
-          onClick={() => setViewType("to")}
+          onClick={() => {
+            setViewType("to");
+            setSearchKeyword("");
+          }}
         >
           받은 메시지
         </Link>
         <Link
           className="messages-type"
           to="#"
-          onClick={() => setViewType("from")}
+          onClick={() => {
+            setViewType("from");
+            setSearchKeyword("");
+          }}
         >
           보낸 메시지
         </Link>

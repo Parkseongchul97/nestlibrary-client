@@ -158,6 +158,7 @@ const ChannelDetail = () => {
                     "/channel/" + channelCode + "/" + channelTag.channelTagCode
                   }
                   key={channelTag.channelTagCode}
+                  onClick={() => setSearchKeyword("")}
                 >
                   {}
                   {}

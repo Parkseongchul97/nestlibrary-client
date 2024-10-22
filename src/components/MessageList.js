@@ -17,7 +17,7 @@ const MessageList = ({ message, setIsOpen, isOpen }) => {
 
   return (
     <div className="message-box">
-      <div className="message-main">
+      <div className="message-main" key={message.messagesCode}>
         <div
           onClick={() => openDetail(message.messagesCode)}
           className="message-link"
