@@ -32,12 +32,12 @@ const Layout = () => {
 
   useEffect(() => {
     chanList(page, keyword, subCheck);
+    console.log(page);
   }, [keyword, page, subCheck]);
 
   const onSearch = (keyword) => {
-    // 키워드를 받음
-    setPage(1); // 검색하면 1페이지로
-    setChannelList([]); // 비디오들도 초기상태로 해놓고 다시 불러야함
+    setPage(1);
+    setChannelList([]);
     setKeyword(keyword);
   };
 
@@ -45,6 +45,8 @@ const Layout = () => {
     if (localStorage.getItem("token") != null) {
       setSubCheck(1);
       setPage(1);
+    } else {
+      alert("로그인 후 이용해주세요");
     }
   };
 

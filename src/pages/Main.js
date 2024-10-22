@@ -7,10 +7,9 @@ import PostListComponent from "../components/PostListComponent";
 import { useAuth } from "../contexts/AuthContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { addSub, checkSub, removeSub } from "../api/subscribe";
-import UserMenu from "../components/UserMenu";
 
 const Main = () => {
-  const { channelList, setPage, subCheck } = useOutletContext();
+  const { channelList, setPage } = useOutletContext();
   const { user, token } = useAuth();
 
   const queryClient = useQueryClient();
@@ -24,48 +23,6 @@ const Main = () => {
     }
   };
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["subscribe", channelList.map((channel) => channel.channelCode)],
-    queryFn: () =>
-      token
-        ? Promise.all(
-            channelList.map((channel) => checkSub(channel.channelCode))
-          )
-        : null,
-    enabled: !!token,
-  });
-  // 구독
-  const addSubMutation = useMutation({
-    mutationFn: addSub,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["subscribe"]);
-    },
-  });
-
-  // 구독 취소
-  const removeSubMutation = useMutation({
-    mutationFn: removeSub,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["subscribe"]);
-    },
-  });
-
-  const addSubSubmit = (chanCode) => {
-    if (token !== null) {
-      const subContent = {
-        userEmail: user.userEmail,
-        channel: {
-          channelCode: chanCode,
-        },
-      };
-      addSubMutation.mutate(subContent);
-    }
-  };
-  const removeSubSubmit = (managementCode) => {
-    // 매니지먼트 코드 보내서 삭제
-    removeSubMutation.mutate(managementCode);
-  };
-
   // 랜더링 + 페이지 변화시마다 스크롤 이벤트 함수 생성 및 제거
   useEffect(() => {
     window.addEventListener("scroll", scroll);
@@ -73,10 +30,6 @@ const Main = () => {
       window.removeEventListener("scroll", scroll);
     };
   }, [setPage]);
-
-  if (isLoading) return <>로딩</>;
-
-  if (error) return <>에러</>;
 
   return (
     <div className="main-box">
@@ -92,22 +45,6 @@ const Main = () => {
                 >
                   {channel?.channelName} 채널
                 </Link>
-
-                {token != null && data[index].data !== "" ? (
-                  <>
-                    <button
-                      onClick={() =>
-                        removeSubSubmit(data[index].data.managementCode)
-                      }
-                    >
-                      구독취소
-                    </button>
-                  </>
-                ) : (
-                  <button onClick={() => addSubSubmit(channel?.channelCode)}>
-                    구독
-                  </button>
-                )}
 
                 {channel.allPost !== undefined &&
                 channel.allPost.length !== 0 ? (

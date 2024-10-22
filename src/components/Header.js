@@ -52,8 +52,10 @@ const Header = ({ onSearch, onsub, all }) => {
 
   const subCheck = () => {
     onsub();
-    setClick("subs");
-    setClick1("");
+    if (localStorage.getItem("token") != null) {
+      setClick("subs");
+      setClick1("");
+    }
   };
 
   const allChannel = () => {
