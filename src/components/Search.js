@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useState } from "react";
 
 const Search = ({
   searchKeyword,
@@ -34,8 +34,8 @@ const Search = ({
       >
         {!isPost ? (
           <>
-            <option value="channel">채널 이름 검색</option>
-            <option value="host">채널 호스트 검색</option>
+            <option value="title">쪽지 제목 검색</option>
+            <option value="user">발/수신자 찾기</option>
           </>
         ) : (
           <>

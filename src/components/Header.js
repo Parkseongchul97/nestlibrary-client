@@ -7,7 +7,8 @@ import Login from "../pages/Login";
 import { kakaoLogout } from "../user/kakaoCode";
 import { useAuth } from "../contexts/AuthContext";
 import UserMenu from "./UserMenu";
-
+import { isOpenMessgeCount } from "../api/message";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 const Header = ({ onSearch, onsub, all }) => {
   const [page, setPage] = useState(false);
   const { user, token } = useAuth();
@@ -17,6 +18,18 @@ const Header = ({ onSearch, onsub, all }) => {
   const [click, setClick] = useState("");
   const [click1, setClick1] = useState("");
   const searchRef = useRef(null);
+  const queryClient = useQueryClient();
+  const {
+    data: messageCount,
+    isLoading,
+    error,
+  } = useQuery({
+    // 데이터, 로딩중인지, 에러발생
+    queryKey: ["messageCount"],
+    queryFn: () => isOpenMessgeCount(),
+    refetchInterval: 1000, // 해당 시간마다 데이터갱식하여 실시간 처럼 처리
+    enabled: !!token,
+  });
 
   const openPage = (event) => {
     setPage(true);
@@ -85,6 +98,10 @@ const Header = ({ onSearch, onsub, all }) => {
       window.removeEventListener("resize", handleResize);
     };
   }, [isSearch]);
+  if (isLoading) return <>로딩중...</>;
+
+  // 에러 발생시 처리
+  if (error) return <>에러발생...</>;
 
   return (
     <>
@@ -159,7 +176,11 @@ const Header = ({ onSearch, onsub, all }) => {
         ) : (
           <div className="header-right">
             <UserMenu user={user} />
-
+            {messageCount !== undefined && (
+              <Link to="/messages" id="message-count">
+                안읽은 메시지({messageCount.data})
+              </Link>
+            )}
             <Link id="logout-btn" onClick={logout} className="info">
               로그아웃
             </Link>

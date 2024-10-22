@@ -1,6 +1,15 @@
 import "../assets/footer.scss";
 import { GoMoveToTop, GoMoveToBottom } from "react-icons/go";
+import { useAuth } from "../contexts/AuthContext";
+import { kakaoLogout } from "../user/kakaoCode";
+import { Link } from "react-router-dom";
 const Footer = () => {
+  const { logout: authLogout } = useAuth();
+
+  const logout = async () => {
+    authLogout();
+    kakaoLogout();
+  };
   return (
     <>
       <div className="footer">
@@ -43,6 +52,9 @@ const Footer = () => {
           <GoMoveToBottom />
         </button>
       </div>
+      <Link id="logout-btn" onClick={logout} className="info">
+        로그아웃
+      </Link>
     </>
   );
 };
