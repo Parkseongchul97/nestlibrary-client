@@ -1,0 +1,23 @@
+.find-box {
+  background: indianred;
+  width: 600px;
+  padding-top: 100px;
+  height: 600px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 2;
+  padding: 50px;
+}
+.logo {
+  font-size: 5rem;
+  font-weight: bold;
+}
+.box-input {
+  width: 80%;
+}
+.box-button {
+  width: 80%;
+}

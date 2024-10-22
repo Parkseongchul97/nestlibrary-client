@@ -6,10 +6,12 @@ import { myChannel } from "../api/channel";
 import "../assets/mypage.scss";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import ChangePassword from "../pages/ChangePassword";
 
 const Mypage = () => {
   const navigate = useNavigate();
   const [channel, setChannel] = useState([]);
+  const [isChange, setIsChange] = useState(false);
 
   const [createPage, setCreatePage] = useState(false);
   // changeImg : -1 = (기존꺼 그대로), 0 =(변경), 1 =(이미지 삭제만)
@@ -211,9 +213,11 @@ const Mypage = () => {
             </Link>
           ))}
         </div>
+        <span onClick={() => setIsChange(!isChange)}>비밀번호 변경 </span>
         <button onClick={openCreateChannel}>채널생성</button>
       </div>
       {createPage && <CreateChannel onClose={closeCreateChannel} />}
+      {isChange && <ChangePassword />}
     </>
   );
 };

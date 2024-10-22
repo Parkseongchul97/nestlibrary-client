@@ -43,6 +43,9 @@
   align-items: center;
   justify-content: space-between;
 }
+.header-center-menu {
+  margin-right: 40px;
+}
 .channel-menu,
 .info {
   display: flex;
@@ -173,6 +176,13 @@
   color: red;
 }
 
+.sub-box {
+  background-color: white;
+  width: 200px;
+  height: 200px;
+  margin-top: 1.4rem;
+  position: absolute;
+}
 /*
 @media screen and (max-width: 700px) {
 

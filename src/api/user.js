@@ -30,8 +30,10 @@ export const login = async (data) => {
     return await instance.post("login", data);
   } catch (error) {
     new Error("LOGIN");
+    return "error";
   }
 };
+
 export const getUserInfo = async (userEmail) => {
   return await authorize.get("info?userEmail=" + userEmail);
 };
@@ -42,4 +44,10 @@ export const updateUser = async (data) => {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
+};
+
+export const updatePass = async (userEmail, userPassword) => {
+  return await authorize.put(
+    `/password?userEmail=${userEmail}&userPassword=${userPassword}`
+  );
 };

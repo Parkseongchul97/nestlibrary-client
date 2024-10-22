@@ -1,12 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import "../assets/header.scss";
 import Login from "../pages/Login";
 import { kakaoLogout } from "../user/kakaoCode";
 import { useAuth } from "../contexts/AuthContext";
 import UserMenu from "./UserMenu";
+import SubChannelList from "./SubChannelList";
 
 const Header = ({ onSearch, onsub, all }) => {
   const [page, setPage] = useState(false);
@@ -14,9 +15,11 @@ const Header = ({ onSearch, onsub, all }) => {
   const { logout: authLogout } = useAuth();
   const [isSearch, setIsSearch] = useState(false);
   const [keyword, setKeyword] = useState("");
-  const [click, setClick] = useState("");
+  const [click, setClick] = useState(false);
   const [click1, setClick1] = useState("");
   const searchRef = useRef(null);
+  const subChannelRef = useRef(null);
+  const subChannelListRef = useRef(null);
 
   const openPage = (event) => {
     setPage(true);
@@ -42,26 +45,22 @@ const Header = ({ onSearch, onsub, all }) => {
     if (searchRef.current && !searchRef.current.contains(event.target)) {
       setIsSearch(false);
     }
+    if (
+      subChannelRef.current && // 구독목록 div가 있고 클릭 요소가
+      !subChannelRef.current.contains(event.target) &&
+      subChannelListRef.current &&
+      !subChannelListRef.current.contains(event.target)
+    ) {
+      console.log("다른곳 누름");
+      setClick(false);
+    }
   };
 
   const enter = (e) => {
     if (e.key === "Enter") {
       onSearch(keyword);
+      alert(keyword);
     }
-  };
-
-  const subCheck = () => {
-    onsub();
-    if (localStorage.getItem("token") != null) {
-      setClick("subs");
-      setClick1("");
-    }
-  };
-
-  const allChannel = () => {
-    all();
-    setClick1("all");
-    setClick("");
   };
 
   // 검색창 페이징 처리  미완성 10-16 성일
@@ -87,6 +86,7 @@ const Header = ({ onSearch, onsub, all }) => {
       window.removeEventListener("resize", handleResize);
     };
   }, [isSearch]);
+  console.log(click);
 
   return (
     <>
@@ -99,11 +99,20 @@ const Header = ({ onSearch, onsub, all }) => {
           <>
             <div ref={searchRef} className="header-center">
               <div className="header-center-menu">
-                <div className="channel-menu" id={click} onClick={subCheck}>
-                  구독 채널
-                </div>
-                <div className="channel-menu" id={click1} onClick={allChannel}>
-                  모든 채널
+                <div>
+                  <div
+                    className="channel-menu"
+                    id={click}
+                    onClick={() => setClick(!click)}
+                    ref={subChannelRef}
+                  >
+                    구독 채널
+                  </div>
+                  {click && (
+                    <div ref={subChannelListRef}>
+                      <SubChannelList />
+                    </div>
+                  )}
                 </div>
               </div>
               <div id="search" className="header-center-search">

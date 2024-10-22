@@ -13,6 +13,8 @@ import ChannelUpdate from "./pages/ChannelUpdate";
 import Messages from "./pages/Messages";
 import MessageWrite from "./components/MessageWrite";
 
+import UserHelp from "./pages/UserHelp";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -47,6 +49,10 @@ const router = createBrowserRouter([
             element: <ChannelDetail />,
           },
         ],
+      },
+      {
+        path: "user/help",
+        element: <UserHelp />,
       },
 
       {
