@@ -10,7 +10,7 @@ import { addSub, checkSub, removeSub } from "../api/subscribe";
 import UserMenu from "../components/UserMenu";
 
 const Main = () => {
-  const { channelList, setPage, subCheck } = useOutletContext();
+  const { channelList, setPage } = useOutletContext();
   const { user, token } = useAuth();
 
   const queryClient = useQueryClient();
@@ -86,14 +86,17 @@ const Main = () => {
           <ul className="channel-list">
             {channelList.map((channel, index) => (
               <li className="channel-box" key={channel?.channelCode}>
-                <Link
-                  to={`/channel/${channel?.channelCode}`}
-                  className="channel-name"
-                >
-                  {channel?.channelName} 채널
-                </Link>
-              {token === null|| token === undefined?  null :
-                 data[index].data !== "" ? (
+                <div className="channel-main-header">
+                  <Link
+                    to={`/channel/${channel?.channelCode}`}
+                    className="channel-name"
+                  >
+                    {channel?.channelName} 채널
+                  </Link>
+                  <UserMenu user={channel?.host} />
+                </div>
+                {token === null || token === undefined ? null : data[index]
+                    .data !== "" ? (
                   <>
                     <button
                       onClick={() =>
