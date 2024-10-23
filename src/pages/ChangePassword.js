@@ -35,13 +35,11 @@ const ChangePassword = () => {
     } else if (response.data != null) {
       setOldCheck(true);
       alert("데이터 전송하면 될듯?");
-      console.log(loginUser);
-      console.log(newpass);
+
       await updatePass(user.userEmail, newpass);
     }
   };
 
-  console.log(user);
   return (
     <>
       <div>

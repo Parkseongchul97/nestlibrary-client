@@ -3,7 +3,7 @@ import "../assets/page.scss";
 import { Link } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-const Page = ({ page, totalPages }) => {
+const Page = ({ page, totalPages, pageBtnOnClick }) => {
   // 페이지 현제 페이지 토탈은 총 몇페이지인지
   const pageCount = 10; // 화면에 보이는 페이지 숫자
   let num = totalPages % 10; // 페이지 좌표 한계점 ex 토탈 173개의 개시글이면 토탈 18p? 2번째부턴 8페이지가끝
@@ -47,7 +47,13 @@ const Page = ({ page, totalPages }) => {
               className="paging-btn"
               to={"?page=1"}
               state={1}
-              onClick={() => setStart(1)}
+              onClick={() => {
+                setStart(1);
+
+                if (pageBtnOnClick !== undefined) {
+                  pageBtnOnClick();
+                }
+              }}
             >
               맨앞으로
             </Link>
@@ -55,7 +61,16 @@ const Page = ({ page, totalPages }) => {
         )}
         {start > 10 ? (
           <li>
-            <button className="paging-btn-10" onClick={prevClick}>
+            <button
+              className="paging-btn-10"
+              onClick={() => {
+                prevClick();
+
+                if (pageBtnOnClick !== undefined) {
+                  pageBtnOnClick();
+                }
+              }}
+            >
               <FaChevronLeft />
             </button>
           </li>
@@ -75,6 +90,11 @@ const Page = ({ page, totalPages }) => {
                     }
                     to={`?page=${start + i}`}
                     state={start + i}
+                    onClick={() => {
+                      if (pageBtnOnClick !== undefined) {
+                        pageBtnOnClick();
+                      }
+                    }}
                   >
                     {start + i}
                   </Link>
@@ -83,7 +103,16 @@ const Page = ({ page, totalPages }) => {
           )}
         {start == totalPages - 9 || start == totalPages - (num - 1) ? null : (
           <li>
-            <button className="paging-btn-10" onClick={nextClick}>
+            <button
+              className="paging-btn-10"
+              onClick={() => {
+                nextClick();
+
+                if (pageBtnOnClick !== undefined) {
+                  pageBtnOnClick();
+                }
+              }}
+            >
               <FaChevronRight />
             </button>
           </li>
@@ -94,7 +123,13 @@ const Page = ({ page, totalPages }) => {
               className="paging-btn"
               to={`?page=${totalPages}`}
               state={totalPages}
-              onClick={lastPage}
+              onClick={() => {
+                lastPage();
+
+                if (pageBtnOnClick !== undefined) {
+                  pageBtnOnClick();
+                }
+              }}
             >
               맨뒤로
             </Link>

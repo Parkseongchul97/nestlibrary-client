@@ -32,7 +32,6 @@ const ChannelUpdate = () => {
     channelImg: "",
   });
   const [error, setError] = useState(null);
-  console.log(channelInfos);
 
   // 업데이트전 채널 정보 불러옴
   const update = async () => {
@@ -85,16 +84,13 @@ const ChannelUpdate = () => {
   let formData = new FormData();
 
   const imgUpdate = async () => {
-    console.log(chan);
     if (chan.channelImgUrl !== null) {
-      console.log("이미지 전송");
       formData.append("channelImgUrl", chan.channelImgUrl);
       formData.append("channelCode", channelCode);
       formData.append("change", chan.change);
       await addImg(formData);
       update();
     } else {
-      console.log("코드만 전송");
       formData.append("channelCode", channelCode);
       formData.append("change", chan.change);
       await addImg(formData);
@@ -129,7 +125,6 @@ const ChannelUpdate = () => {
     document.querySelector(".change-input-file").value = "";
   };
 
-  console.log(formData);
   return (
     <>
       {error ? (
@@ -200,11 +195,9 @@ const ChannelUpdate = () => {
             onChange={(e) => {
               const file = e.target.files[0];
               if (file) {
-                console.log("사진선택");
                 setPreviewUrl(URL.createObjectURL(file));
                 setChan({ ...chan, channelImgUrl: file, change: 1 });
               } else {
-                console.log("사진선택안함");
                 setPreviewUrl(false);
                 setChan({ ...chan, channelImgUrl: null, change: 0 });
               }

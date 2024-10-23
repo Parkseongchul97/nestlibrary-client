@@ -12,7 +12,7 @@ const Layout = () => {
 
   const chanList = useCallback(async (page, keyword, subCheck) => {
     const result = await allChannel(page, keyword);
-    console.log("섭체크 " + subCheck);
+
     if (subCheck == 0) {
       if (page == 1) {
         setChannelList(result.data);
@@ -32,7 +32,6 @@ const Layout = () => {
 
   useEffect(() => {
     chanList(page, keyword, subCheck);
-    console.log(page);
   }, [keyword, page, subCheck]);
 
   const onSearch = (keyword) => {

@@ -46,7 +46,6 @@ const PostWrite = () => {
   }, []);
 
   useEffect(() => {
-    console.log(post?.channelTag?.channelTagName);
     const firstTag =
       post?.channelTag?.channelTagName !== undefined
         ? Channel.channelTag.find(

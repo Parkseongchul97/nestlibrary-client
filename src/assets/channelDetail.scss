@@ -115,6 +115,27 @@
     }
   }
 }
+.is-best-box {
+  display: flex;
+  .is-all {
+    display: flex;
+    background-color: #000;
+    color: white;
+    padding: 5px 10px;
+    align-self: center;
+    border-radius: 13px;
+    margin: 0px 10px;
+  }
+  .is-best {
+    display: flex;
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    align-self: center;
+    border-radius: 13px;
+    margin: 0px 10px;
+  }
+}
 
 .none-post-box {
   padding: 1rem;

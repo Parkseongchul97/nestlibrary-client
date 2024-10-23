@@ -31,6 +31,21 @@ export const allPosts = async (channelCode, page, target, keyword) => {
   );
   return response; // 모든 게시글 데이터 반환
 };
+export const bestPosts = async (channelCode, page, target, keyword) => {
+  const response = await instance.get(
+    `/${channelCode}/best?page=${
+      page === undefined || page === null ? 1 : page
+    }&target=${
+      keyword === undefined ||
+      keyword === null ||
+      target === undefined ||
+      target === null
+        ? ""
+        : target
+    }&keyword=${keyword === undefined || keyword === null ? "" : keyword}`
+  );
+  return response; // 모든 인기 게시글 데이터 반환
+};
 
 // 채널 태그별 게시글 API
 export const tagPosts = async (

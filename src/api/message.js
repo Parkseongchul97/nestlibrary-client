@@ -18,7 +18,10 @@ export const findUser = async (userNickname) => {
 export const addMessage = async (data) => {
   return await authorize.post("messages", data);
 };
-// 내가 보내거나 받은
+export const removeMessage = async (messagesCode) => {
+  return await authorize.delete(`messages/${messagesCode}`);
+};
+// 내가 받은거중 아직 안본
 export const noOpenMessage = async (page, target, keyword) => {
   return await authorize.get(
     `messages?page=${page !== undefined ? page : 1}&target=${
@@ -31,6 +34,7 @@ export const noOpenMessage = async (page, target, keyword) => {
     }&keyword=${keyword === undefined || keyword === null ? "" : keyword}`
   );
 };
+// 내가 보내거나 받은
 export const allMessage = async (page, target, keyword) => {
   return await authorize.get(
     `messages/all?page=${page !== undefined ? page : 1}&target=${
