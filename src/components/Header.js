@@ -73,7 +73,6 @@ const Header = ({ onSearch, onsub, all }) => {
   const enter = (e) => {
     if (e.key === "Enter") {
       onSearch(keyword);
-      alert(keyword);
     }
   };
 
@@ -108,7 +107,10 @@ const Header = ({ onSearch, onsub, all }) => {
   return (
     <>
       <header className="header">
-        <div className="header-left">
+        <div
+          className="header-left"
+          onClick={() => (window.location.href = "/")}
+        >
           <Link to={"/"}>Nest Library</Link>
         </div>
 
@@ -127,7 +129,7 @@ const Header = ({ onSearch, onsub, all }) => {
                   </div>
                   {click && (
                     <div ref={subChannelListRef}>
-                      <SubChannelList />
+                      <SubChannelList onClose={setClick} />
                     </div>
                   )}
                 </div>

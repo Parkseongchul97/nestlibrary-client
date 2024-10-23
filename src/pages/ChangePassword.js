@@ -2,10 +2,11 @@ import "../assets/login.scss";
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { login, updatePass } from "../api/user";
+import { IoIosArrowBack } from "react-icons/io";
 import { set } from "lodash";
 
-const ChangePassword = () => {
-  const { user } = useAuth();
+const ChangePassword = ({ onClose }) => {
+  const { user, logout: authLogout } = useAuth();
   const [oldCheck, setOldCheck] = useState(false);
   const [newCheck, setNewCheck] = useState(false);
   const [newpass, setNewPass] = useState("");
@@ -18,6 +19,10 @@ const ChangePassword = () => {
     /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/;
 
   useEffect(() => {
+    if (pwdRegExp.test(newpass) || pwdRegExp.test(newpass2)) {
+      setNewCheck(false);
+    }
+
     if (pwdRegExp.test(newpass)) {
       if (newpass === newpass2 && newpass.length > 0) {
         setNewCheck(true);
@@ -31,13 +36,17 @@ const ChangePassword = () => {
     alert(newCheck);
     const response = await login(loginUser);
     if (response == "error") {
-      alert("비번오류");
+      alert("현재 비밀번호 입력 오류 입니다");
     } else if (response.data != null) {
-      setOldCheck(true);
-      alert("데이터 전송하면 될듯?");
-      console.log(loginUser);
-      console.log(newpass);
-      await updatePass(user.userEmail, newpass);
+      if (newCheck) {
+        console.log(loginUser);
+        console.log(newpass);
+        await updatePass(user.userEmail, newpass);
+        alert("비밀번호 변경 성공 !");
+
+        window.location.href = "/";
+        authLogout();
+      }
     }
   };
 
@@ -47,7 +56,9 @@ const ChangePassword = () => {
       <div>
         <div className="login-box">
           <div className="login-header">
-            <button className="close"></button>
+            <button className="close" onClick={() => onClose(false)}>
+              <IoIosArrowBack />
+            </button>
             <h3>비밀번호 변경</h3>
             <div className="balance"></div>
           </div>
@@ -73,11 +84,14 @@ const ChangePassword = () => {
                   onChange={(e) => setNewPass(e.target.value)}
                 />
                 {newpass.length > 0 && !pwdRegExp.test(newpass) ? (
-                  <span>형식오류</span>
+                  <span className="warning">
+                    영문자,숫자,특수문자를 포함한 8~16자리로 구성된 비밀번호를
+                    입력해주십시오.
+                  </span>
                 ) : newpass.length > 0 && !newCheck ? (
-                  <span>불일치</span>
+                  <span className="warning">불일치</span>
                 ) : newpass.length > 0 && newCheck ? (
-                  <span>일치</span>
+                  <span className="no-warning">일치</span>
                 ) : null}
                 <input
                   placeholder="새 비밀번호 확인"
@@ -88,7 +102,12 @@ const ChangePassword = () => {
                 />
               </div>
 
-              <button id="login-submit" type="submit" onClick={check}>
+              <button
+                id="login-submit"
+                type="submit"
+                onClick={check}
+                disabled={!newCheck}
+              >
                 확인
               </button>
             </div>

@@ -3,7 +3,7 @@ import { mySub, removeSub } from "../api/subscribe";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 
-const SubChannelList = () => {
+const SubChannelList = ({ onClose }) => {
   const { token } = useAuth();
   const [channelList, setChannelList] = useState([]);
 
@@ -29,7 +29,10 @@ const SubChannelList = () => {
         {token !== null && channelList.length > 0 ? (
           channelList.map((channel) => (
             <li key={channel.id} className="sub-box-li">
-              <span className="sub-box-channelName">
+              <span
+                className="sub-box-channelName"
+                onClick={() => onClose(false)}
+              >
                 <Link to={`/channel/${channel?.channelDTO.channelCode}`}>
                   {channel?.channelDTO.channelName}
                 </Link>

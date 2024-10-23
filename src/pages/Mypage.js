@@ -49,9 +49,12 @@ const Mypage = () => {
       userImgUrl: null,
       userInfo: result.data.userInfo,
       userPoint: result.data.userPoint,
+      userPassword: result.data.userPassword, // 카카오 때문에 추가
     });
   };
+  console.log(userDTO.userPassword);
   useEffect(() => {
+    console.log(user);
     findUser();
     myChannelInfo();
   }, [localStorage.getItem("userEmail")]);
@@ -213,11 +216,23 @@ const Mypage = () => {
             </Link>
           ))}
         </div>
-        <span onClick={() => setIsChange(!isChange)}>비밀번호 변경 </span>
+        {userDTO.userPassword != null ? (
+          <span onClick={() => setIsChange(!isChange)}>비밀번호 변경 </span>
+        ) : (
+          <span
+            onClick={() =>
+              (window.location.href =
+                "https://accounts.kakao.com/weblogin/find_password?continue=%2Flogin%3Fcontinue%3Dhttps%253A%252F%252Fcs.kakao.com%252Fhelps_html%252F1073185489%253Flocale%253Dko%26talk_login%3D&lang=ko")
+            }
+          >
+            비밀번호 변경{" "}
+          </span>
+        )}
+
         <button onClick={openCreateChannel}>채널생성</button>
       </div>
       {createPage && <CreateChannel onClose={closeCreateChannel} />}
-      {isChange && <ChangePassword />}
+      {isChange && <ChangePassword onClose={setIsChange} />}
     </>
   );
 };

@@ -2,43 +2,43 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { allChannel, subChannel } from "../api/channel";
 import { useEffect, useState, useCallback } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 const Layout = () => {
+  const location = useLocation();
+  const currentUrl = window.location.href;
+  console.log(currentUrl);
   const [channelList, setChannelList] = useState([]);
   const [page, setPage] = useState(1);
   const [keyword, setKeyword] = useState("");
   const [subCheck, setSubCheck] = useState(0);
+  const [isSearch, setIsSearch] = useState(false);
+  const navigate = useNavigate();
 
-  const chanList = useCallback(async (page, keyword, subCheck) => {
+  const chanList = useCallback(async (page, keyword) => {
     const result = await allChannel(page, keyword);
-    console.log("섭체크 " + subCheck);
+
     if (subCheck == 0) {
       if (page == 1) {
         setChannelList(result.data);
       } else {
         setChannelList((prev) => [...prev, ...result.data]);
       }
-    } else if (subCheck == 1) {
-      const result2 = await subChannel(page, keyword);
-
-      if (page == 1) {
-        setChannelList(result2.data);
-      } else {
-        setChannelList((prev) => [...prev, ...result2.data]);
-      }
     }
   }, []);
 
   useEffect(() => {
-    chanList(page, keyword, subCheck);
+    chanList(page, keyword);
     console.log(page);
-  }, [keyword, page, subCheck]);
+  }, [keyword, page, subCheck, isSearch]);
 
   const onSearch = (keyword) => {
     setPage(1);
     setChannelList([]);
     setKeyword(keyword);
+    setIsSearch(!isSearch);
+    if (currentUrl != "http://localhost:3000/") navigate(`/`);
+    console.log(keyword);
   };
 
   const onSub = () => {
