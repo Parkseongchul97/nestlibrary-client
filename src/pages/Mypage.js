@@ -46,7 +46,7 @@ const Mypage = () => {
     setUserDTO({
       userEmail: result.data.userEmail,
       userNickname: result.data.userNickname,
-      userImgUrl: null,
+      userImg: null,
       userInfo: result.data.userInfo,
       userPoint: result.data.userPoint,
       userPassword: result.data.userPassword, // 카카오 때문에 추가
@@ -59,12 +59,12 @@ const Mypage = () => {
     myChannelInfo();
   }, [localStorage.getItem("userEmail")]);
   const deleteImg = () => {
-    setUserDTO({ ...userDTO, userImgUrl: null });
+    setUserDTO({ ...userDTO, userImg: null });
     setPreviewUrl(null);
     setChangeImg(1);
   };
   const resetImg = () => {
-    setUserDTO({ ...userDTO, userImgUrl: null });
+    setUserDTO({ ...userDTO, userImg: null });
     setPreviewUrl(
       user.userImgUrl != null
         ? "http://192.168.10.51:8083/user/" +
@@ -101,8 +101,7 @@ const Mypage = () => {
     let formData = new FormData();
     formData.append("userEmail", userDTO.userEmail);
     // 이미지 변경 + 기존 이미지그대로
-    if (userDTO.userImgUrl !== null)
-      formData.append("userImgUrl", userDTO.userImgUrl);
+    if (userDTO.userImg !== null) formData.append("userImg", userDTO.userImg);
     formData.append("userNickname", userDTO.userNickname);
     formData.append("userInfo", userDTO.userInfo);
     // 이미지 변경여부 -1(변경X), 0(변경), 1(이미지 삭제)
@@ -197,12 +196,12 @@ const Mypage = () => {
               const file = e.target.files[0]; // 첫 번째 파일 가져오기
               if (file) {
                 // 있으면
-                setUserDTO({ ...userDTO, userImgUrl: file });
+                setUserDTO({ ...userDTO, userImg: file });
                 setPreviewUrl(URL.createObjectURL(file));
                 setChangeImg(0);
                 // 미리보기 URL 설정
               } else {
-                setUserDTO({ ...userDTO, userImgUrl: null });
+                setUserDTO({ ...userDTO, userImg: null });
                 setPreviewUrl(null);
                 setChangeImg(1);
               }
