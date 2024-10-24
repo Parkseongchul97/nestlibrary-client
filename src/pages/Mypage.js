@@ -124,7 +124,10 @@ const Mypage = () => {
 
   const myChannelInfo = async () => {
     const response = await myChannel(user.userEmail);
-    setChannel(response.data);
+    console.log(response);
+    if (response.data != "") {
+      setChannel(response.data);
+    }
   };
 
   return (
@@ -211,8 +214,8 @@ const Mypage = () => {
           <Link to="/messages">쪽지함</Link>
           <p>내 채널들</p>
           {channel.map((channels) => (
-            <Link to={`/update/${channels.channelCode}`}>
-              {channels.channelName}
+            <Link to={`/update/${channels?.channelCode}`}>
+              {channels?.channelName}
             </Link>
           ))}
         </div>

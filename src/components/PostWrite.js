@@ -14,8 +14,8 @@ const PostWrite = () => {
 
   const [post, setPost] = useState({
     postCode: isPost?.postCode ? isPost.postCode : 0,
-    postContent: isPost?.postContent,
-    postTitle: isPost?.postTitle,
+    postContent: isPost?.postContent ? isPost?.postContent : "",
+    postTitle: isPost?.postTitle ? isPost?.postTitle : "",
     userEmail: user.userEmail,
     channel: { channelCode: isChannelCode },
     channelTag: {
@@ -97,6 +97,7 @@ const PostWrite = () => {
     }
     if (post.postContent.trim().length == 0) {
       alert("내용을 입력해주세요");
+      return;
     }
 
     const response = await add(post);
@@ -114,6 +115,7 @@ const PostWrite = () => {
     }
     if (post.postContent.trim().length == 0) {
       alert("내용을 입력해주세요");
+      return;
     }
 
     const response = await update(post);

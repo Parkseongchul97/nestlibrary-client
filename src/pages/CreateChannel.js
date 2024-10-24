@@ -37,12 +37,14 @@ const CreateChannel = ({ onClose }) => {
     formData.append("channelInfo", channel.channelInfo);
 
     if (channel.channelImg !== null)
-      formData.append("channelImgUrl", channel.channelImg);
+      formData.append("channelImg", channel.channelImg);
 
     const result = await makeChannel(formData);
 
-    if (result.status === 200) {
+    if (result.data.channelCode === undefined) {
       // 채널 생성후 바로 해당 채널로 이동
+      alert("포인트 부족 !");
+    } else {
       navigate(`/channel/${result.data.channelCode}`);
     }
   };
