@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { findUser as byNickname } from "../api/message";
 import UserMenu from "./UserMenu";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { addMessage } from "../api/message";
 import "../assets/messageWrite.scss";
+import { useLocation, useNavigate } from "react-router-dom";
 const MessageWrite = () => {
   const { user } = useAuth(); // 발신자(로그인유저)
   const [message, setMessage] = useState({
@@ -14,12 +15,18 @@ const MessageWrite = () => {
     messagesFromUser: user.userEmail, // 보내는 로그인유저
     messagesToUser: "", // 받을사람
   });
+  const location = useLocation();
+
+  let toUser = null;
+  toUser = location.state !== null ? location.state.toUser : undefined;
   const [toNickname, setToNickname] = useState(""); // 수신자 찾기
-  const [inputNickname, setInputNickname] = useState(""); //입력한 닉네임
+  const [inputNickname, setInputNickname] = useState(
+    toUser !== undefined ? toUser.nickname : ""
+  ); //입력한 닉네임
   const [viewNickname, setViewNickname] = useState("");
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
-
+  const navigate = useNavigate();
   const {
     data: findUser,
     isLoading,
@@ -45,9 +52,17 @@ const MessageWrite = () => {
   };
   const submitMessage = async () => {
     const response = await addMessage(message);
-    console.log(response.data);
+    navigate("/messages");
     return response.data;
   };
+  useEffect(() => {
+    setMessage(
+      toUser !== undefined
+        ? { ...message, messagesToUser: toUser.email }
+        : { ...message }
+    );
+    setViewNickname(toUser !== undefined ? toUser?.userNickname : "");
+  }, []);
   if (isLoading) return <></>;
   if (error) return <></>;
   return (

@@ -59,6 +59,10 @@ const router = createBrowserRouter([
         element: <ChannelDetail />,
         children: [
           {
+            path: "best",
+            element: <ChannelDetail />,
+          },
+          {
             path: ":channelTagCode",
             element: <ChannelDetail />,
           },

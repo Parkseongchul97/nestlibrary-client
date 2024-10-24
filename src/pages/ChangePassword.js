@@ -39,10 +39,7 @@ const ChangePassword = ({ onClose }) => {
       alert("현재 비밀번호 입력 오류 입니다");
     } else if (response.data != null) {
       if (newCheck) {
-        console.log(loginUser);
-        console.log(newpass);
         await updatePass(user.userEmail, newpass);
-        alert("비밀번호 변경 성공 !");
 
         window.location.href = "/";
         authLogout();
@@ -50,7 +47,6 @@ const ChangePassword = ({ onClose }) => {
     }
   };
 
-  console.log(user);
   return (
     <>
       <div>

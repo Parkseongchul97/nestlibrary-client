@@ -129,7 +129,36 @@
   }
 }
 #message-count {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: white;
+  svg {
+    position: fixed;
+    color: white;
+    &:hover {
+      color: red;
+    }
+  }
+}
+#message-count-red {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  svg {
+    position: fixed;
+    color: red;
+  }
+  span {
+    font-weight: bold;
+    font-size: 1.2rem;
+    align-self: center;
+    color: red;
+    position: absolute;
+  }
 }
 @media screen and (min-width: 1000px) {
   .header-center-search input {
@@ -179,11 +208,26 @@
 }
 
 .sub-box {
-  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(214, 214, 214);
   width: 200px;
-  height: 200px;
-  margin-top: 1.4rem;
-  position: absolute;
+  margin-top: 1.3rem;
+  position: fixed;
+  ul {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    width: 100%;
+    margin: 10px;
+    li {
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+  }
 }
 /*
 @media screen and (max-width: 700px) {

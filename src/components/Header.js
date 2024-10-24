@@ -8,6 +8,10 @@ import { kakaoLogout } from "../user/kakaoCode";
 import { useAuth } from "../contexts/AuthContext";
 import UserMenu from "./UserMenu";
 import SubChannelList from "./SubChannelList";
+import { IoMailOutline, IoNotificationsSharp } from "react-icons/io5";
+import { FaMessage } from "react-icons/fa6";
+import { IoIosMail } from "react-icons/io";
+import { TbMessageCircleExclamation } from "react-icons/tb";
 
 import { isOpenMessgeCount } from "../api/message";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -65,7 +69,6 @@ const Header = ({ onSearch, onsub, all }) => {
       subChannelListRef.current &&
       !subChannelListRef.current.contains(event.target)
     ) {
-      console.log("다른곳 누름");
       setClick(false);
     }
   };
@@ -189,11 +192,7 @@ const Header = ({ onSearch, onsub, all }) => {
         ) : (
           <div className="header-right">
             <UserMenu user={user} />
-            {messageCount !== undefined && (
-              <Link to="/messages" id="message-count">
-                안읽은 메시지({messageCount.data})
-              </Link>
-            )}
+
             <Link id="logout-btn" onClick={logout} className="info">
               로그아웃
             </Link>
@@ -201,6 +200,17 @@ const Header = ({ onSearch, onsub, all }) => {
             <Link to={"/mypage"} id="mypage-btn" className="info">
               마이페이지
             </Link>
+            {messageCount !== undefined &&
+              (messageCount.data === 0 ? (
+                <Link to="/messages" id="message-count">
+                  <IoIosMail size={"2rem"} />
+                </Link>
+              ) : (
+                <Link to="/messages" id="message-count-red">
+                  <TbMessageCircleExclamation size={"2.5rem"} />
+                  <span>{messageCount.data}</span>
+                </Link>
+              ))}
           </div>
         )}
       </header>

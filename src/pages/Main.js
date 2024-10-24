@@ -7,6 +7,7 @@ import PostListComponent from "../components/PostListComponent";
 import { useAuth } from "../contexts/AuthContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { addSub, checkSub, removeSub } from "../api/subscribe";
+import UserMenu from "../components/UserMenu";
 
 const Main = () => {
   const { channelList, setPage } = useOutletContext();
@@ -39,13 +40,16 @@ const Main = () => {
           <ul className="channel-list">
             {channelList.map((channel, index) => (
               <li className="channel-box" key={channel?.channelCode}>
-                <Link
-                  to={`/channel/${channel?.channelCode}`}
-                  className="channel-name"
-                >
-                  {channel?.channelName} 채널
-                </Link>
-
+                <div className="channel-main-header">
+                  <Link
+                    to={`/channel/${channel?.channelCode}`}
+                    className="channel-name"
+                  >
+                    {channel?.channelName} 채널
+                  </Link>
+                  <span>구독자수 : {channel.favoriteCount}</span>
+                  <UserMenu user={channel.host} />
+                </div>
                 {channel.allPost !== undefined &&
                 channel.allPost.length !== 0 ? (
                   <div className="post-box">

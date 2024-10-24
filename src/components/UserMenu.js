@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import TimeFormat from "./TimeFormat";
 import "../assets/userMenu.scss";
+import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 const UserMenu = ({ user, time, noneMenu }) => {
+  const { user: loginUser, token } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const accordion = () => {
     setIsOpen(!isOpen);
@@ -27,19 +30,31 @@ const UserMenu = ({ user, time, noneMenu }) => {
           {time !== undefined && <TimeFormat time={time} />}
         </p>
       </div>
-      {!noneMenu && isOpen && (
-        <div className="profile-actions">
-          <a>쪽지 보내기</a>
-          <a>게시글 검색</a>
-          <a>유저페이지로 이동</a>
-          {/* 채널 관리자라면
+      {!noneMenu &&
+        isOpen &&
+        token &&
+        loginUser.userEmail !== user?.userEmail && (
+          <div className="profile-actions">
+            <Link
+              state={{
+                toUser: {
+                  email: user.userEmail,
+                  nickname: user.userNickname,
+                },
+              }}
+              to="/message/write"
+            >
+              쪽지 보내기
+            </Link>
+            <a>유저페이지로 이동</a>
+            {/* 채널 관리자라면
           <a>차단하기</a>
           */}
-          {/* 채널 호스트라면
+            {/* 채널 호스트라면
           <a>관리자로 임명</a>
           */}
-        </div>
-      )}
+          </div>
+        )}
     </div>
   );
 };

@@ -28,9 +28,8 @@ const Layout = () => {
   }, []);
 
   useEffect(() => {
-    chanList(page, keyword);
-    console.log(page);
-  }, [keyword, page, subCheck, isSearch]);
+    chanList(page, keyword, subCheck);
+  }, [keyword, page, subCheck]);
 
   const onSearch = (keyword) => {
     setPage(1);

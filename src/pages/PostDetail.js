@@ -227,6 +227,7 @@ const PostDetail = () => {
               ))
             )}
           </div>
+
           <Page
             page={page}
             totalPages={Math.ceil(commentList.data?.paging.totalPage / 10)}

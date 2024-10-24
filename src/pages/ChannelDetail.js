@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { channelInfo, allPosts, tagPosts } from "../api/channel";
+import { channelInfo, allPosts, tagPosts, bestPosts } from "../api/channel";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useState } from "react";
 import { addSub, checkSub, removeSub } from "../api/subscribe";
@@ -16,6 +16,7 @@ const ChannelDetail = () => {
   const { channelCode, channelTagCode } = useParams();
   const [channel, setChannel] = useState(null); // 채널정보
   const [posts, setPosts] = useState([]); // 채널 내의 게시판 정보
+  const [viewType, setViewType] = useState("all");
   const queryClient = useQueryClient();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
@@ -24,10 +25,13 @@ const ChannelDetail = () => {
   const [searchKeyword, setSearchKeyword] = useState(""); // 검색어
   const [searchTarget, setSearchTarget] = useState("title"); // 기본 검색 대상: 제목
   const fetch = async () => {
+    console.log(channelCode, channelTagCode, viewType);
     const info = await channelInfo(channelCode);
     setChannel(info.data);
     const channelPosts =
-      channelTagCode !== undefined
+      viewType === "best"
+        ? await bestPosts(channelCode, page, searchTarget, searchKeyword)
+        : channelTagCode !== undefined
         ? await tagPosts(
             channelCode,
             channelTagCode,
@@ -38,10 +42,18 @@ const ChannelDetail = () => {
         : await allPosts(channelCode, page, searchTarget, searchKeyword); // 태그가 없으면 모든 게시글 가져오기
     setPosts(channelPosts.data);
   };
-
+  useEffect(() => {
+    // 3가지 채널 태그코드가있으면 -> 상세태그 채널 태그코드가 없으면 best
+    // if (channelTagCode === undefined) {
+    //   setViewType("all");
+    // } else {
+    //   setViewType("best");
+    // }
+  }, [viewType]);
   useEffect(() => {
     fetch();
-  }, [channelCode, channelTagCode, page]);
+    console.log(viewType);
+  }, [channelCode, channelTagCode, page, viewType]);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["subscribe", channelCode],
@@ -186,6 +198,26 @@ const ChannelDetail = () => {
                 />
               </div>
             )}
+            <div className="is-best-box">
+              <Link
+                className="is-best"
+                onClick={() => {
+                  setViewType("best");
+                }}
+                to={`/channel/${channelCode}/best`}
+              >
+                인기글
+              </Link>
+              <Link
+                className="is-all"
+                onClick={() => {
+                  setViewType("all");
+                }}
+                to={`/channel/${channelCode}/best`}
+              >
+                전체글
+              </Link>
+            </div>
             <Search
               searchKeyword={searchKeyword}
               setSearchKeyword={setSearchKeyword}

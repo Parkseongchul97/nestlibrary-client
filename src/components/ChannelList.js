@@ -42,8 +42,7 @@ const ChannelList = ({ listTitle, subList }) => {
       addSubMutation.mutate(subContent);
     }
   };
-  console.log(subList);
-  console.log(channelCode);
+
   const removeSubSubmit = () => {
     // 매니지먼트 코드 보내서 삭제
     removeSubMutation.mutate(subCheck.data?.managementCode);
