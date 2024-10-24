@@ -4,16 +4,16 @@ import "../assets/userMenu.scss";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-const UserMenu = ({ user, time, noneMenu }) => {
+const UserMenu = ({ user, time, noneMenu, isOpenUser, userMenuToggle }) => {
   const { user: loginUser, token } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
-  const accordion = () => {
-    setIsOpen(!isOpen);
-  };
+  // const accordion = () => {
+  //   setIsOpen(!isOpen);
+  // };
 
   return (
     <div className="user-profile-box">
-      <div className="user-profile" onClick={accordion}>
+      <div className="user-profile" onClick={userMenuToggle}>
         <img
           className="user-profile-img"
           src={
@@ -31,7 +31,7 @@ const UserMenu = ({ user, time, noneMenu }) => {
         </p>
       </div>
       {!noneMenu &&
-        isOpen &&
+        isOpenUser &&
         token &&
         loginUser.userEmail !== user?.userEmail && (
           <div className="profile-actions">

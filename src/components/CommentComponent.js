@@ -9,7 +9,7 @@ import {
 import TimeFormat from "./TimeFormat";
 import "../assets/comment.scss";
 import UserMenu from "./UserMenu";
-const CommentComponent = ({ comment, postCode, id }) => {
+const CommentComponent = ({ comment, postCode, id ,isOpenUser,userMenuToggle }) => {
   const { user, token } = useAuth();
   const [newReComment, setNewReComment] = useState({
     commentContent: "",
@@ -27,6 +27,15 @@ const CommentComponent = ({ comment, postCode, id }) => {
 
   const [isChange, setIsChange] = useState(0); // 수정 체크
   const queryClient = useQueryClient();
+
+  const [isOpenReUser , setIsOpenReUser] = useState(null);
+  const userReMenuToggle = (commentCode) => {
+    if(isOpenReUser === commentCode){
+      setIsOpenReUser(null);
+    }else{
+      setIsOpenReUser(commentCode);
+    }
+  };
 
   const addMutation = useMutation({
     mutationFn: addAPI,
@@ -104,7 +113,9 @@ const CommentComponent = ({ comment, postCode, id }) => {
         <>
           {" "}
           <div className="comment-content">
-            <UserMenu user={comment?.user} time={comment?.commentCreatedAt} />
+            <UserMenu user={comment?.user} time={comment?.commentCreatedAt}    
+              isOpenUser={isOpenUser}
+              userMenuToggle={userMenuToggle}  />
             {isChange === comment.commentCode &&
             user !== undefined &&
             user.userEmail === comment?.user?.userEmail ? (
@@ -190,6 +201,10 @@ const CommentComponent = ({ comment, postCode, id }) => {
           comment={reCommentDTO}
           postCode={postCode}
           key={reCommentDTO.commentCode}
+          isOpenUser={isOpenReUser === reCommentDTO.commentCode} // 해당 형제들만 열리고 닫힘을 공유함
+          userMenuToggle={()=>userReMenuToggle(reCommentDTO.commentCode)}
+          // isOpenUser={isOpenUser === reCommentDTO.commentCode}  해당 부모만 열림
+          // userMenuToggle={()=>userMenuToggle(reCommentDTO.commentCode)}
         />
       ))}
     </div>

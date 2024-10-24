@@ -13,6 +13,7 @@ const Main = () => {
   const { channelList, setPage } = useOutletContext();
   const { user, token } = useAuth();
   const queryClient = useQueryClient();
+  const [isOpenUser , setIsOpenUser] = useState(null);
 
   const scroll = () => {
     if (
@@ -31,13 +32,21 @@ const Main = () => {
     };
   }, [setPage]);
 
+  const userMenuToggle = (index) => {
+    if(isOpenUser === index){
+      setIsOpenUser(null);
+    }else{
+      setIsOpenUser(index);
+    }
+  };
+
   return (
     <div className="main-box">
       <div className="main">
         <div className="main-content">
           <div className="sub-title">OUR COMMUNITY</div>
           <ul className="channel-list">
-            {channelList.map((channel) => (
+            {channelList.map((channel, index) => (
               <li className="channel-box" key={channel?.channelCode}>
                 <div className="channel-main-header">
                   <Link
@@ -47,7 +56,7 @@ const Main = () => {
                     {channel?.channelName} 채널
                   </Link>
                   <span>구독자수 : {channel.favoriteCount}</span>
-                  <UserMenu user={channel.host} />
+                  <UserMenu user={channel.host} isOpenUser={index === isOpenUser} userMenuToggle={()=>userMenuToggle(index)} />
                 </div>
                 {channel.allPost !== undefined &&
                 channel.allPost.length !== 0 ? (
