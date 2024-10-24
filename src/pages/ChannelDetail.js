@@ -1,5 +1,11 @@
 import { useEffect } from "react";
-import { channelInfo, allPosts, tagPosts, bestPosts } from "../api/channel";
+import {
+  channelInfo,
+  allPosts,
+  tagPosts,
+  bestPosts,
+  tagBestPosts,
+} from "../api/channel";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useState } from "react";
 import { addSub, checkSub, removeSub } from "../api/subscribe";
@@ -29,16 +35,24 @@ const ChannelDetail = () => {
     const info = await channelInfo(channelCode);
     setChannel(info.data);
     const channelPosts =
-      viewType === "best"
-        ? await bestPosts(channelCode, page, searchTarget, searchKeyword)
-        : channelTagCode !== undefined
-        ? await tagPosts(
+      viewType === "best" && channelTagCode === undefined // 베스트면서 채널 태그코드가 없으면
+        ? await bestPosts(channelCode, page, searchTarget, searchKeyword) // 모든 인기글
+        : viewType === "best" && channelTagCode !== undefined // 베스트면서 채널 태그코드가 있으면
+        ? await tagBestPosts(
             channelCode,
             channelTagCode,
             page,
             searchTarget,
             searchKeyword
           ) // 태그가 있으면 태그별 게시글 가져오기
+        : viewType === "all" && channelTagCode !== undefined
+        ? await tagPosts(
+            channelCode,
+            channelTagCode,
+            page,
+            searchTarget,
+            searchKeyword
+          )
         : await allPosts(channelCode, page, searchTarget, searchKeyword); // 태그가 없으면 모든 게시글 가져오기
     setPosts(channelPosts.data);
   };
@@ -200,7 +214,7 @@ const ChannelDetail = () => {
             )}
             <div className="is-best-box">
               <Link
-                className="is-best"
+                className={viewType === "best" ? "is-best" : "is-all"}
                 onClick={() => {
                   setViewType("best");
                 }}
@@ -209,7 +223,7 @@ const ChannelDetail = () => {
                 인기글
               </Link>
               <Link
-                className="is-all"
+                className={viewType === "all" ? "is-best" : "is-all"}
                 onClick={() => {
                   setViewType("all");
                 }}

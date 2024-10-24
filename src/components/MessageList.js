@@ -12,6 +12,7 @@ const MessageList = ({
   isChecked,
   checkedList,
   setCheckedList,
+  viewType,
 }) => {
   const { user } = useAuth();
   const [isCheck, setIsCheck] = useState(isChecked);
@@ -22,6 +23,7 @@ const MessageList = ({
       setIsOpen(code);
     }
   };
+  const [notRead, setNotRead] = useState(false);
   const listChange = (messagesCode) => {
     const list = [...checkedList, messagesCode];
     setCheckedList(list);
@@ -58,7 +60,10 @@ const MessageList = ({
           }}
         />
         <div
-          onClick={() => openDetail(message.messagesCode)}
+          onClick={() => {
+            openDetail(message.messagesCode);
+            setNotRead(true);
+          }}
           className="message-link"
         >
           {message.messagesTitle}
@@ -80,19 +85,30 @@ const MessageList = ({
             time={message.messagesSentAt}
             className="message-time"
           ></TimeFormat>
-          <div className="is-open">
-            {message.messagesRead ? (
-              <IoMailOpenOutline size={"2rem"} />
-            ) : (
-              <IoMailOutline size={"2rem"} />
-            )}
-          </div>
+
+          {viewType !== "open" ? (
+            <div className="is-open">
+              {message.messagesRead ? (
+                <IoMailOpenOutline size={"2rem"} />
+              ) : (
+                <IoMailOutline size={"2rem"} />
+              )}
+            </div>
+          ) : (
+            <div className="is-open">
+              {notRead ? (
+                <IoMailOpenOutline size={"2rem"} />
+              ) : (
+                <IoMailOutline size={"2rem"} />
+              )}
+            </div>
+          )}
         </div>
       </div>
       {isOpen === message.messagesCode && (
         <MessagesDetail
           isOpen={isOpen}
-          setIsOpen={() => setIsOpen(0)}
+          setIsOpen={setIsOpen}
           messagesCode={message?.messagesCode}
           key={message?.messagesCode}
         />

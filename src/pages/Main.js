@@ -5,14 +5,13 @@ import { useOutletContext } from "react-router-dom";
 import PostListComponent from "../components/PostListComponent";
 
 import { useAuth } from "../contexts/AuthContext";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { addSub, checkSub, removeSub } from "../api/subscribe";
+import { useQueryClient } from "@tanstack/react-query";
+
 import UserMenu from "../components/UserMenu";
 
 const Main = () => {
   const { channelList, setPage } = useOutletContext();
   const { user, token } = useAuth();
-
   const queryClient = useQueryClient();
 
   const scroll = () => {
@@ -38,7 +37,7 @@ const Main = () => {
         <div className="main-content">
           <div className="sub-title">OUR COMMUNITY</div>
           <ul className="channel-list">
-            {channelList.map((channel, index) => (
+            {channelList.map((channel) => (
               <li className="channel-box" key={channel?.channelCode}>
                 <div className="channel-main-header">
                   <Link
