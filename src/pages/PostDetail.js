@@ -13,7 +13,9 @@ import { likeState as state, like, unLike } from "../api/postLike";
 import TimeFormat from "../components/TimeFormat";
 import Page from "../components/Page";
 import { remove } from "../api/post";
+import { checkGrade } from "../api/channel";
 const PostDetail = () => {
+  const [isOpenUser, setIsOpenUser] = useState(false);
   const { postCode } = useParams();
   const { user, token } = useAuth();
   const location = useLocation();
@@ -25,6 +27,7 @@ const PostDetail = () => {
     userEmail: user?.userEmail,
   });
   const [post, setPost] = useState(null);
+  const [role, setRole] = useState("");
 
   const queryClient = useQueryClient();
   // 댓글 목록
@@ -129,10 +132,25 @@ const PostDetail = () => {
         post?.channelTag?.channelTagCode;
     }
   };
+  const setGrade = async () => {
+    const response = await checkGrade(user.userEmail, postCode);
+    console.log(response);
+    setRole(response.data);
+  };
 
   useEffect(() => {
     loadingPost();
+    setGrade();
   }, []);
+  const changeSet = (miniOpen) => {
+    console.log("대상 유저에용" + miniOpen);
+    if (miniOpen === "") {
+      setIsOpenUser(miniOpen);
+    } else {
+      console.log("큰거를 폴스로 바꿔요");
+      setIsOpenUser(miniOpen);
+    }
+  };
   // 시점이 다를때마다 useEffect 추가
 
   // 데이터 로딩중일 때 처리
@@ -223,6 +241,9 @@ const PostDetail = () => {
                   comment={comment}
                   postCode={postCode}
                   key={comment.commentCode}
+                  role={role}
+                  setIsOpenUser={changeSet}
+                  isOpenUser={isOpenUser}
                 />
               ))
             )}

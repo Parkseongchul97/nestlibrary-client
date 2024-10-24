@@ -9,7 +9,14 @@ import {
 import TimeFormat from "./TimeFormat";
 import "../assets/comment.scss";
 import UserMenu from "./UserMenu";
-const CommentComponent = ({ comment, postCode, id }) => {
+const CommentComponent = ({
+  comment,
+  postCode,
+  id,
+  role,
+  isOpenUser,
+  setIsOpenUser,
+}) => {
   const { user, token } = useAuth();
   const [newReComment, setNewReComment] = useState({
     commentContent: "",
@@ -94,6 +101,7 @@ const CommentComponent = ({ comment, postCode, id }) => {
         updateComment();
       }
   };
+
   return (
     <div className="comment-content-box" id={"comment-code-" + id}>
       {comment?.commentContent === null ? (
@@ -104,7 +112,13 @@ const CommentComponent = ({ comment, postCode, id }) => {
         <>
           {" "}
           <div className="comment-content">
-            <UserMenu user={comment?.user} time={comment?.commentCreatedAt} />
+            <UserMenu
+              user={comment?.user}
+              time={comment?.commentCreatedAt}
+              role={role}
+              setIsOpenUser={setIsOpenUser}
+              isOpenUser={isOpenUser}
+            />
             {isChange === comment.commentCode &&
             user !== undefined &&
             user.userEmail === comment?.user?.userEmail ? (

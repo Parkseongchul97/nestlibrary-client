@@ -1,19 +1,90 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TimeFormat from "./TimeFormat";
 import "../assets/userMenu.scss";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { userRole } from "../api/subscribe";
 
-const UserMenu = ({ user, time, noneMenu }) => {
+const UserMenu = ({
+  user,
+  time,
+  noneMenu,
+  role,
+  setIsOpenUser,
+  isOpenUser,
+}) => {
   const { user: loginUser, token } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
-  const accordion = () => {
+
+  //const [isOpenUser, setIsOpenUser] = useState(false);
+  const [userRoleDTO, setUserRoleDTO] = useState({
+    userEmail: "",
+    managementUserStatus: role !== undefined ? role.channel.channelCode : "",
+    channelCode: "",
+    banDate: "",
+  });
+
+  const accordion = (userEmail) => {
     setIsOpen(!isOpen);
+
+    setUserRoleDTO({
+      channelCode: role.channel.channelCode,
+    });
   };
+
+  const getUserDTo = async (data) => {
+    console.log(data);
+    if (data.type == "click") {
+      if (userRoleDTO.banDate === "") {
+        alert("기간 선택을 해주세요!");
+        return;
+      } else {
+        setUserRoleDTO({
+          ...userRoleDTO,
+          managementUserStatus: "ban",
+          userEmail: user.userEmail,
+        });
+        await userRole(userRoleDTO);
+        setUserRoleDTO("");
+        setIsOpen(false);
+      }
+    } else {
+      await userRole(data);
+      setUserRoleDTO("");
+      setIsOpen(false);
+      return;
+    }
+  };
+
+  const [banOpen, setbanOpen] = useState(false);
+  // useEffect(() => {
+  //   setUserRoleDTO({
+  //     userEmail: "",
+  //     managementUserStatus: "",
+  //     channelCode: "",
+  //     banDate: "",
+  //   });
+  // }, [isOpen]);
+
+  useEffect(() => {
+    // console.log("이즈오픈" + isOpen);
+    // console.log("이즈오픈유저" + setIsOpenUser);
+  }, [setIsOpen, setIsOpenUser]);
 
   return (
     <div className="user-profile-box">
-      <div className="user-profile" onClick={accordion}>
+      <div
+        className="user-profile"
+        onClick={() => {
+          setIsOpen(!isOpen);
+          console.log("작은거의 상태가 : " + isOpen + "이에용");
+          if (isOpen) {
+            setIsOpenUser(user.userEmail);
+          } else {
+            setIsOpenUser("");
+          }
+        }}
+      >
         <img
           className="user-profile-img"
           src={
@@ -31,6 +102,7 @@ const UserMenu = ({ user, time, noneMenu }) => {
         </p>
       </div>
       {!noneMenu &&
+        isOpenUser &&
         isOpen &&
         token &&
         loginUser.userEmail !== user?.userEmail && (
@@ -49,10 +121,103 @@ const UserMenu = ({ user, time, noneMenu }) => {
             <a>유저페이지로 이동</a>
             {/* 채널 관리자라면
           <a>차단하기</a>
+          
           */}
+            {role.managementUserStatus == "admin" && <a>차단하기</a>}
             {/* 채널 호스트라면
           <a>관리자로 임명</a>
           */}
+            {role.managementUserStatus == "host" && (
+              <>
+                <a onClick={() => setbanOpen(!banOpen)}>차단하기</a>
+                {banOpen && (
+                  <>
+                    <div>벤하실건가여?</div>
+                    <label>
+                      <input
+                        type="radio"
+                        name={`option-${user?.userEmail}`}
+                        value="1"
+                        onClick={(e) =>
+                          setUserRoleDTO({
+                            ...userRoleDTO,
+                            banDate: e.target.value,
+                          })
+                        }
+                      />
+                      1일
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        name={`option-${user?.userEmail}`}
+                        value="7"
+                        onClick={(e) =>
+                          setUserRoleDTO({
+                            ...userRoleDTO,
+                            banDate: e.target.value,
+                          })
+                        }
+                      />
+                      1주일
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        name={`option-${user?.userEmail}`}
+                        value="30"
+                        onClick={(e) =>
+                          setUserRoleDTO({
+                            ...userRoleDTO,
+                            banDate: e.target.value,
+                          })
+                        }
+                      />
+                      1달
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        name={`option-${user?.userEmail}`}
+                        value="365"
+                        onClick={(e) =>
+                          setUserRoleDTO({
+                            ...userRoleDTO,
+                            banDate: e.target.value,
+                          })
+                        }
+                      />
+                      1년
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        name={`option-${user?.userEmail}`}
+                        value="99999"
+                        onClick={(e) =>
+                          setUserRoleDTO({
+                            ...userRoleDTO,
+                            banDate: e.target.value,
+                          })
+                        }
+                      />
+                      영구벤
+                    </label>
+                    <button onClick={getUserDTo}>확인</button>
+                  </>
+                )}
+                <a
+                  onClick={() =>
+                    getUserDTo({
+                      ...userRoleDTO,
+                      managementUserStatus: "admin",
+                    })
+                  }
+                >
+                  관리자로 임명
+                </a>
+              </>
+            )}
           </div>
         )}
     </div>
