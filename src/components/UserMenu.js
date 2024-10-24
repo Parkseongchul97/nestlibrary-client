@@ -17,7 +17,7 @@ const UserMenu = ({ user, time, noneMenu }) => {
         <img
           className="user-profile-img"
           src={
-            user?.userImgUrl != null
+            user?.userImgUrl !== null
               ? "http://192.168.10.51:8083/user/" +
                 user?.userEmail +
                 "/" +
