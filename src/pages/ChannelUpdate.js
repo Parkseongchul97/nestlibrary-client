@@ -15,7 +15,7 @@ const ChannelUpdate = () => {
   const [previewUrl, setPreviewUrl] = useState("");
   const [chan, setChan] = useState({
     channelCode: channelCode,
-    channelImgUrl: null,
+    channelImg: null,
     change: "",
   });
 
@@ -29,7 +29,7 @@ const ChannelUpdate = () => {
     favoriteCount: "",
     channelInfo: "",
     channelTag: [{}],
-    channelImg: "",
+    channelImgUrl: "",
   });
   const [error, setError] = useState(null);
 
@@ -84,8 +84,8 @@ const ChannelUpdate = () => {
   let formData = new FormData();
 
   const imgUpdate = async () => {
-    if (chan.channelImgUrl !== null) {
-      formData.append("channelImgUrl", chan.channelImgUrl);
+    if (chan.channelImg !== null) {
+      formData.append("channelImg", chan.channelImg);
       formData.append("channelCode", channelCode);
       formData.append("change", chan.change);
       await addImg(formData);
@@ -106,14 +106,14 @@ const ChannelUpdate = () => {
   // ban , admin  => management
 
   const reset = () => {
-    if (channelInfos.channelImg != null) {
+    if (channelInfos.channelImgUrl != null) {
       setPreviewUrl(
-        `http://192.168.10.51:8083/channel/${channelCode}/${channelInfos.channelImg}`
+        `http://192.168.10.51:8083/channel/${channelCode}/${channelInfos.channelImgUrl}`
       );
     } else {
       setPreviewUrl(null);
     }
-    setChan({ ...chan, channelImgUrl: null, change: 0 });
+    setChan({ ...chan, channelImg: null, change: 0 });
     document.querySelector(".change-input-file").value = "";
   };
 
@@ -121,7 +121,7 @@ const ChannelUpdate = () => {
     setPreviewUrl(
       "http://192.168.10.51:8083/%EA%B8%B0%EB%B3%B8%EB%8C%80%EB%AC%B8.jpg"
     );
-    setChan({ ...chan, channelImgUrl: null, change: -1 });
+    setChan({ ...chan, channelImg: null, change: -1 });
     document.querySelector(".change-input-file").value = "";
   };
 
@@ -196,10 +196,10 @@ const ChannelUpdate = () => {
               const file = e.target.files[0];
               if (file) {
                 setPreviewUrl(URL.createObjectURL(file));
-                setChan({ ...chan, channelImgUrl: file, change: 1 });
+                setChan({ ...chan, channelImg: file, change: 1 });
               } else {
                 setPreviewUrl(false);
-                setChan({ ...chan, channelImgUrl: null, change: 0 });
+                setChan({ ...chan, channelImg: null, change: 0 });
               }
             }}
           />
@@ -209,9 +209,9 @@ const ChannelUpdate = () => {
           <img
             src={
               previewUrl ||
-              (channelInfos.channelImg === null
+              (channelInfos.channelImgUrl === null
                 ? "http://192.168.10.51:8083/%EA%B8%B0%EB%B3%B8%EB%8C%80%EB%AC%B8.jpg"
-                : `http://192.168.10.51:8083/channel/${channelCode}/${channelInfos.channelImg}`)
+                : `http://192.168.10.51:8083/channel/${channelCode}/${channelInfos.channelImgUrl}`)
             }
           />
           <button onClick={remove}>채널삭제</button>

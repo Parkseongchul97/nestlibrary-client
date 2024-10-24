@@ -37,7 +37,7 @@ const CreateChannel = ({ onClose }) => {
     formData.append("channelInfo", channel.channelInfo);
 
     if (channel.channelImg !== null)
-      formData.append("channelImgUrl", channel.channelImg);
+      formData.append("channelImg", channel.channelImg);
 
     const result = await makeChannel(formData);
 
