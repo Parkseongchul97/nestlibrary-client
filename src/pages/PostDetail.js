@@ -28,18 +28,9 @@ const PostDetail = () => {
   });
   const [post, setPost] = useState(null);
   const [role, setRole] = useState("");
-  const [open, setOpen] = useState(null);
-
-  const isOpen = (commentCode) => {
-    if (open === commentCode) {
-      setOpen(null);
-    } else {
-      setOpen(commentCode);
-    }
-  };
 
   const queryClient = useQueryClient();
-  const [isOpenUser, setIsOpenUser] = useState(null);
+
   const userMenuToggle = (commentCode) => {
     console.log("기존 : " + isOpenUser);
     console.log("새로운 : " + commentCode);
@@ -257,6 +248,7 @@ const PostDetail = () => {
                   key={comment.commentCode}
                   isOpenUser={isOpenUser}
                   userMenuToggle={userMenuToggle}
+                  role={role}
                 />
               ))
             )}

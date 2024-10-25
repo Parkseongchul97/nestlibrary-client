@@ -15,6 +15,7 @@ const CommentComponent = ({
   id,
   isOpenUser,
   userMenuToggle,
+  role,
 }) => {
   const { user, token } = useAuth();
   const [newReComment, setNewReComment] = useState({
@@ -125,6 +126,7 @@ const CommentComponent = ({
               time={comment?.commentCreatedAt}
               isOpenUser={isOpenUser === comment.commentCode}
               userMenuToggle={() => userMenuToggle(comment.commentCode)}
+              role={role}
             />
             {isChange === comment.commentCode &&
             user !== undefined &&
@@ -214,6 +216,7 @@ const CommentComponent = ({
           key={reCommentDTO.commentCode}
           isOpenUser={isOpenUser}
           userMenuToggle={userMenuToggle}
+          role={role}
         />
       ))}
     </div>
