@@ -13,7 +13,6 @@ import { likeState as state, like, unLike } from "../api/postLike";
 import TimeFormat from "../components/TimeFormat";
 import Page from "../components/Page";
 import { remove } from "../api/post";
-
 const PostDetail = () => {
   const [isOpenUser, setIsOpenUser] = useState(false);
   const { postCode } = useParams();
