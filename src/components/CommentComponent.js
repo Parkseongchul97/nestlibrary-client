@@ -10,6 +10,7 @@ import TimeFormat from "./TimeFormat";
 import "../assets/comment.scss";
 import UserMenu from "./UserMenu";
 const CommentComponent = ({
+  channelCode,
   comment,
   postCode,
   id,
@@ -34,15 +35,6 @@ const CommentComponent = ({
 
   const [isChange, setIsChange] = useState(0); // 수정 체크
   const queryClient = useQueryClient();
-
-  // const [isOpenReUser, setIsOpenReUser] = useState(null);
-  // const userReMenuToggle = (commentCode) => {
-  //   if (isOpenReUser === commentCode) {
-  //     setIsOpenReUser(null);
-  //   } else {
-  //     setIsOpenReUser(commentCode);
-  //   }
-  // };
 
   const addMutation = useMutation({
     mutationFn: addAPI,
@@ -126,7 +118,7 @@ const CommentComponent = ({
               time={comment?.commentCreatedAt}
               isOpenUser={isOpenUser === comment.commentCode}
               userMenuToggle={() => userMenuToggle(comment.commentCode)}
-              role={role}
+              channelCode={channelCode}
             />
             {isChange === comment.commentCode &&
             user !== undefined &&
@@ -216,7 +208,7 @@ const CommentComponent = ({
           key={reCommentDTO.commentCode}
           isOpenUser={isOpenUser}
           userMenuToggle={userMenuToggle}
-          role={role}
+          channelCode={channelCode}
         />
       ))}
     </div>

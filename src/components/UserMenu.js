@@ -4,64 +4,76 @@ import "../assets/userMenu.scss";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { userRole } from "../api/management";
+import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { loginUserChannelGrade, userChannelGrade } from "../api/management";
 
-const UserMenu = ({
-  user,
-  channelCode,
-  time,
-  isOpenUser,
-  userMenuToggle,
-  role,
-}) => {
-  const [userRoleDTO, setUserRoleDTO] = useState({
+const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
+  const [managementDTO, setManagementDTO] = useState({
     userEmail: user.userEmail,
     managementUserStatus: "",
     channelCode: "",
-    banDate: "",
+    banDate: 0,
   });
 
   const handleRadioChange = (e) => {
-    setUserRoleDTO({
-      ...userRoleDTO,
+    setManagementDTO({
+      ...managementDTO,
       banDate: e.target.value,
       managementUserStatus: "ban",
-      channelCode: role?.channel.channelCode,
-    });
-  };
-
-  const handleConfirm = () => {
-    // 보내고
-
-    getUserDTo();
-    // 닫고
-    userMenuToggle();
-    // 초기화
-    setUserRoleDTO({
-      userEmail: user.userEmail,
-      banDate: "",
-      managementUserStatus: "",
-      channelCode: "",
+      channelCode: loginUserGrade?.channel.channelCode,
     });
   };
 
   const { user: loginUser, token } = useAuth();
 
-  const getUserDTo = async () => {
-    console.log("벤");
-    console.log(userRoleDTO);
-    await userRole(userRoleDTO);
-  };
-  const grade = () => {};
+  const [loginUserGrade, setloginUserGrade] = useState(null); // 로그인유저
 
-  const getAdmin = async (data) => {
-    console.log("관리자");
-    console.log(data);
-    await userRole(data);
+  const queryClient = useQueryClient();
+
+  const {
+    data: userGrade,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["gradeCheck", channelCode, user.userEmail],
+    queryFn: () => userChannelGrade(channelCode, user.userEmail),
+    enabled: !!channelCode,
+    // refetchInterval: 1000,
+  });
+
+  const loginGrade = async () => {
+    const response = await loginUserChannelGrade(channelCode);
+    setloginUserGrade(response.data);
+  };
+
+  const gradeChangeSubmit = () => {
+    submitRoleMutation.mutate(managementDTO);
+
+    userMenuToggle();
   };
 
   useEffect(() => {
-    setUserRoleDTO({
-      ...userRoleDTO,
+    if (channelCode !== undefined && channelCode !== null && token !== null)
+      loginGrade();
+  }, [channelCode, token]);
+
+  const getAdmin = (data) => {
+    submitRoleMutation.mutate(data);
+    userMenuToggle();
+  };
+
+  const banCanle = (data) => {
+    submitRoleMutation.mutate(data);
+    userMenuToggle();
+    // 초기화
+
+    queryClient.invalidateQueries(["gradeCheck", channelCode, user.userEmail]);
+  };
+
+  useEffect(() => {
+    setbanOpen(false);
+    setManagementDTO({
+      ...managementDTO,
       banDate: "",
       managementUserStatus: "",
       channelCode: "",
@@ -70,6 +82,19 @@ const UserMenu = ({
 
   const [banOpen, setbanOpen] = useState(false);
 
+  const submitRoleMutation = useMutation({
+    mutationFn: userRole,
+    onSuccess: () => {
+      queryClient.invalidateQueries([
+        "gradeCheck",
+        channelCode,
+        user.userEmail,
+      ]);
+    },
+  });
+
+  if (isLoading) return <>로딩중</>;
+  if (error) return <>에러;;</>;
   return (
     <div className="user-profile-box">
       <div className="user-profile" onClick={userMenuToggle}>
@@ -85,7 +110,9 @@ const UserMenu = ({
           }
         />
         <p className="user-profile-nickname">
-          {user?.userNickname}
+          {user?.userNickname},
+          {userGrade?.data !== undefined &&
+            userGrade?.data?.managementUserStatus}
           {time !== undefined && <TimeFormat time={time} />}
         </p>
       </div>
@@ -103,18 +130,15 @@ const UserMenu = ({
             쪽지 보내기
           </Link>
           <a>유저페이지로 이동</a>
-          {/* 채널 관리자라면
-     
-          
-          */}
-          {role.managementUserStatus == "admin" && <a>차단하기</a>}
-          {/* 채널 호스트라면
-          <a>관리자로 임명</a>
-          */}
-          {role.managementUserStatus == "host" && (
+
+          {loginUserGrade.managementUserStatus == "host" && (
             <>
-              <a onClick={() => setbanOpen(!banOpen)}>차단하기</a>
-              {banOpen && (
+              {userGrade?.data?.managementUserStatus !== "ban" ? (
+                <a onClick={() => setbanOpen(!banOpen)}>차단하기</a>
+              ) : (
+                <a onClick={() => setbanOpen(!banOpen)}>벤풀기</a>
+              )}
+              {banOpen && userGrade?.data?.managementUserStatus !== "ban" && (
                 <>
                   <div>벤하실건가여?</div>
                   <label>
@@ -163,25 +187,60 @@ const UserMenu = ({
                     영구벤
                   </label>
                   <button
-                    onClick={handleConfirm}
-                    disabled={userRoleDTO.banDate > 0 ? false : true}
+                    onClick={gradeChangeSubmit}
+                    disabled={managementDTO.banDate > 0 ? false : true}
                   >
                     확인
                   </button>
                 </>
               )}
-              <a
-                onClick={() =>
-                  getAdmin({
-                    userEmail: user.userEmail,
-                    banDate: "",
-                    managementUserStatus: "admin",
-                    channelCode: role?.channel.channelCode,
-                  })
-                }
-              >
-                관리자로 임명
-              </a>
+              {banOpen && userGrade?.data?.managementUserStatus === "ban" && (
+                <>
+                  <div>{userGrade?.data?.managementDeleteAt}</div>
+                  <button
+                    onClick={() =>
+                      banCanle({
+                        userEmail: user.userEmail,
+                        banDate: -1,
+                        managementUserStatus: "ban",
+                        channelCode: loginUserGrade?.channel.channelCode,
+                      })
+                    }
+                  >
+                    벤 풀기
+                  </button>
+                </>
+              )}
+              {userGrade?.data?.managementUserStatus != "admin" &&
+                userGrade?.data?.managementUserStatus != "ban" && (
+                  <a
+                    onClick={() =>
+                      getAdmin({
+                        userEmail: user.userEmail,
+                        banDate: "",
+                        managementUserStatus: "admin",
+                        channelCode: loginUserGrade?.channel.channelCode,
+                      })
+                    }
+                  >
+                    관리자로임명{" "}
+                  </a>
+                )}
+
+              {userGrade?.data?.managementUserStatus == "admin" && (
+                <a
+                  onClick={() =>
+                    getAdmin({
+                      userEmail: user.userEmail,
+                      banDate: "",
+                      managementUserStatus: "admin",
+                      channelCode: loginUserGrade?.channel.channelCode,
+                    })
+                  }
+                >
+                  관리자 취소
+                </a>
+              )}
             </>
           )}
         </div>

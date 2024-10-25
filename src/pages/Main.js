@@ -46,7 +46,7 @@ const Main = () => {
         <div className="main-content">
           <div className="sub-title">OUR COMMUNITY</div>
           <ul className="channel-list">
-            {channelList.map((channel, index) => (
+            {channelList.map((channel) => (
               <li className="channel-box" key={channel?.channelCode}>
                 <div className="channel-main-header">
                   <Link
