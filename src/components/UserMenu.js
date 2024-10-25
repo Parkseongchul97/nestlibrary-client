@@ -3,7 +3,7 @@ import TimeFormat from "./TimeFormat";
 import "../assets/userMenu.scss";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { userRole } from "../api/management";
+import { userRole, addRole, removeRole } from "../api/management";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { loginUserChannelGrade, userChannelGrade } from "../api/management";
 
@@ -46,8 +46,12 @@ const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
     setloginUserGrade(response.data);
   };
 
-  const gradeChangeSubmit = () => {
-    submitRoleMutation.mutate(managementDTO);
+  const gradeChangeSubmit = (dto) => {
+    if (dto?.managementUserStatus === "admin") {
+      submitRoleMutation.mutate(dto);
+    } else {
+      submitRoleMutation.mutate(managementDTO);
+    }
 
     userMenuToggle();
   };
@@ -57,15 +61,10 @@ const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
       loginGrade();
   }, [channelCode, token]);
 
-  const getAdmin = (data) => {
-    submitRoleMutation.mutate(data);
+  const banCanle = () => {
+    console.log(userGrade?.data?.managementCode);
+    removeRoleMutatoin.mutate(userGrade?.data?.managementCode);
     userMenuToggle();
-  };
-
-  const banCanle = (data) => {
-    submitRoleMutation.mutate(data);
-    userMenuToggle();
-    // 초기화
 
     queryClient.invalidateQueries(["gradeCheck", channelCode, user.userEmail]);
   };
@@ -82,8 +81,19 @@ const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
 
   const [banOpen, setbanOpen] = useState(false);
 
+  const removeRoleMutatoin = useMutation({
+    mutationFn: removeRole,
+    onSuccess: () => {
+      queryClient.invalidateQueries([
+        "gradeCheck",
+        channelCode,
+        user.userEmail,
+      ]);
+    },
+  });
+
   const submitRoleMutation = useMutation({
-    mutationFn: userRole,
+    mutationFn: addRole,
     onSuccess: () => {
       queryClient.invalidateQueries([
         "gradeCheck",
@@ -197,49 +207,27 @@ const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
               {banOpen && userGrade?.data?.managementUserStatus === "ban" && (
                 <>
                   <div>{userGrade?.data?.managementDeleteAt}</div>
-                  <button
-                    onClick={() =>
-                      banCanle({
-                        userEmail: user.userEmail,
-                        banDate: -1,
-                        managementUserStatus: "ban",
-                        channelCode: loginUserGrade?.channel.channelCode,
-                      })
-                    }
-                  >
-                    벤 풀기
-                  </button>
+                  <button onClick={banCanle}>벤 풀기</button>
                 </>
               )}
               {userGrade?.data?.managementUserStatus != "admin" &&
                 userGrade?.data?.managementUserStatus != "ban" && (
                   <a
-                    onClick={() =>
-                      getAdmin({
+                    onClick={() => {
+                      gradeChangeSubmit({
                         userEmail: user.userEmail,
                         banDate: "",
                         managementUserStatus: "admin",
                         channelCode: loginUserGrade?.channel.channelCode,
-                      })
-                    }
+                      });
+                    }}
                   >
                     관리자로임명{" "}
                   </a>
                 )}
 
               {userGrade?.data?.managementUserStatus == "admin" && (
-                <a
-                  onClick={() =>
-                    getAdmin({
-                      userEmail: user.userEmail,
-                      banDate: "",
-                      managementUserStatus: "admin",
-                      channelCode: loginUserGrade?.channel.channelCode,
-                    })
-                  }
-                >
-                  관리자 취소
-                </a>
+                <a onClick={banCanle}>관리자 취소</a>
               )}
             </>
           )}
