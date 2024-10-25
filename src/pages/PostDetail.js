@@ -29,8 +29,6 @@ const PostDetail = () => {
   const queryClient = useQueryClient();
   const [isOpenUser, setIsOpenUser] = useState(null);
   const userMenuToggle = (commentCode) => {
-    console.log("기존 : " + isOpenUser);
-    console.log("새로운 : " + commentCode);
     if (isOpenUser === commentCode) {
       setIsOpenUser(null);
     } else {

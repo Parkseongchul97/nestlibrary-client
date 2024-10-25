@@ -46,9 +46,8 @@ const Mypage = () => {
       userPassword: result.data.userPassword, // 카카오 때문에 추가
     });
   };
-  console.log(userDTO.userPassword);
+
   useEffect(() => {
-    console.log(user);
     findUser();
     myChannelInfo();
   }, [localStorage.getItem("userEmail")]);
@@ -117,7 +116,6 @@ const Mypage = () => {
 
   const myChannelInfo = async () => {
     const response = await myChannel(user.userEmail);
-    console.log(response);
     if (response.data !== "") {
       setChannel(response.data);
     }

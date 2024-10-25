@@ -32,10 +32,8 @@ const MessageList = ({
   };
   const checkboxInput = () => {
     if (!isCheck) {
-      console.log(message.messagesCode + " 체크");
       listChange(message.messagesCode);
     } else {
-      console.log(message.messagesCode + " 해제");
       const updatedList = [];
       for (const code of checkedList) {
         if (message.messagesCode !== code) {
