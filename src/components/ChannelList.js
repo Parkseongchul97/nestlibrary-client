@@ -6,7 +6,6 @@ import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
 
 const ChannelList = ({ listTitle, subList }) => {
-  const queryClient = useQueryClient();
   const { user, token } = useAuth();
   const [channelCode, setChannelCode] = useState();
   const [isOpen, setIsOpen] = useState(false);
@@ -20,6 +19,8 @@ const ChannelList = ({ listTitle, subList }) => {
       queryClient.invalidateQueries(["subscribe", channelCode]);
     },
   });
+  const queryClient = useQueryClient();
+
   const { subCheck, isLoading, error } = useQuery({
     queryKey: ["subscribe", channelCode],
     queryFn: () => (token ? checkSub(channelCode) : null),
