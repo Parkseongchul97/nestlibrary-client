@@ -13,6 +13,8 @@ import { TbMessageCircleExclamation } from "react-icons/tb";
 
 import { isOpenMessgeCount } from "../api/message";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { findPush, removeAllPush } from "../api/push";
+import PushList from "./PushList";
 const Header = ({ onSearch }) => {
   const [page, setPage] = useState(false);
   const { user, token } = useAuth();
@@ -20,6 +22,7 @@ const Header = ({ onSearch }) => {
   const [isSearch, setIsSearch] = useState(false);
   const [keyword, setKeyword] = useState("");
   const [click, setClick] = useState(false);
+  const [isPush, setIsPush] = useState(false);
   const searchRef = useRef(null);
   const subChannelRef = useRef(null);
   const subChannelListRef = useRef(null);
@@ -35,6 +38,27 @@ const Header = ({ onSearch }) => {
     refetchInterval: 1000, // 해당 시간마다 데이터갱식하여 실시간 처럼 처리
     enabled: !!token,
   });
+  const {
+    data: pushCount,
+    isLoading: pushLoading,
+    error: pushError,
+  } = useQuery({
+    // 데이터, 로딩중인지, 에러발생
+    queryKey: ["pushCount"],
+    queryFn: () => findPush(),
+    refetchInterval: 1000, // 해당 시간마다 데이터갱식하여 실시간 처럼 처리
+    enabled: !!token,
+  });
+  const removeAllMutation = useMutation({
+    mutationFn: removeAllPush,
+    enabled: !!token,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["pushCount"]);
+    },
+  });
+  const removeAllSubmit = () => {
+    removeAllMutation.mutate();
+  };
 
   const openPage = (event) => {
     setPage(true);
@@ -100,9 +124,12 @@ const Header = ({ onSearch }) => {
     };
   }, [isSearch]);
   if (isLoading) return <>로딩중...</>;
-
+  if (pushLoading) return <>로딩중...</>;
   // 에러 발생시 처리
   if (error) return <>에러발생...</>;
+
+  // 에러 발생시 처리
+  if (pushError) return <>에러발생...</>;
 
   return (
     <>
@@ -188,6 +215,25 @@ const Header = ({ onSearch }) => {
           </div>
         ) : (
           <div className="header-right">
+            {pushCount.data !== undefined && pushCount.data.length && (
+              <button onClick={removeAllSubmit}>알람 다끈다</button>
+            )}
+
+            <div className="info" onClick={() => setIsPush(!isPush)}>
+              알림 숫자 :{" "}
+              {pushCount.data === undefined
+                ? 0
+                : pushCount.data.length > 9
+                ? "10++"
+                : pushCount.data.length}
+            </div>
+            {isPush && (
+              <div className="push-list-box">
+                {pushCount.data.map((push) => (
+                  <PushList push={push} />
+                ))}
+              </div>
+            )}
             <UserMenu user={user} />
 
             <Link id="logout-btn" onClick={logout} className="info">
