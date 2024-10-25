@@ -57,6 +57,7 @@ const Main = () => {
                   </Link>
                   <span>구독자수 : {channel.favoriteCount}</span>
                   <UserMenu
+                    channelCode={channel.channelCode}
                     user={channel.host}
                     isOpenUser={channel.channelCode === isOpenUser}
                     userMenuToggle={() => userMenuToggle(channel.channelCode)}

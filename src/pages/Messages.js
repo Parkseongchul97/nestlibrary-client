@@ -79,7 +79,6 @@ const Messages = () => {
   });
   const deleteSubmit = () => {
     for (const code of checkedList) {
-      console.log(code);
       removeMutation.mutate(code);
     }
   };
@@ -124,12 +123,10 @@ const Messages = () => {
     queryClient.invalidateQueries({ queryKey: ["messageList"] });
   };
   useEffect(() => {
-    console.log(viewType);
     queryClient.invalidateQueries({ queryKey: ["messageList"] });
   }, [page, viewType]);
 
   useEffect(() => {
-    console.log(checkedList);
     if (
       messageList != undefined &&
       messageList?.data?.messagesDTOList.length !== 0

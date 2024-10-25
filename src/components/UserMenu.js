@@ -5,8 +5,14 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { userRole } from "../api/subscribe";
 
-const UserMenu = ({ user, time, isOpenUser, userMenuToggle, role }) => {
-  // 변경대상을 담는곳
+const UserMenu = ({
+  user,
+  channelCode,
+  time,
+  isOpenUser,
+  userMenuToggle,
+  role,
+}) => {
   const [userRoleDTO, setUserRoleDTO] = useState({
     userEmail: user.userEmail,
     managementUserStatus: "",
@@ -45,6 +51,7 @@ const UserMenu = ({ user, time, isOpenUser, userMenuToggle, role }) => {
     console.log(userRoleDTO);
     await userRole(userRoleDTO);
   };
+  const grade = () => {};
 
   const getAdmin = async (data) => {
     console.log("관리자");

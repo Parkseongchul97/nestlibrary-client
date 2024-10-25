@@ -31,7 +31,6 @@ const ChannelDetail = () => {
   const [searchKeyword, setSearchKeyword] = useState(""); // 검색어
   const [searchTarget, setSearchTarget] = useState("title"); // 기본 검색 대상: 제목
   const fetch = async () => {
-    console.log(channelCode, channelTagCode, viewType);
     const info = await channelInfo(channelCode);
     setChannel(info.data);
     const channelPosts =
@@ -66,7 +65,6 @@ const ChannelDetail = () => {
   }, [viewType]);
   useEffect(() => {
     fetch();
-    console.log(viewType);
   }, [channelCode, channelTagCode, page, viewType]);
 
   const { data, isLoading, error } = useQuery({

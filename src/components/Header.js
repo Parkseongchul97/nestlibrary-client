@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import "../assets/header.scss";
 import Login from "../pages/Login";
@@ -8,21 +8,18 @@ import { kakaoLogout } from "../user/kakaoCode";
 import { useAuth } from "../contexts/AuthContext";
 import UserMenu from "./UserMenu";
 import SubChannelList from "./SubChannelList";
-import { IoMailOutline, IoNotificationsSharp } from "react-icons/io5";
-import { FaMessage } from "react-icons/fa6";
 import { IoIosMail } from "react-icons/io";
 import { TbMessageCircleExclamation } from "react-icons/tb";
 
 import { isOpenMessgeCount } from "../api/message";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-const Header = ({ onSearch, onsub, all }) => {
+const Header = ({ onSearch }) => {
   const [page, setPage] = useState(false);
   const { user, token } = useAuth();
   const { logout: authLogout } = useAuth();
   const [isSearch, setIsSearch] = useState(false);
   const [keyword, setKeyword] = useState("");
   const [click, setClick] = useState(false);
-  const [click1, setClick1] = useState("");
   const searchRef = useRef(null);
   const subChannelRef = useRef(null);
   const subChannelListRef = useRef(null);

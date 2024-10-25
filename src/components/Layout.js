@@ -1,13 +1,13 @@
 import Header from "./Header";
 import Footer from "./Footer";
-import { allChannel, subChannel } from "../api/channel";
+import { allChannel } from "../api/channel";
 import { useEffect, useState, useCallback } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 const Layout = () => {
   const location = useLocation();
   const currentUrl = window.location.href;
-  console.log(currentUrl);
+
   const [channelList, setChannelList] = useState([]);
   const [page, setPage] = useState(1);
   const [keyword, setKeyword] = useState("");
@@ -37,7 +37,6 @@ const Layout = () => {
     setKeyword(keyword);
     setIsSearch(!isSearch);
     if (currentUrl != "http://localhost:3000/") navigate(`/`);
-    console.log(keyword);
   };
 
   const onSub = () => {
