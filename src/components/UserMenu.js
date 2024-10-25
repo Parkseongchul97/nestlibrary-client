@@ -3,50 +3,79 @@ import TimeFormat from "./TimeFormat";
 import "../assets/userMenu.scss";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { userRole } from "../api/subscribe";
 
-const UserMenu = ({
-  user,
-  channelCode,
-  time,
-  isOpenUser,
-  userMenuToggle,
-  role,
-}) => {
+import { loginUserChannelGrade, userChannelGrade } from "../api/management";
+
+const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
   const [userRoleDTO, setUserRoleDTO] = useState({
     userEmail: "",
     managementUserStatus: "",
     channelCode: "",
     banDate: "",
   });
+  const [managementDTO, setManagementDTO] = useState({
+    userEmail: user.userEmail,
+    managementUserStatus: "",
+    channelCode: channelCode,
+    banDate: 0,
+  });
 
   const { user: loginUser, token } = useAuth();
+  const [userGrade, setUserGrade] = useState(null); // 해당유저
+  const [loginUserGrade, setloginUserGrade] = useState(null); // 로그인유저
 
-  const getUserDTo = async (data) => {
-    console.log(data);
-    if (data.type == "click") {
-      if (userRoleDTO.banDate === "") {
-        alert("기간 선택을 해주세요!");
-        return;
-      } else {
-        setUserRoleDTO({
-          ...userRoleDTO,
-          managementUserStatus: "ban",
-          userEmail: user.userEmail,
-        });
-        await userRole(userRoleDTO);
-        setUserRoleDTO("");
-      }
-    } else {
-      await userRole(data);
-      setUserRoleDTO("");
-
-      return;
-    }
+  // const getUserDTo = async (data) => {
+  //   console.log(data);
+  //   // if (data.type == "click") {
+  //   //   if (userRoleDTO.banDate === "") {
+  //   //     alert("기간 선택을 해주세요!");
+  //   //     return;
+  //   //   } else {
+  //   //     setUserRoleDTO({
+  //   //       ...userRoleDTO,
+  //   //       managementUserStatus: "ban",
+  //   //       userEmail: user.userEmail,
+  //   //     });
+  //   //     await userRole(userRoleDTO);
+  //   //     setUserRoleDTO("");
+  //   //   }
+  //   // } else {
+  //   //   await userRole(data);
+  //   //   setUserRoleDTO("");
+  //   return;
+  //   // }
+  // };
+  const grade = async () => {
+    const response = await userChannelGrade(channelCode, user.userEmail);
+    setUserGrade(response.data);
   };
-  const grade = () => {};
+  const loginGrade = async () => {
+    const response = await loginUserChannelGrade(channelCode);
+    setloginUserGrade(response.data);
+  };
+  useEffect(() => {
+    if (channelCode !== undefined && channelCode !== null) grade();
+  }, [channelCode]);
+  useEffect(() => {
+    if (channelCode !== undefined && channelCode !== null && token !== null)
+      loginGrade();
+  }, [channelCode, token]);
 
   const [banOpen, setbanOpen] = useState(false);
+
+  const gradeChangeSubmit = () => {
+    // 여기에 유저 정보 변경 로직
+    console.log("채널코드 : " + channelCode);
+    console.log(managementDTO);
+    // 여기서 정보 보내기
+    // 초기화
+    setManagementDTO({
+      userEmail: user.userEmail,
+      managementUserStatus: "",
+      channelCode: channelCode,
+      banDate: 0,
+    });
+  };
 
   return (
     <div className="user-profile-box">
@@ -85,99 +114,139 @@ const UserMenu = ({
      
           
           */}
-          {role.managementUserStatus == "admin" && <a>차단하기</a>}
+          {loginUserGrade.managementUserStatus == "admin" && <a>차단하기</a>}
           {/* 채널 호스트라면
           <a>관리자로 임명</a>
           */}
-          {role.managementUserStatus == "host" && (
+          {loginUserGrade.managementUserStatus == "host" && (
             <>
               <a onClick={() => setbanOpen(!banOpen)}>차단하기</a>
-              {banOpen && (
-                <>
-                  <div>벤하실건가여?</div>
-                  <label>
-                    <input
-                      type="radio"
-                      name={`option-${user?.userEmail}`}
-                      value="1"
-                      onClick={(e) =>
-                        setUserRoleDTO({
-                          ...userRoleDTO,
-                          banDate: e.target.value,
-                        })
-                      }
-                    />
-                    1일
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name={`option-${user?.userEmail}`}
-                      value="7"
-                      onClick={(e) =>
-                        setUserRoleDTO({
-                          ...userRoleDTO,
-                          banDate: e.target.value,
-                        })
-                      }
-                    />
-                    1주일
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name={`option-${user?.userEmail}`}
-                      value="30"
-                      onClick={(e) =>
-                        setUserRoleDTO({
-                          ...userRoleDTO,
-                          banDate: e.target.value,
-                        })
-                      }
-                    />
-                    1달
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name={`option-${user?.userEmail}`}
-                      value="365"
-                      onClick={(e) =>
-                        setUserRoleDTO({
-                          ...userRoleDTO,
-                          banDate: e.target.value,
-                        })
-                      }
-                    />
-                    1년
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name={`option-${user?.userEmail}`}
-                      value="99999"
-                      onClick={(e) =>
-                        setUserRoleDTO({
-                          ...userRoleDTO,
-                          banDate: e.target.value,
-                        })
-                      }
-                    />
-                    영구벤
-                  </label>
-                  <button onClick={getUserDTo}>확인</button>
-                </>
-              )}
-              <a
-                onClick={() =>
-                  getUserDTo({
-                    ...userRoleDTO,
+              {banOpen &&
+                (userGrade === null ||
+                  userGrade === "" ||
+                  userGrade.managementUserStatus !== "ban") && (
+                  <>
+                    <div>벤하실건가여?</div>
+
+                    <label>
+                      <input
+                        type="radio"
+                        value={1}
+                        onClick={(e) =>
+                          setManagementDTO({
+                            ...managementDTO,
+                            banDate: e.target.value,
+                            managementUserStatus: "ban",
+                            channelCode: channelCode,
+                          })
+                        }
+                      />
+                      1일
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value={3}
+                        onClick={(e) =>
+                          setManagementDTO({
+                            ...managementDTO,
+                            banDate: e.target.value,
+                            managementUserStatus: "ban",
+                            channelCode: channelCode,
+                          })
+                        }
+                      />
+                      3일
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value={7}
+                        onClick={(e) =>
+                          setManagementDTO({
+                            ...managementDTO,
+                            banDate: e.target.value,
+                            managementUserStatus: "ban",
+                            channelCode: channelCode,
+                          })
+                        }
+                      />
+                      일주일
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value={30}
+                        onClick={(e) =>
+                          setManagementDTO({
+                            ...managementDTO,
+                            banDate: e.target.value,
+                            managementUserStatus: "ban",
+                            channelCode: channelCode,
+                          })
+                        }
+                      />
+                      1달
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value={365}
+                        onClick={(e) =>
+                          setManagementDTO({
+                            ...managementDTO,
+                            banDate: e.target.value,
+                            managementUserStatus: "ban",
+                            channelCode: channelCode,
+                          })
+                        }
+                      />
+                      1년
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value={99999}
+                        onClick={(e) =>
+                          setManagementDTO({
+                            ...managementDTO,
+                            banDate: e.target.value,
+                            managementUserStatus: "ban",
+                            channelCode: channelCode,
+                          })
+                        }
+                      />
+                      영구
+                    </label>
+                    <button
+                      onClick={() => {
+                        gradeChangeSubmit();
+                      }}
+                    >
+                      벤 확인
+                    </button>
+                  </>
+                )}
+              {userGrade !== null ||
+                (userGrade.managementUserStatus === "ban" && (
+                  <>
+                    <div>벤풀기</div>
+                    <div>남은날짜 : {userGrade.managementUserStatus}</div>
+                  </>
+                ))}
+
+              <div
+                onClick={() => {
+                  setManagementDTO({
+                    ...managementDTO,
                     managementUserStatus: "admin",
-                  })
-                }
+                    channelCode: channelCode,
+                  });
+                  gradeChangeSubmit();
+                }}
               >
-                관리자로 임명
-              </a>
+                해당 유저관리자로 임명
+              </div>
             </>
           )}
         </div>
