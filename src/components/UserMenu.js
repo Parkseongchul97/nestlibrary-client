@@ -132,7 +132,8 @@ const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
                       <input
                         type="radio"
                         value={1}
-                        onClick={(e) =>
+                        name={`option-${user.userEmail}`}
+                        onChange={(e) =>
                           setManagementDTO({
                             ...managementDTO,
                             banDate: e.target.value,
@@ -147,7 +148,8 @@ const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
                       <input
                         type="radio"
                         value={3}
-                        onClick={(e) =>
+                        name={`option-${user.userEmail}`}
+                        onChange={(e) =>
                           setManagementDTO({
                             ...managementDTO,
                             banDate: e.target.value,
@@ -162,7 +164,8 @@ const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
                       <input
                         type="radio"
                         value={7}
-                        onClick={(e) =>
+                        name={`option-${user.userEmail}`}
+                        onChange={(e) =>
                           setManagementDTO({
                             ...managementDTO,
                             banDate: e.target.value,
@@ -177,7 +180,8 @@ const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
                       <input
                         type="radio"
                         value={30}
-                        onClick={(e) =>
+                        name={`option-${user.userEmail}`}
+                        onChange={(e) =>
                           setManagementDTO({
                             ...managementDTO,
                             banDate: e.target.value,
@@ -192,7 +196,8 @@ const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
                       <input
                         type="radio"
                         value={365}
-                        onClick={(e) =>
+                        name={`option-${user.userEmail}`}
+                        onChange={(e) =>
                           setManagementDTO({
                             ...managementDTO,
                             banDate: e.target.value,
@@ -207,7 +212,8 @@ const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
                       <input
                         type="radio"
                         value={99999}
-                        onClick={(e) =>
+                        name={`option-${user.userEmail}`}
+                        onChange={(e) =>
                           setManagementDTO({
                             ...managementDTO,
                             banDate: e.target.value,
