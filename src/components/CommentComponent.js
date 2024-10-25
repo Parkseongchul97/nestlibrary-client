@@ -13,11 +13,8 @@ const CommentComponent = ({
   comment,
   postCode,
   id,
-  role,
   isOpenUser,
-  setIsOpenUser,
-  opening,
-  toggle,
+  userMenuToggle,
 }) => {
   const { user, token } = useAuth();
   const [newReComment, setNewReComment] = useState({
@@ -36,6 +33,15 @@ const CommentComponent = ({
 
   const [isChange, setIsChange] = useState(0); // 수정 체크
   const queryClient = useQueryClient();
+
+  // const [isOpenReUser, setIsOpenReUser] = useState(null);
+  // const userReMenuToggle = (commentCode) => {
+  //   if (isOpenReUser === commentCode) {
+  //     setIsOpenReUser(null);
+  //   } else {
+  //     setIsOpenReUser(commentCode);
+  //   }
+  // };
 
   const addMutation = useMutation({
     mutationFn: addAPI,
@@ -117,9 +123,8 @@ const CommentComponent = ({
             <UserMenu
               user={comment?.user}
               time={comment?.commentCreatedAt}
-              role={role}
-              toggle={() => toggle(comment?.commentCode)}
-              opening={opening === comment?.commentCode}
+              isOpenUser={isOpenUser === comment.commentCode}
+              userMenuToggle={() => userMenuToggle(comment.commentCode)}
             />
             {isChange === comment.commentCode &&
             user !== undefined &&
@@ -205,10 +210,10 @@ const CommentComponent = ({
         <CommentComponent
           comment={reCommentDTO}
           postCode={postCode}
+          id={reCommentDTO.commentCode}
           key={reCommentDTO.commentCode}
-          opening={opening}
-          toggle={toggle}
-          role={role}
+          isOpenUser={isOpenUser}
+          userMenuToggle={userMenuToggle}
         />
       ))}
     </div>

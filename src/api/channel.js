@@ -64,6 +64,23 @@ export const tagPosts = async (
   );
   return response; // 특정 태그의 게시글 데이터 반환
 };
+// 채널 태그별 게시글 API
+export const tagBestPosts = async (
+  channelCode,
+  channeltagCode,
+  page,
+  target,
+  keyword
+) => {
+  const response = await instance.get(
+    `/${channelCode}/${channeltagCode}/best?page=${
+      page === undefined || page === null ? 1 : page
+    }&target=${target === undefined || target === null ? "" : target}&keyword=${
+      keyword === undefined || keyword === null ? "" : keyword
+    }`
+  );
+  return response; // 특정 태그의 게시글 데이터 반환
+};
 
 export const allChannel = async (page, keyword = "") => {
   return await instance.get("channel/main", {

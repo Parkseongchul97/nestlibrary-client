@@ -5,15 +5,15 @@ import { useOutletContext } from "react-router-dom";
 import PostListComponent from "../components/PostListComponent";
 
 import { useAuth } from "../contexts/AuthContext";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { addSub, checkSub, removeSub } from "../api/subscribe";
+import { useQueryClient } from "@tanstack/react-query";
+
 import UserMenu from "../components/UserMenu";
 
 const Main = () => {
   const { channelList, setPage } = useOutletContext();
   const { user, token } = useAuth();
-
   const queryClient = useQueryClient();
+  const [isOpenUser, setIsOpenUser] = useState(null);
 
   const scroll = () => {
     if (
@@ -32,6 +32,14 @@ const Main = () => {
     };
   }, [setPage]);
 
+  const userMenuToggle = (code) => {
+    if (isOpenUser === code) {
+      setIsOpenUser(null);
+    } else {
+      setIsOpenUser(code);
+    }
+  };
+
   return (
     <div className="main-box">
       <div className="main">
@@ -48,7 +56,11 @@ const Main = () => {
                     {channel?.channelName} 채널
                   </Link>
                   <span>구독자수 : {channel.favoriteCount}</span>
-                  <UserMenu user={channel.host} />
+                  <UserMenu
+                    user={channel.host}
+                    isOpenUser={channel.channelCode === isOpenUser}
+                    userMenuToggle={() => userMenuToggle(channel.channelCode)}
+                  />
                 </div>
                 {channel.allPost !== undefined &&
                 channel.allPost.length !== 0 ? (

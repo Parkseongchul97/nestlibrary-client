@@ -34,13 +34,7 @@ const Mypage = () => {
 
   const [nicknameSubmit, setNicknameSubmit] = useState(true);
 
-  const [userDTO, setUserDTO] = useState({
-    // userEmail: user.userEmail,
-    // userNickname: user.userNickname,
-    // userImgUrl: null,
-    // userInfo: user.userInfo,
-    // userPoint: user.userPoint,
-  });
+  const [userDTO, setUserDTO] = useState({});
   const findUser = async () => {
     const result = await getUserInfo(localStorage.getItem("userEmail"));
     setUserDTO({
@@ -124,7 +118,7 @@ const Mypage = () => {
   const myChannelInfo = async () => {
     const response = await myChannel(user.userEmail);
     console.log(response);
-    if (response.data != "") {
+    if (response.data !== "") {
       setChannel(response.data);
     }
   };

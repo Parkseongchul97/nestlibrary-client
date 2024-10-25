@@ -24,8 +24,15 @@ const Messages = () => {
   const [searchKeyword, setSearchKeyword] = useState(""); // 검색어
   const [searchTarget, setSearchTarget] = useState("title"); // 기본
   const [newCheckList, setNewCheckList] = useState([]);
-  const [viewType, setViewType] = useState(""); // 전체냐 to냐 from이냐 구분
-
+  const [viewType, setViewType] = useState("open"); // 전체냐 to냐 from이냐 구분
+  const [isOpenUser, setIsOpenUser] = useState(null);
+  const userMenuToggle = (code) => {
+    if (isOpenUser === code) {
+      setIsOpenUser(null);
+    } else {
+      setIsOpenUser(code);
+    }
+  };
   const {
     data: messageList,
     isLoading,
@@ -62,7 +69,7 @@ const Messages = () => {
         }
       }
     },
-    refetchInterval: 1000,
+    // refetchInterval: viewType !== "open" ? 1000 : null,
   });
   const removeMutation = useMutation({
     mutationFn: removeMessage,
@@ -80,15 +87,14 @@ const Messages = () => {
   const AllListAdd = () => {
     if (messageList !== undefined) {
       // 리스트들이 다올라오면
+
       const ckList = [];
       for (const m of messageList.data.messagesDTOList) {
         const messageCode = m?.messagesCode;
-        // 기존 checkedList에 없으면 추가
-        if (!checkedList.includes(messageCode)) {
-          ckList.push(messageCode);
-        }
+        ckList.push(messageCode);
       }
       setNewCheckList(ckList);
+      setAllCheck(true);
     }
   };
   const AllListRemove = () => {
@@ -97,7 +103,7 @@ const Messages = () => {
     setAllCheck(false);
   };
   useEffect(() => {
-    setCheckedList(...checkedList, newCheckList);
+    setCheckedList(newCheckList);
   }, [newCheckList]);
 
   useEffect(() => {
@@ -118,9 +124,26 @@ const Messages = () => {
     queryClient.invalidateQueries({ queryKey: ["messageList"] });
   };
   useEffect(() => {
+    console.log(viewType);
     queryClient.invalidateQueries({ queryKey: ["messageList"] });
   }, [page, viewType]);
 
+  useEffect(() => {
+    console.log(checkedList);
+    if (
+      messageList != undefined &&
+      messageList?.data?.messagesDTOList.length !== 0
+    ) {
+      if (checkedList.length === messageList?.data?.messagesDTOList?.length) {
+        setAllCheck(true);
+      } else if (
+        checkedList.length === 0 &&
+        messageList?.data?.messagesDTOList?.length !== 0
+      ) {
+        setAllCheck(false);
+      }
+    }
+  }, [checkedList]);
   if (isLoading) return <>로딩중...</>;
   if (error) return <>에러발생...</>;
   return (
@@ -128,17 +151,21 @@ const Messages = () => {
       <div className="message-list-box">
         <div className="messages-header">
           <Link
-            className="messages-type"
+            className={
+              viewType === "open" ? "messages-selected-type" : "messages-type"
+            }
             to="#"
             onClick={() => {
-              setViewType("");
+              setViewType("open");
               AllListRemove();
             }}
           >
             아직안본 메시지
           </Link>
           <Link
-            className="messages-type"
+            className={
+              viewType === "all" ? "messages-selected-type" : "messages-type"
+            }
             to="#"
             onClick={() => {
               setViewType("all");
@@ -148,7 +175,9 @@ const Messages = () => {
             모든 메시지
           </Link>
           <Link
-            className="messages-type"
+            className={
+              viewType === "to" ? "messages-selected-type" : "messages-type"
+            }
             to="#"
             onClick={() => {
               setViewType("to");
@@ -158,7 +187,9 @@ const Messages = () => {
             받은 메시지
           </Link>
           <Link
-            className="messages-type"
+            className={
+              viewType === "from" ? "messages-selected-type" : "messages-type"
+            }
             to="#"
             onClick={() => {
               setViewType("from");
@@ -188,7 +219,7 @@ const Messages = () => {
               <p>쪽지가 없습니다.</p>
             </div>
           ) : (
-            messageList.data.messagesDTOList?.map((message) => (
+            messageList.data.messagesDTOList?.map((message, index) => (
               <MessageList
                 message={message}
                 key={message?.messagesCode}
@@ -197,6 +228,9 @@ const Messages = () => {
                 isChecked={allCheck}
                 setCheckedList={setCheckedList}
                 checkedList={checkedList}
+                viewType={viewType}
+                isOpenUser={isOpenUser}
+                userMenuToggle={userMenuToggle}
               />
             ))
           )}

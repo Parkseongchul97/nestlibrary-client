@@ -31,6 +31,8 @@ const UserMenu = ({
       channelCode: role.channel.channelCode,
     });
   };
+const UserMenu = ({ user, time, isOpenUser, userMenuToggle }) => {
+  const { user: loginUser, token } = useAuth();
 
   const getUserDTo = async (data) => {
     console.log(data);
@@ -68,7 +70,7 @@ const UserMenu = ({
 
   return (
     <div className="user-profile-box">
-      <div className="user-profile" onClick={toggle}>
+      <div className="user-profile" onClick={userMenuToggle}>
         <img
           className="user-profile-img"
           src={
@@ -103,6 +105,21 @@ const UserMenu = ({
             </Link>
             <a>유저페이지로 이동</a>
             {/* 채널 관리자라면
+      {isOpenUser && token && loginUser.userEmail !== user?.userEmail && (
+        <div className="profile-actions">
+          <Link
+            state={{
+              toUser: {
+                email: user.userEmail,
+                nickname: user.userNickname,
+              },
+            }}
+            to="/message/write"
+          >
+            쪽지 보내기
+          </Link>
+          <a>유저페이지로 이동</a>
+          {/* 채널 관리자라면
           <a>차단하기</a>
           
           */}

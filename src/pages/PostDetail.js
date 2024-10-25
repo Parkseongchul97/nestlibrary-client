@@ -39,6 +39,16 @@ const PostDetail = () => {
   };
 
   const queryClient = useQueryClient();
+  const [isOpenUser, setIsOpenUser] = useState(null);
+  const userMenuToggle = (commentCode) => {
+    console.log("기존 : " + isOpenUser);
+    console.log("새로운 : " + commentCode);
+    if (isOpenUser === commentCode) {
+      setIsOpenUser(null);
+    } else {
+      setIsOpenUser(commentCode);
+    }
+  };
   // 댓글 목록
   const {
     data: commentList,
@@ -245,9 +255,8 @@ const PostDetail = () => {
                   comment={comment}
                   postCode={postCode}
                   key={comment.commentCode}
-                  role={role}
-                  opening={open}
-                  toggle={isOpen}
+                  isOpenUser={isOpenUser}
+                  userMenuToggle={userMenuToggle}
                 />
               ))
             )}

@@ -16,6 +16,10 @@
     border: 1px solid;
     border-radius: 15px;
     padding: 2px;
+    svg {
+      color: red;
+      margin-right: 5px;
+    }
     .channel-tag {
       text-wrap: nowrap;
       align-self: center;

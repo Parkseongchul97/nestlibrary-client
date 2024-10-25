@@ -12,6 +12,9 @@ const MessageList = ({
   isChecked,
   checkedList,
   setCheckedList,
+  viewType,
+  isOpenUser,
+  userMenuToggle,
 }) => {
   const { user } = useAuth();
   const [isCheck, setIsCheck] = useState(isChecked);
@@ -22,6 +25,7 @@ const MessageList = ({
       setIsOpen(code);
     }
   };
+  const [notRead, setNotRead] = useState(false);
   const listChange = (messagesCode) => {
     const list = [...checkedList, messagesCode];
     setCheckedList(list);
@@ -58,7 +62,10 @@ const MessageList = ({
           }}
         />
         <div
-          onClick={() => openDetail(message.messagesCode)}
+          onClick={() => {
+            openDetail(message.messagesCode);
+            setNotRead(true);
+          }}
           className="message-link"
         >
           {message.messagesTitle}
@@ -68,31 +75,50 @@ const MessageList = ({
           {user.userEmail === message.messagesFromUser.userEmail ? (
             <>
               <div>받은사람</div>
-              <UserMenu user={message.messagesToUser} />
+              <UserMenu
+                user={message.messagesToUser}
+                isOpenUser={isOpenUser === message.messagesCode}
+                userMenuToggle={() => userMenuToggle(message.messagesCode)}
+              />
             </>
           ) : (
             <>
               <div>보낸사람</div>
-              <UserMenu user={message.messagesFromUser} />
+              <UserMenu
+                user={message.messagesFromUser}
+                isOpenUser={isOpenUser === message.messagesCode}
+                userMenuToggle={() => userMenuToggle(message.messagesCode)}
+              />
             </>
           )}
           <TimeFormat
             time={message.messagesSentAt}
             className="message-time"
           ></TimeFormat>
-          <div className="is-open">
-            {message.messagesRead ? (
-              <IoMailOpenOutline size={"2rem"} />
-            ) : (
-              <IoMailOutline size={"2rem"} />
-            )}
-          </div>
+
+          {viewType !== "open" ? (
+            <div className="is-open">
+              {message.messagesRead ? (
+                <IoMailOpenOutline size={"2rem"} />
+              ) : (
+                <IoMailOutline size={"2rem"} />
+              )}
+            </div>
+          ) : (
+            <div className="is-open">
+              {notRead ? (
+                <IoMailOpenOutline size={"2rem"} />
+              ) : (
+                <IoMailOutline size={"2rem"} />
+              )}
+            </div>
+          )}
         </div>
       </div>
       {isOpen === message.messagesCode && (
         <MessagesDetail
           isOpen={isOpen}
-          setIsOpen={() => setIsOpen(0)}
+          setIsOpen={setIsOpen}
           messagesCode={message?.messagesCode}
           key={message?.messagesCode}
         />

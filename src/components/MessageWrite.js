@@ -23,7 +23,9 @@ const MessageWrite = () => {
   const [inputNickname, setInputNickname] = useState(
     toUser !== undefined ? toUser.nickname : ""
   ); //입력한 닉네임
-  const [viewNickname, setViewNickname] = useState("");
+  const [viewNickname, setViewNickname] = useState(
+    toUser !== undefined ? toUser.nickname : ""
+  );
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
@@ -61,7 +63,6 @@ const MessageWrite = () => {
         ? { ...message, messagesToUser: toUser.email }
         : { ...message }
     );
-    setViewNickname(toUser !== undefined ? toUser?.userNickname : "");
   }, []);
   if (isLoading) return <></>;
   if (error) return <></>;
@@ -83,11 +84,7 @@ const MessageWrite = () => {
           (targetUser) =>
             targetUser.userEmail !== user.userEmail && (
               <div>
-                <UserMenu
-                  user={targetUser}
-                  key={targetUser.userEmail}
-                  noneMenu={true}
-                />
+                <UserMenu user={targetUser} key={targetUser.userEmail} />
                 <button
                   onClick={() => {
                     selectedUser(targetUser);
