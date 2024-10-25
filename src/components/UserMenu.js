@@ -5,7 +5,14 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { userRole } from "../api/subscribe";
 
-const UserMenu = ({ user, time, isOpenUser, userMenuToggle, role }) => {
+const UserMenu = ({
+  user,
+  channelCode,
+  time,
+  isOpenUser,
+  userMenuToggle,
+  role,
+}) => {
   const [userRoleDTO, setUserRoleDTO] = useState({
     userEmail: "",
     managementUserStatus: "",
@@ -37,6 +44,7 @@ const UserMenu = ({ user, time, isOpenUser, userMenuToggle, role }) => {
       return;
     }
   };
+  const grade = () => {};
 
   const [banOpen, setbanOpen] = useState(false);
 
