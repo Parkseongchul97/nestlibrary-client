@@ -25,12 +25,12 @@ const Messages = () => {
   const [searchTarget, setSearchTarget] = useState("title"); // 기본
   const [newCheckList, setNewCheckList] = useState([]);
   const [viewType, setViewType] = useState("open"); // 전체냐 to냐 from이냐 구분
-  const [isOpenUser , setIsOpenUser] = useState(null);
-  const userMenuToggle = (index) => {
-    if(isOpenUser === index){
+  const [isOpenUser, setIsOpenUser] = useState(null);
+  const userMenuToggle = (code) => {
+    if (isOpenUser === code) {
       setIsOpenUser(null);
-    }else{
-      setIsOpenUser(index);
+    } else {
+      setIsOpenUser(code);
     }
   };
   const {
@@ -219,7 +219,7 @@ const Messages = () => {
               <p>쪽지가 없습니다.</p>
             </div>
           ) : (
-            messageList.data.messagesDTOList?.map((message ,index) => (
+            messageList.data.messagesDTOList?.map((message, index) => (
               <MessageList
                 message={message}
                 key={message?.messagesCode}
@@ -229,8 +229,8 @@ const Messages = () => {
                 setCheckedList={setCheckedList}
                 checkedList={checkedList}
                 viewType={viewType}
-                isOpenUser={isOpenUser === index}
-                userMenuToggle={()=>userMenuToggle(index)}
+                isOpenUser={isOpenUser}
+                userMenuToggle={userMenuToggle}
               />
             ))
           )}

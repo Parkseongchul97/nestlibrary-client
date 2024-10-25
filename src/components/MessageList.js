@@ -14,7 +14,7 @@ const MessageList = ({
   setCheckedList,
   viewType,
   isOpenUser,
-  userMenuToggle
+  userMenuToggle,
 }) => {
   const { user } = useAuth();
   const [isCheck, setIsCheck] = useState(isChecked);
@@ -75,16 +75,20 @@ const MessageList = ({
           {user.userEmail === message.messagesFromUser.userEmail ? (
             <>
               <div>받은사람</div>
-              <UserMenu user={message.messagesToUser}   
-              isOpenUser={isOpenUser}
-              userMenuToggle={userMenuToggle}/>
+              <UserMenu
+                user={message.messagesToUser}
+                isOpenUser={isOpenUser === message.messagesCode}
+                userMenuToggle={() => userMenuToggle(message.messagesCode)}
+              />
             </>
           ) : (
             <>
               <div>보낸사람</div>
-              <UserMenu user={message.messagesFromUser}
-              isOpenUser={isOpenUser}
-              userMenuToggle={userMenuToggle} />
+              <UserMenu
+                user={message.messagesFromUser}
+                isOpenUser={isOpenUser === message.messagesCode}
+                userMenuToggle={() => userMenuToggle(message.messagesCode)}
+              />
             </>
           )}
           <TimeFormat

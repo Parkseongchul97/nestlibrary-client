@@ -84,11 +84,7 @@ const MessageWrite = () => {
           (targetUser) =>
             targetUser.userEmail !== user.userEmail && (
               <div>
-                <UserMenu
-                  user={targetUser}
-                  key={targetUser.userEmail}
-                  noneMenu={true}
-                />
+                <UserMenu user={targetUser} key={targetUser.userEmail} />
                 <button
                   onClick={() => {
                     selectedUser(targetUser);

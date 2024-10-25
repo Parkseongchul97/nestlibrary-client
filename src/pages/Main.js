@@ -13,7 +13,7 @@ const Main = () => {
   const { channelList, setPage } = useOutletContext();
   const { user, token } = useAuth();
   const queryClient = useQueryClient();
-  const [isOpenUser , setIsOpenUser] = useState(null);
+  const [isOpenUser, setIsOpenUser] = useState(null);
 
   const scroll = () => {
     if (
@@ -32,11 +32,11 @@ const Main = () => {
     };
   }, [setPage]);
 
-  const userMenuToggle = (index) => {
-    if(isOpenUser === index){
+  const userMenuToggle = (code) => {
+    if (isOpenUser === code) {
       setIsOpenUser(null);
-    }else{
-      setIsOpenUser(index);
+    } else {
+      setIsOpenUser(code);
     }
   };
 
@@ -56,7 +56,11 @@ const Main = () => {
                     {channel?.channelName} 채널
                   </Link>
                   <span>구독자수 : {channel.favoriteCount}</span>
-                  <UserMenu user={channel.host} isOpenUser={index === isOpenUser} userMenuToggle={()=>userMenuToggle(index)} />
+                  <UserMenu
+                    user={channel.host}
+                    isOpenUser={channel.channelCode === isOpenUser}
+                    userMenuToggle={() => userMenuToggle(channel.channelCode)}
+                  />
                 </div>
                 {channel.allPost !== undefined &&
                 channel.allPost.length !== 0 ? (
