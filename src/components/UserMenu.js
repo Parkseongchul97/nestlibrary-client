@@ -12,6 +12,8 @@ const UserMenu = ({
   role,
   setIsOpenUser,
   isOpenUser,
+  toggle,
+  opening,
 }) => {
   const { user: loginUser, token } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
@@ -19,14 +21,12 @@ const UserMenu = ({
   //const [isOpenUser, setIsOpenUser] = useState(false);
   const [userRoleDTO, setUserRoleDTO] = useState({
     userEmail: "",
-    managementUserStatus: role !== undefined ? role.channel.channelCode : "",
+    managementUserStatus: "",
     channelCode: "",
     banDate: "",
   });
 
   const accordion = (userEmail) => {
-    setIsOpen(!isOpen);
-
     setUserRoleDTO({
       channelCode: role.channel.channelCode,
     });
@@ -66,25 +66,9 @@ const UserMenu = ({
   //   });
   // }, [isOpen]);
 
-  useEffect(() => {
-    // console.log("이즈오픈" + isOpen);
-    // console.log("이즈오픈유저" + setIsOpenUser);
-  }, [setIsOpen, setIsOpenUser]);
-
   return (
     <div className="user-profile-box">
-      <div
-        className="user-profile"
-        onClick={() => {
-          setIsOpen(!isOpen);
-          console.log("작은거의 상태가 : " + isOpen + "이에용");
-          if (isOpen) {
-            setIsOpenUser(user.userEmail);
-          } else {
-            setIsOpenUser("");
-          }
-        }}
-      >
+      <div className="user-profile" onClick={toggle}>
         <img
           className="user-profile-img"
           src={
@@ -102,8 +86,7 @@ const UserMenu = ({
         </p>
       </div>
       {!noneMenu &&
-        isOpenUser &&
-        isOpen &&
+        opening &&
         token &&
         loginUser.userEmail !== user?.userEmail && (
           <div className="profile-actions">

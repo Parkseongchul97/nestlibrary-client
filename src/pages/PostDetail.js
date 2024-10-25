@@ -28,6 +28,15 @@ const PostDetail = () => {
   });
   const [post, setPost] = useState(null);
   const [role, setRole] = useState("");
+  const [open, setOpen] = useState(null);
+
+  const isOpen = (commentCode) => {
+    if (open === commentCode) {
+      setOpen(null);
+    } else {
+      setOpen(commentCode);
+    }
+  };
 
   const queryClient = useQueryClient();
   // 댓글 목록
@@ -133,24 +142,19 @@ const PostDetail = () => {
     }
   };
   const setGrade = async () => {
-    const response = await checkGrade(user.userEmail, postCode);
-    console.log(response);
-    setRole(response.data);
+    if (localStorage.getItem("token") !== null) {
+      const response = await checkGrade(user.userEmail, postCode);
+      console.log(response);
+      setRole(response.data);
+    }
   };
 
   useEffect(() => {
+    console.log(role);
     loadingPost();
     setGrade();
   }, []);
-  const changeSet = (miniOpen) => {
-    console.log("대상 유저에용" + miniOpen);
-    if (miniOpen === "") {
-      setIsOpenUser(miniOpen);
-    } else {
-      console.log("큰거를 폴스로 바꿔요");
-      setIsOpenUser(miniOpen);
-    }
-  };
+
   // 시점이 다를때마다 useEffect 추가
 
   // 데이터 로딩중일 때 처리
@@ -242,8 +246,8 @@ const PostDetail = () => {
                   postCode={postCode}
                   key={comment.commentCode}
                   role={role}
-                  setIsOpenUser={changeSet}
-                  isOpenUser={isOpenUser}
+                  opening={open}
+                  toggle={isOpen}
                 />
               ))
             )}
