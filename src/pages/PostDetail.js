@@ -13,7 +13,9 @@ import { likeState as state, like, unLike } from "../api/postLike";
 import TimeFormat from "../components/TimeFormat";
 import Page from "../components/Page";
 import { remove } from "../api/post";
+import { checkGrade } from "../api/channel";
 const PostDetail = () => {
+  const [isOpenUser, setIsOpenUser] = useState(false);
   const { postCode } = useParams();
   const { user, token } = useAuth();
   const location = useLocation();
@@ -25,9 +27,10 @@ const PostDetail = () => {
     userEmail: user?.userEmail,
   });
   const [post, setPost] = useState(null);
+  const [role, setRole] = useState("");
 
   const queryClient = useQueryClient();
-  const [isOpenUser, setIsOpenUser] = useState(null);
+
   const userMenuToggle = (commentCode) => {
     if (isOpenUser === commentCode) {
       setIsOpenUser(null);
@@ -137,10 +140,20 @@ const PostDetail = () => {
         post?.channelTag?.channelTagCode;
     }
   };
+  const setGrade = async () => {
+    if (localStorage.getItem("token") !== null) {
+      const response = await checkGrade(user.userEmail, postCode);
+      console.log(response);
+      setRole(response.data);
+    }
+  };
 
   useEffect(() => {
+    console.log(role);
     loadingPost();
+    setGrade();
   }, []);
+
   // 시점이 다를때마다 useEffect 추가
 
   // 데이터 로딩중일 때 처리
@@ -233,6 +246,7 @@ const PostDetail = () => {
                   key={comment.commentCode}
                   isOpenUser={isOpenUser}
                   userMenuToggle={userMenuToggle}
+                  role={role}
                 />
               ))
             )}

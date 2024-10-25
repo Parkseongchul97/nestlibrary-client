@@ -1,11 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TimeFormat from "./TimeFormat";
 import "../assets/userMenu.scss";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { userRole } from "../api/subscribe";
 
-const UserMenu = ({ user, time, isOpenUser, userMenuToggle }) => {
+const UserMenu = ({ user, time, isOpenUser, userMenuToggle, role }) => {
+  const [userRoleDTO, setUserRoleDTO] = useState({
+    userEmail: "",
+    managementUserStatus: "",
+    channelCode: "",
+    banDate: "",
+  });
+
   const { user: loginUser, token } = useAuth();
+
+  const getUserDTo = async (data) => {
+    console.log(data);
+    if (data.type == "click") {
+      if (userRoleDTO.banDate === "") {
+        alert("기간 선택을 해주세요!");
+        return;
+      } else {
+        setUserRoleDTO({
+          ...userRoleDTO,
+          managementUserStatus: "ban",
+          userEmail: user.userEmail,
+        });
+        await userRole(userRoleDTO);
+        setUserRoleDTO("");
+      }
+    } else {
+      await userRole(data);
+      setUserRoleDTO("");
+
+      return;
+    }
+  };
+
+  const [banOpen, setbanOpen] = useState(false);
 
   return (
     <div className="user-profile-box">
@@ -41,11 +74,104 @@ const UserMenu = ({ user, time, isOpenUser, userMenuToggle }) => {
           </Link>
           <a>유저페이지로 이동</a>
           {/* 채널 관리자라면
-          <a>차단하기</a>
+     
+          
           */}
+          {role.managementUserStatus == "admin" && <a>차단하기</a>}
           {/* 채널 호스트라면
           <a>관리자로 임명</a>
           */}
+          {role.managementUserStatus == "host" && (
+            <>
+              <a onClick={() => setbanOpen(!banOpen)}>차단하기</a>
+              {banOpen && (
+                <>
+                  <div>벤하실건가여?</div>
+                  <label>
+                    <input
+                      type="radio"
+                      name={`option-${user?.userEmail}`}
+                      value="1"
+                      onClick={(e) =>
+                        setUserRoleDTO({
+                          ...userRoleDTO,
+                          banDate: e.target.value,
+                        })
+                      }
+                    />
+                    1일
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name={`option-${user?.userEmail}`}
+                      value="7"
+                      onClick={(e) =>
+                        setUserRoleDTO({
+                          ...userRoleDTO,
+                          banDate: e.target.value,
+                        })
+                      }
+                    />
+                    1주일
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name={`option-${user?.userEmail}`}
+                      value="30"
+                      onClick={(e) =>
+                        setUserRoleDTO({
+                          ...userRoleDTO,
+                          banDate: e.target.value,
+                        })
+                      }
+                    />
+                    1달
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name={`option-${user?.userEmail}`}
+                      value="365"
+                      onClick={(e) =>
+                        setUserRoleDTO({
+                          ...userRoleDTO,
+                          banDate: e.target.value,
+                        })
+                      }
+                    />
+                    1년
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name={`option-${user?.userEmail}`}
+                      value="99999"
+                      onClick={(e) =>
+                        setUserRoleDTO({
+                          ...userRoleDTO,
+                          banDate: e.target.value,
+                        })
+                      }
+                    />
+                    영구벤
+                  </label>
+                  <button onClick={getUserDTo}>확인</button>
+                </>
+              )}
+              <a
+                onClick={() =>
+                  getUserDTo({
+                    ...userRoleDTO,
+                    managementUserStatus: "admin",
+                  })
+                }
+              >
+                관리자로 임명
+              </a>
+            </>
+          )}
         </div>
       )}
     </div>

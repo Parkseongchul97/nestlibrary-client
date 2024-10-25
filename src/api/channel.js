@@ -154,3 +154,8 @@ export const removeChannel = async (channelCode) => {
 export const myChannel = async (userEmail) => {
   return await authorize.get(`${userEmail}`);
 };
+
+// 등급체크
+export const checkGrade = async (userEmail, postCode) => {
+  return await authorize.get(`${userEmail}/${postCode}`);
+};
