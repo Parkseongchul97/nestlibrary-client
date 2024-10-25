@@ -26,8 +26,3 @@ export const mySub = async () => {
   const response = await authorize.get("subscribe/channel");
   return response;
 };
-
-export const userRole = async (data) => {
-  const response = await authorize.put("/subscribe/role", data);
-  return response;
-};

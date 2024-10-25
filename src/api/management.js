@@ -15,5 +15,10 @@ export const userChannelGrade = async (channelCode, userEmail) => {
 };
 
 export const loginUserChannelGrade = async (channelCode) => {
-  return await authorize.get(`/grade/${channelCode}`);
+  return await authorize.get(`grade/${channelCode}`);
+};
+
+export const userRole = async (data) => {
+  const response = await authorize.put("/subscribe/role", data);
+  return response;
 };

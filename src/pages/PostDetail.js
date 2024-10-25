@@ -14,6 +14,7 @@ import TimeFormat from "../components/TimeFormat";
 import Page from "../components/Page";
 import { remove } from "../api/post";
 import { checkGrade } from "../api/channel";
+import { loginUserChannelGrade } from "../api/management";
 const PostDetail = () => {
   const [isOpenUser, setIsOpenUser] = useState(false);
   const { postCode } = useParams();
@@ -141,8 +142,9 @@ const PostDetail = () => {
     }
   };
   const setGrade = async () => {
+    console.log("에러");
     if (localStorage.getItem("token") !== null) {
-      const response = await checkGrade(user.userEmail, postCode);
+      const response = await loginUserChannelGrade(postCode);
       console.log(response);
       setRole(response.data);
     }

@@ -3,7 +3,7 @@ import TimeFormat from "./TimeFormat";
 import "../assets/userMenu.scss";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { userRole } from "../api/subscribe";
+import { userRole } from "../api/management";
 
 const UserMenu = ({
   user,
