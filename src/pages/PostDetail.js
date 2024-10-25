@@ -32,8 +32,6 @@ const PostDetail = () => {
   const queryClient = useQueryClient();
 
   const userMenuToggle = (commentCode) => {
-    console.log("기존 : " + isOpenUser);
-    console.log("새로운 : " + commentCode);
     if (isOpenUser === commentCode) {
       setIsOpenUser(null);
     } else {
@@ -151,7 +149,6 @@ const PostDetail = () => {
   };
 
   useEffect(() => {
-    console.log(role);
     loadingPost();
     setGrade();
   }, []);

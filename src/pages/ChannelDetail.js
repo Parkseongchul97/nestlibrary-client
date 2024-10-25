@@ -200,7 +200,11 @@ const ChannelDetail = () => {
                 </div>
               ) : (
                 posts?.postList?.map((post) => (
-                  <PostListComponent post={post} key={post?.postCode} />
+                  <PostListComponent
+                    post={post}
+                    key={post?.postCode}
+                    channelCode={channelCode}
+                  />
                 ))
               )}
             </div>

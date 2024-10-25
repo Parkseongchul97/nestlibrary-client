@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import TimeFormat from "./TimeFormat";
 import { FaFaceGrinStars } from "react-icons/fa6";
 import "../assets/postList.scss";
-const PostListComponent = ({ post }) => {
+const PostListComponent = ({ post, channelCode }) => {
   if (!post) {
     return null;
   }

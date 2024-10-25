@@ -6,37 +6,60 @@ import { useAuth } from "../contexts/AuthContext";
 import { userRole } from "../api/subscribe";
 
 const UserMenu = ({ user, time, isOpenUser, userMenuToggle, role }) => {
+  // 변경대상을 담는곳
   const [userRoleDTO, setUserRoleDTO] = useState({
-    userEmail: "",
+    userEmail: user.userEmail,
     managementUserStatus: "",
     channelCode: "",
     banDate: "",
   });
 
+  const handleRadioChange = (e) => {
+    setUserRoleDTO({
+      ...userRoleDTO,
+      banDate: e.target.value,
+      managementUserStatus: "ban",
+      channelCode: role?.channel.channelCode,
+    });
+  };
+
+  const handleConfirm = () => {
+    // 보내고
+
+    getUserDTo();
+    // 닫고
+    userMenuToggle();
+    // 초기화
+    setUserRoleDTO({
+      userEmail: user.userEmail,
+      banDate: "",
+      managementUserStatus: "",
+      channelCode: "",
+    });
+  };
+
   const { user: loginUser, token } = useAuth();
 
-  const getUserDTo = async (data) => {
-    console.log(data);
-    if (data.type == "click") {
-      if (userRoleDTO.banDate === "") {
-        alert("기간 선택을 해주세요!");
-        return;
-      } else {
-        setUserRoleDTO({
-          ...userRoleDTO,
-          managementUserStatus: "ban",
-          userEmail: user.userEmail,
-        });
-        await userRole(userRoleDTO);
-        setUserRoleDTO("");
-      }
-    } else {
-      await userRole(data);
-      setUserRoleDTO("");
-
-      return;
-    }
+  const getUserDTo = async () => {
+    console.log("벤");
+    console.log(userRoleDTO);
+    await userRole(userRoleDTO);
   };
+
+  const getAdmin = async (data) => {
+    console.log("관리자");
+    console.log(data);
+    await userRole(data);
+  };
+
+  useEffect(() => {
+    setUserRoleDTO({
+      ...userRoleDTO,
+      banDate: "",
+      managementUserStatus: "",
+      channelCode: "",
+    });
+  }, [isOpenUser]);
 
   const [banOpen, setbanOpen] = useState(false);
 
@@ -92,12 +115,7 @@ const UserMenu = ({ user, time, isOpenUser, userMenuToggle, role }) => {
                       type="radio"
                       name={`option-${user?.userEmail}`}
                       value="1"
-                      onClick={(e) =>
-                        setUserRoleDTO({
-                          ...userRoleDTO,
-                          banDate: e.target.value,
-                        })
-                      }
+                      onChange={handleRadioChange}
                     />
                     1일
                   </label>
@@ -106,12 +124,7 @@ const UserMenu = ({ user, time, isOpenUser, userMenuToggle, role }) => {
                       type="radio"
                       name={`option-${user?.userEmail}`}
                       value="7"
-                      onClick={(e) =>
-                        setUserRoleDTO({
-                          ...userRoleDTO,
-                          banDate: e.target.value,
-                        })
-                      }
+                      onChange={handleRadioChange}
                     />
                     1주일
                   </label>
@@ -120,12 +133,7 @@ const UserMenu = ({ user, time, isOpenUser, userMenuToggle, role }) => {
                       type="radio"
                       name={`option-${user?.userEmail}`}
                       value="30"
-                      onClick={(e) =>
-                        setUserRoleDTO({
-                          ...userRoleDTO,
-                          banDate: e.target.value,
-                        })
-                      }
+                      onChange={handleRadioChange}
                     />
                     1달
                   </label>
@@ -134,12 +142,7 @@ const UserMenu = ({ user, time, isOpenUser, userMenuToggle, role }) => {
                       type="radio"
                       name={`option-${user?.userEmail}`}
                       value="365"
-                      onClick={(e) =>
-                        setUserRoleDTO({
-                          ...userRoleDTO,
-                          banDate: e.target.value,
-                        })
-                      }
+                      onChange={handleRadioChange}
                     />
                     1년
                   </label>
@@ -148,23 +151,25 @@ const UserMenu = ({ user, time, isOpenUser, userMenuToggle, role }) => {
                       type="radio"
                       name={`option-${user?.userEmail}`}
                       value="99999"
-                      onClick={(e) =>
-                        setUserRoleDTO({
-                          ...userRoleDTO,
-                          banDate: e.target.value,
-                        })
-                      }
+                      onChange={handleRadioChange}
                     />
                     영구벤
                   </label>
-                  <button onClick={getUserDTo}>확인</button>
+                  <button
+                    onClick={handleConfirm}
+                    disabled={userRoleDTO.banDate > 0 ? false : true}
+                  >
+                    확인
+                  </button>
                 </>
               )}
               <a
                 onClick={() =>
-                  getUserDTo({
-                    ...userRoleDTO,
+                  getAdmin({
+                    userEmail: user.userEmail,
+                    banDate: "",
                     managementUserStatus: "admin",
+                    channelCode: role?.channel.channelCode,
                   })
                 }
               >
