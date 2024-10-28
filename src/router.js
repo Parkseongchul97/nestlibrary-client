@@ -6,7 +6,6 @@ import LoginWait from "./pages/loginWait";
 
 import Mypage from "./pages/Mypage";
 import ChannelDetail from "./pages/ChannelDetail";
-import PostDetail from "./pages/PostDetail";
 
 import PostWrite from "./components/PostWrite";
 import ChannelUpdate from "./pages/ChannelUpdate";
@@ -59,9 +58,24 @@ const router = createBrowserRouter([
         element: <ChannelDetail />,
         children: [
           {
-            path: "best",
+            path: "post/:postCode",
             element: <ChannelDetail />,
           },
+          {
+            path: "best",
+            element: <ChannelDetail />,
+            children: [
+              {
+                index: true,
+                element: <ChannelDetail />,
+              },
+              {
+                path: "post/:postCode",
+                element: <ChannelDetail />,
+              },
+            ],
+          },
+
           {
             path: ":channelTagCode",
             children: [
@@ -70,8 +84,22 @@ const router = createBrowserRouter([
                 element: <ChannelDetail />,
               },
               {
+                path: "post/:postCode",
+                element: <ChannelDetail />,
+              },
+              {
                 path: "best",
                 element: <ChannelDetail />,
+                children: [
+                  {
+                    index: true,
+                    element: <ChannelDetail />,
+                  },
+                  {
+                    path: "post/:postCode",
+                    element: <ChannelDetail />,
+                  },
+                ],
               },
             ],
           },
@@ -80,11 +108,6 @@ const router = createBrowserRouter([
       {
         path: "user/help",
         element: <UserHelp />,
-      },
-
-      {
-        path: "/post/:postCode",
-        element: <PostDetail />,
       },
     ],
   },

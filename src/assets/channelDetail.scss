@@ -19,10 +19,12 @@
   }
 }
 .tag-box {
+  border-radius: 10px;
   display: flex;
   justify-content: flex-start;
   overflow: scroll;
-  width: 80%;
+  max-width: 600px;
+  width: 100%;
   background-color: black;
   &::-webkit-scrollbar {
     width: 100%;

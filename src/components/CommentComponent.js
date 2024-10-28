@@ -115,8 +115,15 @@ const CommentComponent = ({
       ) : (
         <>
           {" "}
-          <div className="comment-content">
-            {isPostUser && <FaFeatherPointed />}
+          <div
+            className={
+              user?.userEmail === comment?.user?.userEmail
+                ? "comment-content-my"
+                : isPostUser
+                ? "comment-content-writer"
+                : "comment-content"
+            }
+          >
             <UserMenu
               user={comment?.user}
               time={comment?.commentCreatedAt}
@@ -124,6 +131,7 @@ const CommentComponent = ({
               userMenuToggle={() => userMenuToggle(comment.commentCode)}
               channelCode={channelCode}
             />
+
             {isChange === comment.commentCode &&
             user !== undefined &&
             user.userEmail === comment?.user?.userEmail ? (
@@ -145,8 +153,14 @@ const CommentComponent = ({
                 </div>
               </>
             ) : (
-              <p className="comment-text">{comment.commentContent}</p>
+              <>
+                <p className="comment-text">
+                  {isPostUser && <FaFeatherPointed />}
+                  {comment.commentContent}
+                </p>
+              </>
             )}
+
             <div className="btn-box">
               {/*이거나 관리자인 경우*/}
               {user.userEmail === comment?.user?.userEmail && (

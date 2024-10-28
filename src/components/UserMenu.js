@@ -70,7 +70,6 @@ const UserMenu = ({
   }, [channelCode, token]);
 
   const banCanle = () => {
-    console.log(userGrade?.data?.managementCode);
     removeRoleMutatoin.mutate(userGrade?.data?.managementCode);
     userMenuToggle();
 
@@ -129,20 +128,27 @@ const UserMenu = ({
             }
           />
         )}
-        <div>
+        <div className="user-nickname-box">
           <p className="user-profile-nickname">
             {userGrade?.data !== undefined &&
             userGrade?.data?.managementUserStatus === "host" ? (
-              <FaRegCheckCircle style={{ color: "orange" }} />
+              <FaRegCheckCircle
+                style={{ color: "orange", marginRight: "5px" }}
+              />
             ) : userGrade?.data?.managementUserStatus === "admin" ? (
-              <FaRegCheckCircle style={{ color: "blue" }} />
+              <FaRegCheckCircle style={{ color: "blue", marginRight: "5px" }} />
             ) : userGrade?.data?.managementUserStatus === "ban" ? (
-              <FaBan style={{ color: "red" }} />
+              <FaBan style={{ color: "red", marginRight: "5px" }} />
             ) : null}
             {user?.userNickname}
           </p>
         </div>
-        <div>{time !== undefined && <TimeFormat time={time} />}</div>
+        {time !== undefined && (
+          <div className="time-box">
+            {" "}
+            <TimeFormat time={time} />
+          </div>
+        )}
       </div>
       {isOpenUser && token && loginUser.userEmail !== user?.userEmail && (
         <div className="profile-actions">

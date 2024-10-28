@@ -47,7 +47,7 @@ const Main = () => {
           <div className="sub-title">OUR COMMUNITY</div>
           <ul className="channel-list">
             {channelList.map((channel) => (
-              <li className="channel-box" key={channel?.channelCode}>
+              <li className="main-channel-box" key={channel?.channelCode}>
                 <div className="channel-main-header">
                   <Link
                     to={`/channel/${channel?.channelCode}`}
@@ -70,6 +70,7 @@ const Main = () => {
                       <PostListComponent
                         post={post}
                         key={post?.postCode}
+                        page={1}
                         channelCode={channel.channelCode}
                       />
                     ))}

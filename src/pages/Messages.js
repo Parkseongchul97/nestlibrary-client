@@ -81,6 +81,7 @@ const Messages = () => {
     for (const code of checkedList) {
       removeMutation.mutate(code);
     }
+    setAllCheck(false);
   };
 
   const AllListAdd = () => {

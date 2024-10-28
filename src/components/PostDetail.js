@@ -13,13 +13,16 @@ import { likeState as state, like, unLike } from "../api/postLike";
 import TimeFormat from "../components/TimeFormat";
 import Page from "../components/Page";
 import { remove } from "../api/post";
-const PostDetail = () => {
+import UserMenu from "./UserMenu";
+const PostDetail = ({ postCode, page }) => {
   const [isOpenUser, setIsOpenUser] = useState(false);
-  const { postCode } = useParams();
   const { user, token } = useAuth();
   const location = useLocation();
+
   const query = new URLSearchParams(location.search);
-  const page = query.get("page") || 1;
+  const commentPage = query.get("comment_page") || 1;
+
+  const [postPage, setPostPage] = useState(page);
   const [newComment, setNewComment] = useState({
     commentContent: "",
     postCode: postCode,
@@ -43,8 +46,8 @@ const PostDetail = () => {
     error,
   } = useQuery({
     // 데이터, 로딩중인지, 에러발생
-    queryKey: ["comment", postCode, page],
-    queryFn: () => viewComment(postCode, page),
+    queryKey: ["comment", postCode, commentPage],
+    queryFn: () => viewComment(postCode, commentPage),
     // refetchInterval: 1000, // 해당 시간마다 데이터갱식하여 실시간 처럼 처리
   });
 
@@ -142,7 +145,10 @@ const PostDetail = () => {
 
   useEffect(() => {
     loadingPost();
-  }, []);
+  }, [postCode, page]);
+  useEffect(() => {
+    setPostPage(page);
+  }, [page]);
 
   // 시점이 다를때마다 useEffect 추가
 
@@ -157,9 +163,11 @@ const PostDetail = () => {
     <div className="post-detail-box">
       <div className="post-detail">
         <h1 className="post-title">{post?.postTitle}</h1>
-        <TimeFormat time={post?.postCreatedAt} />
+
         <div>조회수 :{post?.postViews} </div>
-        <div>작성자 :{post?.user?.userNickname} </div>
+        <div>
+          <UserMenu user={post?.user} time={post?.postCreatedAt} />{" "}
+        </div>
         <Link
           className="channel-tag"
           to={
@@ -242,11 +250,14 @@ const PostDetail = () => {
               ))
             )}
           </div>
-
-          <Page
-            page={page}
-            totalPages={Math.ceil(commentList.data?.paging.totalPage / 10)}
-          />
+          <div className="paging-box">
+            <Page
+              isComment={true}
+              page={postPage}
+              commentPage={commentPage}
+              totalPages={Math.ceil(commentList.data?.paging.totalPage / 10)}
+            />
+          </div>
         </div>
       </div>
     </div>

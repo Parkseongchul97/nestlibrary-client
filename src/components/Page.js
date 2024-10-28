@@ -3,7 +3,7 @@ import "../assets/page.scss";
 import { Link } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-const Page = ({ page, totalPages, pageBtnOnClick }) => {
+const Page = ({ page, totalPages, pageBtnOnClick, isComment, commentPage }) => {
   // 페이지 현제 페이지 토탈은 총 몇페이지인지
   const pageCount = 10; // 화면에 보이는 페이지 숫자
   let num = totalPages % 10; // 페이지 좌표 한계점 ex 토탈 173개의 개시글이면 토탈 18p? 2번째부턴 8페이지가끝
@@ -37,6 +37,22 @@ const Page = ({ page, totalPages, pageBtnOnClick }) => {
       setStart(totalPages - (num - 1));
     }
   };
+  useEffect(() => {
+    // 댓글 제외 페이징이면
+    if (!isComment) {
+      const newStart = Math.floor((page - 1) / pageCount) * pageCount + 1;
+      setStart(newStart);
+    }
+  }, [page]);
+
+  useEffect(() => {
+    // 댓글 페이징이면
+    if (isComment) {
+      const newStart =
+        Math.floor((commentPage - 1) / pageCount) * pageCount + 1;
+      setStart(newStart);
+    }
+  }, [commentPage]);
 
   return (
     <div className="paging">
@@ -45,7 +61,7 @@ const Page = ({ page, totalPages, pageBtnOnClick }) => {
           <li>
             <Link
               className="paging-btn"
-              to={"?page=1"}
+              to={isComment ? `?&page=${page}&comment_page=1` : "?page=1"}
               state={1}
               onClick={() => {
                 setStart(1);
@@ -86,9 +102,19 @@ const Page = ({ page, totalPages, pageBtnOnClick }) => {
                 <li key={start + i} className={start + i}>
                   <Link
                     className={
-                      page == start + i ? "page-link-select" : "page-link"
+                      isComment && commentPage == start + i
+                        ? "page-link-select"
+                        : isComment
+                        ? "page-link"
+                        : page == start + i
+                        ? "page-link-select"
+                        : "page-link"
                     }
-                    to={`?page=${start + i}`}
+                    to={
+                      isComment
+                        ? `?page=${page}&comment_page=${start + i}`
+                        : `?page=${start + i}`
+                    }
                     state={start + i}
                     onClick={() => {
                       if (pageBtnOnClick !== undefined) {
@@ -121,7 +147,11 @@ const Page = ({ page, totalPages, pageBtnOnClick }) => {
           <li>
             <Link
               className="paging-btn"
-              to={`?page=${totalPages}`}
+              to={
+                isComment
+                  ? `?page=${page}&comment_page=${totalPages}`
+                  : `?page=${totalPages}`
+              }
               state={totalPages}
               onClick={() => {
                 lastPage();

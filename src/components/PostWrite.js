@@ -105,7 +105,12 @@ const PostWrite = () => {
       alert("글쓰기가 제한되어있습니다");
       return;
     }
-    window.location.href = "/post/" + response.data.postCode;
+
+    window.location.href =
+      "/channel/" +
+      response.data.channel.channelCode +
+      "/post/" +
+      response.data.postCode;
   };
   // 수정
   const updatePost = async () => {
@@ -123,7 +128,7 @@ const PostWrite = () => {
       alert("글쓰기가 제한되어있습니다");
       return;
     }
-    window.location.href = "/post/" + response.data.postCode;
+    window.location.href = `/channel/${response.data?.channelCode}/post/${response.data?.postCode}`;
   };
 
   return (
