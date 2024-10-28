@@ -8,7 +8,7 @@ import {
   addImg,
   removeChannel,
 } from "../api/channel";
-import { original } from "@reduxjs/toolkit";
+import FindUser from "../components/FindUser";
 
 const ChannelUpdate = () => {
   const { channelCode } = useParams();
@@ -18,6 +18,10 @@ const ChannelUpdate = () => {
     channelImg: null,
     change: "",
   });
+  const [isOpen, setIsOpen] = useState(false);
+  const [inputNickname, setInputNickname] = useState("");
+  const [toNickname, setToNickname] = useState(""); //
+  const [viewNickname, setViewNickname] = useState("");
 
   //  업데이트 전  채널 정보들
   const [channelInfos, setChannelInfos] = useState({
@@ -125,6 +129,22 @@ const ChannelUpdate = () => {
     document.querySelector(".change-input-file").value = "";
   };
 
+  const findSubmit = () => {
+    // 찾기버튼 누를시 넣어서 찾고 열어줌
+    setToNickname(inputNickname);
+    setIsOpen(true);
+    // 검색결과가 없는경우 얼럿 추가
+  };
+  const selectedUser = (targetUser) => {
+    // 선택 누르면 필요값 담고 선택한 사람 닉네임 노출
+    setViewNickname(targetUser?.userNickname);
+  };
+  const deleteToUser = () => {
+    setToNickname("");
+    setViewNickname("");
+    setInputNickname("");
+  };
+
   return (
     <>
       {error ? (
@@ -155,6 +175,17 @@ const ChannelUpdate = () => {
               <li key={bans.userEmail}>{bans.userEmail}</li>
             ))}
           </ul>
+          <FindUser
+            toNickname={toNickname}
+            inputNickname={inputNickname}
+            setInputNickname={setInputNickname}
+            findSubmit={findSubmit}
+            viewNickname={viewNickname}
+            deleteToUser={deleteToUser}
+            selectedUser={selectedUser}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+          />
           <div>
             <ul>
               태그 리스트
