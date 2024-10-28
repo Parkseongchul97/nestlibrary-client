@@ -3,7 +3,7 @@ import TimeFormat from "./TimeFormat";
 import "../assets/userMenu.scss";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { userRole, addRole, removeRole } from "../api/management";
+import { addRole, removeRole } from "../api/management";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { loginUserChannelGrade, userChannelGrade } from "../api/management";
 import { FaRegCheckCircle, FaBan } from "react-icons/fa";
@@ -138,9 +138,7 @@ const UserMenu = ({
               <FaRegCheckCircle style={{ color: "blue" }} />
             ) : userGrade?.data?.managementUserStatus === "ban" ? (
               <FaBan style={{ color: "red" }} />
-            ) : (
-              <FaRegCheckCircle style={{ color: "black" }} />
-            )}
+            ) : null}
             {user?.userNickname}
           </p>
         </div>
@@ -161,7 +159,7 @@ const UserMenu = ({
           </Link>
           <a>유저페이지로 이동</a>
 
-          {loginUserGrade.managementUserStatus == "host" && (
+          {loginUserGrade?.managementUserStatus == "host" && (
             <>
               {userGrade?.data?.managementUserStatus !== "ban" ? (
                 <a onClick={() => setbanOpen(!banOpen)}>차단하기</a>

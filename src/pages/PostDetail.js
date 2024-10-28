@@ -237,7 +237,7 @@ const PostDetail = () => {
                   isOpenUser={isOpenUser}
                   userMenuToggle={userMenuToggle}
                   channelCode={post?.channelCode}
-                  isWriter={postUserEmail === comment.user.userEmail}
+                  isWriter={postUserEmail}
                 />
               ))
             )}

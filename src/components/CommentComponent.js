@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
@@ -8,6 +8,7 @@ import {
 } from "../api/comment";
 import "../assets/comment.scss";
 import UserMenu from "./UserMenu";
+import { FaFeatherPointed } from "react-icons/fa6";
 const CommentComponent = ({
   channelCode,
   comment,
@@ -18,6 +19,7 @@ const CommentComponent = ({
   isWriter,
 }) => {
   const { user, token } = useAuth();
+  const [isPostUser, setIsPostUser] = useState(false);
   const [newReComment, setNewReComment] = useState({
     commentContent: "",
     postCode: postCode,
@@ -101,7 +103,9 @@ const CommentComponent = ({
         updateComment();
       }
   };
-
+  useEffect(() => {
+    setIsPostUser(isWriter === comment.user.userEmail);
+  }, [isWriter]);
   return (
     <div className="comment-content-box" id={"comment-code-" + id}>
       {comment?.commentContent === null ? (
@@ -112,7 +116,7 @@ const CommentComponent = ({
         <>
           {" "}
           <div className="comment-content">
-            {isWriter && "!!글쓴이!!"}
+            {isPostUser && <FaFeatherPointed />}
             <UserMenu
               user={comment?.user}
               time={comment?.commentCreatedAt}
