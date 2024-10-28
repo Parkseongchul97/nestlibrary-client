@@ -6,7 +6,6 @@ import {
   updateComment as updateAPI,
   removeComment as deleteAPI,
 } from "../api/comment";
-import TimeFormat from "./TimeFormat";
 import "../assets/comment.scss";
 import UserMenu from "./UserMenu";
 const CommentComponent = ({
@@ -16,7 +15,7 @@ const CommentComponent = ({
   id,
   isOpenUser,
   userMenuToggle,
-  role,
+  isWriter,
 }) => {
   const { user, token } = useAuth();
   const [newReComment, setNewReComment] = useState({
@@ -113,6 +112,7 @@ const CommentComponent = ({
         <>
           {" "}
           <div className="comment-content">
+            {isWriter && "!!글쓴이!!"}
             <UserMenu
               user={comment?.user}
               time={comment?.commentCreatedAt}
@@ -209,6 +209,7 @@ const CommentComponent = ({
           isOpenUser={isOpenUser}
           userMenuToggle={userMenuToggle}
           channelCode={channelCode}
+          isWriter={isWriter}
         />
       ))}
     </div>

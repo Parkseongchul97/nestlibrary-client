@@ -6,6 +6,15 @@
   align-items: center;
   a,
   p {
+    margin-left: 0.3rem;
+    text-wrap: nowrap;
+    font-size: 0.9rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+      "Malgun Gothic", "맑은 고딕", arial, 굴림, Gulim, sans-serif;
+    color: gray;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
   }
   button {
     background-color: antiquewhite;

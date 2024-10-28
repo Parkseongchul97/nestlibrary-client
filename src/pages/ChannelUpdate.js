@@ -8,66 +8,28 @@ import {
   addImg,
   removeChannel,
 } from "../api/channel";
-import { findUser as byNickname } from "../api/message";
-import { original } from "@reduxjs/toolkit";
-import { useQueryClient, useQuery } from "@tanstack/react-query";
-import UserMenu from "../components/UserMenu";
-import { useAuth } from "../contexts/AuthContext";
-import { useLocation } from "react-router-dom";
-import { sendCode, checkEmail } from "../api/email";
+import FindUser from "../components/FindUser";
 import { useNavigate } from "react-router-dom";
 
 const ChannelUpdate = () => {
   const { user } = useAuth(); // 발신자(로그인유저)
   const { channelCode } = useParams();
   const [previewUrl, setPreviewUrl] = useState("");
-  const location = useLocation();
+
   const [isDelete, setIsDelete] = useState(false);
   const [code, setCode] = useState("");
   const [reCode, setReCode] = useState(false);
   const navigate = useNavigate();
 
-  let toUser = null;
-  toUser = location.state !== null ? location.state.toUser : undefined;
-
-  const [toNickname, setToNickname] = useState(""); // 수신자 찾기
-  const [inputNickname, setInputNickname] = useState(
-    toUser !== undefined ? toUser.nickname : ""
-  ); //입력한 닉네임
   const [chan, setChan] = useState({
     channelCode: channelCode,
     channelImg: null,
     change: "",
   });
-  const [viewNickname, setViewNickname] = useState(
-    toUser !== undefined ? toUser.nickname : ""
-  );
   const [isOpen, setIsOpen] = useState(false);
-
-  const queryClient = useQueryClient();
-
-  const {
-    data: findUser,
-    isLoading,
-    errors,
-  } = useQuery({
-    queryKey: ["findUser", toNickname],
-    queryFn: () => byNickname(toNickname),
-    enabled: toNickname.length > 1,
-  });
-  const findSubmit = () => {
-    setToNickname(inputNickname);
-    setIsOpen(true);
-  };
-  const selectedUser = (targetUser) => {
-    setViewNickname(targetUser?.userNickname);
-  };
-  const deleteToUser = () => {
-    setToNickname("");
-
-    setViewNickname("");
-    setInputNickname("");
-  };
+  const [inputNickname, setInputNickname] = useState("");
+  const [toNickname, setToNickname] = useState(""); //
+  const [viewNickname, setViewNickname] = useState("");
 
   //  업데이트 전  채널 정보들
   const [channelInfos, setChannelInfos] = useState({
@@ -193,8 +155,20 @@ const ChannelUpdate = () => {
     }
   };
 
-  if (isLoading) return <> 로딩중 </>;
-  if (errors) return <>에러</>;
+  const findSubmit = () => {
+    setToNickname(inputNickname);
+    setIsOpen(true);
+  };
+  const selectedUser = (targetUser) => {
+    // 여기서 필요한곳에 타겟 유저.필요한정보 담기
+    setViewNickname(targetUser?.userNickname);
+  };
+  const deleteToUser = () => {
+    // 여기서 타겟유저 정보 담아둔거 날리기
+    setToNickname("");
+    setViewNickname("");
+    setInputNickname("");
+  };
 
   return (
     <>
@@ -253,6 +227,17 @@ const ChannelUpdate = () => {
                   </div>
                 )
             )}
+          <FindUser
+            toNickname={toNickname}
+            inputNickname={inputNickname}
+            setInputNickname={setInputNickname}
+            findSubmit={findSubmit}
+            viewNickname={viewNickname}
+            deleteToUser={deleteToUser}
+            selectedUser={selectedUser}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+          />
           <div>
             <ul>
               태그 리스트

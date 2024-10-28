@@ -67,7 +67,11 @@ const Main = () => {
                 channel.allPost.length !== 0 ? (
                   <div className="post-box">
                     {channel.allPost.map((post) => (
-                      <PostListComponent post={post} key={post?.postCode} />
+                      <PostListComponent
+                        post={post}
+                        key={post?.postCode}
+                        channelCode={channel.channelCode}
+                      />
                     ))}
                   </div>
                 ) : (
