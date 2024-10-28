@@ -6,6 +6,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { userRole, addRole, removeRole } from "../api/management";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { loginUserChannelGrade, userChannelGrade } from "../api/management";
+import { sendCode, checkEmail } from "../api/email";
 
 const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
   const [managementDTO, setManagementDTO] = useState({
@@ -23,6 +24,10 @@ const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
       channelCode: loginUserGrade?.channel.channelCode,
     });
   };
+
+  const [isHost, setIsHost] = useState(false);
+  const [code, setCode] = useState("");
+  const [reCode, setReCode] = useState(false);
 
   const { user: loginUser, token } = useAuth();
 
@@ -49,6 +54,8 @@ const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
   const gradeChangeSubmit = (dto) => {
     if (dto?.managementUserStatus === "admin") {
       submitRoleMutation.mutate(dto);
+    } else if (dto?.managementUserStatus === "host") {
+      submitRoleMutation.mutate(dto);
     } else {
       submitRoleMutation.mutate(managementDTO);
     }
@@ -71,6 +78,7 @@ const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
 
   useEffect(() => {
     setbanOpen(false);
+    setIsHost(false);
     setManagementDTO({
       ...managementDTO,
       banDate: "",
@@ -102,6 +110,23 @@ const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
       ]);
     },
   });
+
+  const getCode = async () => {
+    setReCode(true);
+    await sendCode(loginUser.userEmail);
+    alert("인증번호가 발송되었습니다");
+  };
+  const submitCode = async (info) => {
+    const response = await checkEmail(code);
+    if (response.data) {
+      alert("인증번호가 일치합니다");
+      gradeChangeSubmit(info);
+      setCode("");
+    } else {
+      alert("인증번호가 일치하지 않습니다");
+      setCode("");
+    }
+  };
 
   if (isLoading) return <>로딩중</>;
   if (error) return <>에러;;</>;
@@ -227,7 +252,38 @@ const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
                 )}
 
               {userGrade?.data?.managementUserStatus == "admin" && (
-                <a onClick={banCanle}>관리자 취소</a>
+                <>
+                  <a onClick={banCanle}>관리자 취소</a>
+                  <a onClick={() => setIsHost(!isHost)}>호스트로 임명</a>
+                  {isHost && (
+                    <>
+                      <>
+                        <a>가입하신 이메일로 인증번호가 발송됩니다</a>
+                        <input
+                          placeholder="인증번호를 입력해주세요"
+                          type="text"
+                          value={code}
+                          onChange={(e) => setCode(e.target.value)}
+                        />
+                        <button onClick={getCode}>
+                          {reCode ? "인증번호 재발송" : "인증번호 발송"}
+                        </button>
+                        <button
+                          onClick={() =>
+                            submitCode({
+                              userEmail: user.userEmail,
+                              banDate: "",
+                              managementUserStatus: "host",
+                              channelCode: loginUserGrade?.channel.channelCode,
+                            })
+                          }
+                        >
+                          확인
+                        </button>
+                      </>
+                    </>
+                  )}
+                </>
               )}
             </>
           )}

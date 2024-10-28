@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   updateInfo,
   addTags,
@@ -8,16 +8,66 @@ import {
   addImg,
   removeChannel,
 } from "../api/channel";
+import { findUser as byNickname } from "../api/message";
 import { original } from "@reduxjs/toolkit";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
+import UserMenu from "../components/UserMenu";
+import { useAuth } from "../contexts/AuthContext";
+import { useLocation } from "react-router-dom";
+import { sendCode, checkEmail } from "../api/email";
+import { useNavigate } from "react-router-dom";
 
 const ChannelUpdate = () => {
+  const { user } = useAuth(); // 발신자(로그인유저)
   const { channelCode } = useParams();
   const [previewUrl, setPreviewUrl] = useState("");
+  const location = useLocation();
+  const [isDelete, setIsDelete] = useState(false);
+  const [code, setCode] = useState("");
+  const [reCode, setReCode] = useState(false);
+  const navigate = useNavigate();
+
+  let toUser = null;
+  toUser = location.state !== null ? location.state.toUser : undefined;
+
+  const [toNickname, setToNickname] = useState(""); // 수신자 찾기
+  const [inputNickname, setInputNickname] = useState(
+    toUser !== undefined ? toUser.nickname : ""
+  ); //입력한 닉네임
   const [chan, setChan] = useState({
     channelCode: channelCode,
     channelImg: null,
     change: "",
   });
+  const [viewNickname, setViewNickname] = useState(
+    toUser !== undefined ? toUser.nickname : ""
+  );
+  const [isOpen, setIsOpen] = useState(false);
+
+  const queryClient = useQueryClient();
+
+  const {
+    data: findUser,
+    isLoading,
+    errors,
+  } = useQuery({
+    queryKey: ["findUser", toNickname],
+    queryFn: () => byNickname(toNickname),
+    enabled: toNickname.length > 1,
+  });
+  const findSubmit = () => {
+    setToNickname(inputNickname);
+    setIsOpen(true);
+  };
+  const selectedUser = (targetUser) => {
+    setViewNickname(targetUser?.userNickname);
+  };
+  const deleteToUser = () => {
+    setToNickname("");
+
+    setViewNickname("");
+    setInputNickname("");
+  };
 
   //  업데이트 전  채널 정보들
   const [channelInfos, setChannelInfos] = useState({
@@ -78,7 +128,7 @@ const ChannelUpdate = () => {
 
   const remove = async () => {
     await removeChannel(channelCode);
-    window.location.href = "/";
+    navigate("/");
   };
 
   let formData = new FormData();
@@ -125,6 +175,27 @@ const ChannelUpdate = () => {
     document.querySelector(".change-input-file").value = "";
   };
 
+  const getCode = async () => {
+    setReCode(true);
+    await sendCode(user.userEmail);
+    alert("인증번호가 발송되었습니다");
+  };
+  const submitCode = async () => {
+    const response = await checkEmail(code);
+    if (response.data) {
+      const result = window.confirm("정말 삭제하실 건가요?");
+      if (result) {
+        alert("삭제 되었습니다 ");
+        remove();
+      } else {
+        alert("삭제가 취소 되었습니다");
+      }
+    }
+  };
+
+  if (isLoading) return <> 로딩중 </>;
+  if (errors) return <>에러</>;
+
   return (
     <>
       {error ? (
@@ -155,6 +226,33 @@ const ChannelUpdate = () => {
               <li key={bans.userEmail}>{bans.userEmail}</li>
             ))}
           </ul>
+          <input
+            placeholder="받는사람"
+            type="text"
+            value={inputNickname}
+            onChange={(e) => {
+              setInputNickname(e.target.value);
+            }}
+          />
+          <button onClick={findSubmit}>찾기</button>
+          {findUser !== undefined &&
+            isOpen &&
+            findUser.data.map(
+              (targetUser) =>
+                targetUser.userEmail !== user.userEmail && (
+                  <div>
+                    <UserMenu user={targetUser} key={targetUser.userEmail} />
+                    <button
+                      onClick={() => {
+                        selectedUser(targetUser);
+                        setIsOpen(false);
+                      }}
+                    >
+                      선택
+                    </button>
+                  </div>
+                )
+            )}
           <div>
             <ul>
               태그 리스트
@@ -214,7 +312,26 @@ const ChannelUpdate = () => {
                 : `http://192.168.10.51:8083/channel/${channelCode}/${channelInfos.channelImgUrl}`)
             }
           />
-          <button onClick={remove}>채널삭제</button>
+          <button
+            onClick={() => {
+              setIsDelete(!isDelete);
+            }}
+          >
+            채널삭제
+          </button>
+          {isDelete && (
+            <>
+              <div>채널 삭제는 이메일 인증코드가 필요 합니다 </div>
+              <input
+                type="text"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+              />
+              <button onClick={getCode}>{reCode ? "재발송" : "발송"}</button>
+              <button onClick={submitCode}>확인</button>
+            </>
+          )}
+          <Link to={"/channel/" + channelCode}>바로가기</Link>
         </>
       )}
     </>
