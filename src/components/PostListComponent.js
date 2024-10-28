@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import TimeFormat from "./TimeFormat";
 import { FaFaceGrinStars } from "react-icons/fa6";
 import "../assets/postList.scss";
+import UserMenu from "./UserMenu";
 const PostListComponent = ({ post, channelCode }) => {
   if (!post) {
     return null;
@@ -23,7 +24,12 @@ const PostListComponent = ({ post, channelCode }) => {
         </Link>
         <Link className="post-link" to={"/post/" + post?.postCode}>
           <div className="post-start">
-            <span className="post-ather">{post?.user.userNickname}</span>
+            {/* <span className="post-ather">{post?.user.userNickname}</span> */}
+            <UserMenu
+              noneImg={true}
+              user={post.user}
+              channelCode={post?.channelCode}
+            />
             <span className="post-text">{post?.postTitle}</span>
           </div>
           <div className="post-end">

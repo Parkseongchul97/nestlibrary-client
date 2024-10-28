@@ -132,7 +132,6 @@ const ChannelUpdate = () => {
   const findSubmit = () => {
     setToNickname(inputNickname);
     setIsOpen(true);
-    // 검색결과가 없는경우 얼럿 추가
   };
   const selectedUser = (targetUser) => {
     // 여기서 필요한곳에 타겟 유저.필요한정보 담기

@@ -1,8 +1,8 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useLocation, useNavigate } from "react-router-dom";
-import { addMessage, findUser as byNickname } from "../api/message";
+import { useQuery } from "@tanstack/react-query";
+
+import { findUser as byNickname } from "../api/message";
 import { useAuth } from "../contexts/AuthContext";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import UserMenu from "./UserMenu";
 const FindUser = ({
   toNickname,

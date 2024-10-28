@@ -6,8 +6,16 @@ import { useAuth } from "../contexts/AuthContext";
 import { userRole, addRole, removeRole } from "../api/management";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { loginUserChannelGrade, userChannelGrade } from "../api/management";
+import { FaRegCheckCircle, FaBan } from "react-icons/fa";
 
-const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
+const UserMenu = ({
+  user,
+  channelCode,
+  time,
+  isOpenUser,
+  userMenuToggle,
+  noneImg,
+}) => {
   const [managementDTO, setManagementDTO] = useState({
     userEmail: user.userEmail,
     managementUserStatus: "",
@@ -108,23 +116,35 @@ const UserMenu = ({ user, channelCode, time, isOpenUser, userMenuToggle }) => {
   return (
     <div className="user-profile-box">
       <div className="user-profile" onClick={userMenuToggle}>
-        <img
-          className="user-profile-img"
-          src={
-            user?.userImgUrl !== null
-              ? "http://192.168.10.51:8083/user/" +
-                user?.userEmail +
-                "/" +
-                user?.userImgUrl
-              : "http://192.168.10.51:8083/e0680940917fba1b2350c6563c32ad0c.jpg"
-          }
-        />
-        <p className="user-profile-nickname">
-          {user?.userNickname},
-          {userGrade?.data !== undefined &&
-            userGrade?.data?.managementUserStatus}
-          {time !== undefined && <TimeFormat time={time} />}
-        </p>
+        {!noneImg && (
+          <img
+            className="user-profile-img"
+            src={
+              user?.userImgUrl !== null
+                ? "http://192.168.10.51:8083/user/" +
+                  user?.userEmail +
+                  "/" +
+                  user?.userImgUrl
+                : "http://192.168.10.51:8083/e0680940917fba1b2350c6563c32ad0c.jpg"
+            }
+          />
+        )}
+        <div>
+          <p className="user-profile-nickname">
+            {userGrade?.data !== undefined &&
+            userGrade?.data?.managementUserStatus === "host" ? (
+              <FaRegCheckCircle style={{ color: "orange" }} />
+            ) : userGrade?.data?.managementUserStatus === "admin" ? (
+              <FaRegCheckCircle style={{ color: "blue" }} />
+            ) : userGrade?.data?.managementUserStatus === "ban" ? (
+              <FaBan style={{ color: "red" }} />
+            ) : (
+              <FaRegCheckCircle style={{ color: "black" }} />
+            )}
+            {user?.userNickname}
+          </p>
+        </div>
+        <div>{time !== undefined && <TimeFormat time={time} />}</div>
       </div>
       {isOpenUser && token && loginUser.userEmail !== user?.userEmail && (
         <div className="profile-actions">

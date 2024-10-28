@@ -26,7 +26,7 @@ const PostDetail = () => {
     userEmail: user?.userEmail,
   });
   const [post, setPost] = useState(null);
-
+  const [postUserEmail, setPostUserEmail] = useState("");
   const queryClient = useQueryClient();
 
   const userMenuToggle = (commentCode) => {
@@ -72,6 +72,7 @@ const PostDetail = () => {
   const loadingPost = async () => {
     const response = await viewPost(postCode);
     setPost(response.data);
+    setPostUserEmail(response.data.user.userEmail);
   };
   // 좋아요 확인
   const {
@@ -236,6 +237,7 @@ const PostDetail = () => {
                   isOpenUser={isOpenUser}
                   userMenuToggle={userMenuToggle}
                   channelCode={post?.channelCode}
+                  isWriter={postUserEmail === comment.user.userEmail}
                 />
               ))
             )}
