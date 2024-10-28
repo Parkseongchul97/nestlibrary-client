@@ -50,13 +50,12 @@ const FindUser = ({
       />
       <button onClick={findSubmit}>찾기</button>
 
-      {findUser !== undefined &&
-        isOpen &&
+      {isOpen && findUser?.data?.length > 0 ? (
         findUser.data.map(
           (targetUser) =>
             targetUser.userEmail !== user.userEmail && (
-              <div>
-                <UserMenu user={targetUser} key={targetUser.userEmail} />
+              <div key={targetUser.userEmail}>
+                <UserMenu user={targetUser} />
                 <button
                   onClick={() => {
                     selectedUser(targetUser);
@@ -67,7 +66,10 @@ const FindUser = ({
                 </button>
               </div>
             )
-        )}
+        )
+      ) : isOpen && findUser?.data?.length === 0 ? (
+        <p>검색 결과가 없습니다.</p>
+      ) : null}
       <p>
         수신자 : {viewNickname} <button onClick={deleteToUser}>취소</button>
       </p>

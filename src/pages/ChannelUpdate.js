@@ -130,16 +130,16 @@ const ChannelUpdate = () => {
   };
 
   const findSubmit = () => {
-    // 찾기버튼 누를시 넣어서 찾고 열어줌
     setToNickname(inputNickname);
     setIsOpen(true);
     // 검색결과가 없는경우 얼럿 추가
   };
   const selectedUser = (targetUser) => {
-    // 선택 누르면 필요값 담고 선택한 사람 닉네임 노출
+    // 여기서 필요한곳에 타겟 유저.필요한정보 담기
     setViewNickname(targetUser?.userNickname);
   };
   const deleteToUser = () => {
+    // 여기서 타겟유저 정보 담아둔거 날리기
     setToNickname("");
     setViewNickname("");
     setInputNickname("");
