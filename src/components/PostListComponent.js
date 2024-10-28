@@ -8,6 +8,7 @@ const PostListComponent = ({ channelTagCode, post, postCode, page }) => {
   if (!post) {
     return null;
   }
+
   return (
     <>
       <div
@@ -51,8 +52,9 @@ const PostListComponent = ({ channelTagCode, post, postCode, page }) => {
           <div className="post-start">
             {/* <span className="post-ather">{post?.user.userNickname}</span> */}
             <UserMenu
+              user={post?.user}
               noneImg={true}
-              user={post.user}
+              isOpenUser={false}
               channelCode={post?.channelCode}
             />
             <span className="post-text">{post?.postTitle}</span>

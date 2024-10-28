@@ -17,7 +17,7 @@ const UserMenu = ({
   noneImg,
 }) => {
   const [managementDTO, setManagementDTO] = useState({
-    userEmail: user.userEmail,
+    userEmail: user?.userEmail,
     managementUserStatus: "",
     channelCode: "",
     banDate: 0,
@@ -43,8 +43,8 @@ const UserMenu = ({
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["gradeCheck", channelCode, user.userEmail],
-    queryFn: () => userChannelGrade(channelCode, user.userEmail),
+    queryKey: ["gradeCheck", channelCode, user?.userEmail],
+    queryFn: () => userChannelGrade(channelCode, user?.userEmail),
     enabled: !!channelCode,
     // refetchInterval: 1000,
   });

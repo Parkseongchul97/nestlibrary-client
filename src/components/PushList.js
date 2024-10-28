@@ -2,10 +2,12 @@ import { Link } from "react-router-dom";
 import TimeFormat from "./TimeFormat";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { removePush } from "../api/push";
+import { useState, useEffect } from "react";
 import "../assets/pushList.scss";
+import { getPageNum } from "../api/post";
 const PushList = ({ push }) => {
   const queryClient = useQueryClient();
-
+  const [page, setPage] = useState();
   const removeMutation = useMutation({
     mutationFn: removePush,
     enabled: !!push.pushCode,
@@ -16,11 +18,21 @@ const PushList = ({ push }) => {
   const removeSubmit = () => {
     removeMutation.mutate(push.pushCode);
   };
+  const postPaging = async () => {
+    const result = await getPageNum(push.pushCode);
+    setPage(result.data);
+  };
+  useEffect(() => {
+    postPaging();
+  }, []);
 
   return (
     <div className="push-box">
       {push?.postCode !== undefined ? (
-        <Link to={`post/${push.postCode}`} onClick={removeSubmit}>
+        <Link
+          to={`/channel/${push.channelCode}/post/${push.postCode}?page=${page}`}
+          onClick={removeSubmit}
+        >
           {push.pushMassage}
           <TimeFormat time={push.pushCreatedAt} />
         </Link>
