@@ -19,11 +19,12 @@ const PushList = ({ push }) => {
     removeMutation.mutate(push.pushCode);
   };
   const postPaging = async () => {
-    const result = await getPageNum(push.pushCode);
+    const result = await getPageNum(push.postCode);
     setPage(result.data);
   };
   useEffect(() => {
     postPaging();
+    console.log("내 포스트 코드 : "+ push?.postCode + "내 페이지 : + " + page)
   }, []);
 
   return (

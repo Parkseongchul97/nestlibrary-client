@@ -1,11 +1,17 @@
+.push-list-box{
+  margin-top: 80px;
+}
 .push-box {
-  top: 100px;
-  position: absolute;
+
+ 
   display: flex;
   background-color: white;
+ 
   align-items: center;
   a,
   p {
+   
+    margin-top: 20px;
     margin-left: 0.3rem;
     text-wrap: nowrap;
     font-size: 0.9rem;
