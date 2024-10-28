@@ -186,7 +186,7 @@ const UserMenu = ({
           </Link>
           <a>유저페이지로 이동</a>
 
-          {loginUserGrade.managementUserStatus == "host" && (
+          {loginUserGrade?.managementUserStatus == "host" && (
             <>
               {userGrade?.data?.managementUserStatus !== "ban" ? (
                 <a onClick={() => setbanOpen(!banOpen)}>차단하기</a>

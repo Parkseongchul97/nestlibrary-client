@@ -10,6 +10,11 @@ import {
 } from "../api/channel";
 import FindUser from "../components/FindUser";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { checkEmail, sendCode } from "../api/email";
+import { findUser as byNickname } from "../api/message";
+import { useQuery } from "@tanstack/react-query";
+import UserMenu from "../components/UserMenu";
 
 const ChannelUpdate = () => {
   const { user } = useAuth(); // 발신자(로그인유저)
@@ -58,6 +63,16 @@ const ChannelUpdate = () => {
       }
     }
   };
+
+  const {
+    data: findUser,
+    isLoading,
+    errors,
+  } = useQuery({
+    queryKey: ["findUser", toNickname],
+    queryFn: () => byNickname(toNickname),
+    enabled: toNickname.length > 1,
+  });
 
   useEffect(() => {
     update();
@@ -200,33 +215,6 @@ const ChannelUpdate = () => {
               <li key={bans.userEmail}>{bans.userEmail}</li>
             ))}
           </ul>
-          <input
-            placeholder="받는사람"
-            type="text"
-            value={inputNickname}
-            onChange={(e) => {
-              setInputNickname(e.target.value);
-            }}
-          />
-          <button onClick={findSubmit}>찾기</button>
-          {findUser !== undefined &&
-            isOpen &&
-            findUser.data.map(
-              (targetUser) =>
-                targetUser.userEmail !== user.userEmail && (
-                  <div>
-                    <UserMenu user={targetUser} key={targetUser.userEmail} />
-                    <button
-                      onClick={() => {
-                        selectedUser(targetUser);
-                        setIsOpen(false);
-                      }}
-                    >
-                      선택
-                    </button>
-                  </div>
-                )
-            )}
           <FindUser
             toNickname={toNickname}
             inputNickname={inputNickname}
