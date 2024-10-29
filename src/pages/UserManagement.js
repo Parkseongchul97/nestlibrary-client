@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 
 import { useEffect, useState } from "react";
+import PostManagement from "../components/post/PostManagement.js";
 
 import "../assets/userManagement.scss";
 import {
@@ -8,11 +9,14 @@ import {
   addRole,
   removeRole,
   loginUserChannelGrade,
+  allPost,
 } from "../api/management.js";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { useAuth } from "../contexts/AuthContext.js";
 import { sendCode, checkEmail } from "../api/email.js";
+import { getPageNum } from "../api/post.js";
+import { Link } from "react-router-dom";
 
 import "../assets/login.scss";
 
@@ -21,6 +25,7 @@ const UserManagement = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearch, setIsSearch] = useState(true);
   const [inputNickname, setInputNickname] = useState(null);
+  const [page, setPage] = useState(1);
 
   const [ban, setBan] = useState(false);
   const [host, setHost] = useState(false);
@@ -39,7 +44,11 @@ const UserManagement = () => {
   const [selectedUser, setSelectedUser] = useState([]);
   const location = useLocation();
   const [targetUser, setTargetUser] = useState("");
+  const [post, setPost] = useState([]);
+  const [isPost, setIsPost] = useState(false);
+  const [author, setAuthor] = useState(null);
   const channelCode = location.state?.channelCode;
+  const [check, setCheck] = useState([]);
 
   const allUser = async (data) => {
     if (inputNickname.trim().length < 1) {
@@ -95,7 +104,7 @@ const UserManagement = () => {
 
   useEffect(() => {
     loginUser();
-  }, [loginDto]);
+  }, [isOpen]);
 
   useEffect(() => {
     setBan(false);
@@ -116,10 +125,18 @@ const UserManagement = () => {
       allUser(inputNickname);
     }
   };
+
+  const postEnter = (e) => {
+    console.log(e.key);
+    if (e.key === "Enter" && author != null) {
+      postList(author);
+    }
+  };
+
   const updateInfo = (data) => {
     if (
-      data.userNickname != user.userNickname &&
-      data.managementUserStatus != "host"
+      data.userNickname !== user.userNickname &&
+      data.managementUserStatus !== "host"
     ) {
       setIsOpen(!isOpen);
 
@@ -133,7 +150,7 @@ const UserManagement = () => {
 
   const gradeChangeSubmit = async (data) => {
     let result = null;
-    if (data.managementUserStatus == "admin") {
+    if (data.managementUserStatus === "admin") {
       result = window.confirm("정말 관리자로 임명하시겠습니까?");
       if (result) {
         await addRole(data);
@@ -147,7 +164,7 @@ const UserManagement = () => {
       }
     }
 
-    if (managementDTO.managementUserStatus == "ban") {
+    if (managementDTO.managementUserStatus === "ban") {
       await addRole(managementDTO);
       setIsOpen(false);
       banList();
@@ -171,7 +188,7 @@ const UserManagement = () => {
     setBan(false);
     setHost(false);
     let result = null;
-    if (data.managementUserStatus == "ban") {
+    if (data.managementUserStatus === "ban") {
       result = window.confirm("벤을 취소 하시겠습니까? ");
       if (result) {
         cancle(data.managementCode);
@@ -181,7 +198,7 @@ const UserManagement = () => {
       } else {
         alert("취소되었습니다");
       }
-    } else if (data.managementUserStatus == "admin") {
+    } else if (data.managementUserStatus === "admin") {
       result = window.confirm("관리자 권한을 취소 하시겠습니까? ? ");
       if (result) {
         cancle(data.managementCode);
@@ -193,10 +210,27 @@ const UserManagement = () => {
       }
     }
   };
+  // 게시글 조회
+  const postList = async (author) => {
+    const response = await allPost(channelCode, author);
+    setPost(response);
+  };
+
+  const getPage = async (code) => {
+    const response = await getPageNum(code);
+    setPage(response.data);
+    return response.data;
+  };
 
   useEffect(() => {
-    console.log(loginDto);
-  }, [targetUser]);
+    {
+      post.map((post) => getPage(post.postCode));
+    }
+  }, [isOpen]);
+  useEffect(() => {
+    console.log(check);
+  }, [check]);
+
   return (
     <>
       <div className="main-box">
@@ -210,20 +244,44 @@ const UserManagement = () => {
                   setIsSearch(true);
                   setSelectedUser([]);
                   setInputNickname("");
+                  setIsPost(false);
                 }}
               >
                 전체 사용자
               </div>
-              <div className="admin-user" onClick={() => adminList()}>
+              <div
+                className="admin-user"
+                onClick={() => {
+                  adminList();
+                  setIsPost(false);
+                }}
+              >
                 관리자
               </div>
-              <div className="ban-user" onClick={() => banList()}>
+              <div
+                className="ban-user"
+                onClick={() => {
+                  banList();
+                  setIsPost(false);
+                }}
+              >
                 차단리스트
+              </div>
+
+              <div
+                className="admin-user"
+                onClick={() => {
+                  postList();
+                  setIsPost(true);
+                  setIsSearch(false);
+                }}
+              >
+                게시글
               </div>
             </div>
             <div className="main-content-right">
               <div className="search-form">
-                {isSearch && (
+                {isSearch ? (
                   <>
                     <input
                       className="search-user"
@@ -239,52 +297,102 @@ const UserManagement = () => {
                       검색
                     </button>
                   </>
-                )}
+                ) : isPost ? (
+                  <>
+                    <input
+                      className="search-user"
+                      placeholder="글쓴이 검색"
+                      onChange={(e) => setAuthor(e.target.value)}
+                      value={author}
+                      onKeyDown={postEnter}
+                    />
+                    <button
+                      className="search-submit"
+                      onClick={() => postList(author)}
+                    >
+                      검색
+                    </button>
+                  </>
+                ) : null}
               </div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>닉네임</th>
-                    <th>이메일</th>
-                    <th>등급</th>
-                    <th>삭제 예정일</th>
-                    <th>작성글 수 </th>
-                    <th>댓글 수 </th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {selectedUser && selectedUser.length > 0 ? (
-                    selectedUser.map((users) => (
-                      <tr key={users.userEmail}>
-                        {" "}
-                        {/* 고유 키 추가 */}
-                        <td onClick={() => updateInfo(users)}>
-                          {users?.userNickname}
-                        </td>
-                        <td>{users?.userEmail}</td>
-                        <td>
-                          {users?.managementUserStatus != null
-                            ? users?.managementUserStatus
-                            : "해당없음"}
-                        </td>
-                        <td>
-                          {users.managementDeleteAt != null
-                            ? users.managementDeleteAt.split("T")[0]
-                            : "해당없음"}
-                        </td>
-                        <td>{users.postCount}</td>
-                        <td>{users.commentCount}</td>
-                      </tr>
-                    ))
-                  ) : (
+              {isPost ? (
+                <table>
+                  <thead>
                     <tr>
-                      <td colSpan={6}>조회 결과가 없습니다.</td>{" "}
-                      {/* 대체 메시지 */}
+                      <th>삭제</th>
+                      <th>닉네임</th>
+                      <th>이메일</th>
+                      <th>게시판</th>
+                      <th>제목</th>
+                      <th>작성일</th>
+                      <th>조회 수 </th>
+                      <th>댓글 수 </th>
                     </tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+
+                  <tbody>
+                    {post && post.length > 0 ? (
+                      post.map((post) => (
+                        <PostManagement
+                          channelCode={channelCode}
+                          post={post}
+                          setCheck={setCheck}
+                        />
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={6}>조회 결과가 없습니다.</td>{" "}
+                        {/* 대체 메시지 */}
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              ) : (
+                <table>
+                  <thead>
+                    <tr>
+                      <th>닉네임</th>
+                      <th>이메일</th>
+                      <th>등급</th>
+                      <th>삭제 예정일</th>
+                      <th>작성글 수 </th>
+                      <th>댓글 수 </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {selectedUser && selectedUser.length > 0 ? (
+                      selectedUser.map((users) => (
+                        <tr key={users.userEmail}>
+                          {" "}
+                          {/* 고유 키 추가 */}
+                          <td onClick={() => updateInfo(users)}>
+                            {users?.userNickname}
+                          </td>
+                          <td>{users?.userEmail}</td>
+                          <td>
+                            {users?.managementUserStatus != null
+                              ? users?.managementUserStatus
+                              : "해당없음"}
+                          </td>
+                          <td>
+                            {users.managementDeleteAt != null
+                              ? users.managementDeleteAt.split("T")[0]
+                              : "해당없음"}
+                          </td>
+                          <td>{users.postCount}</td>
+                          <td>{users.commentCount}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={6}>조회 결과가 없습니다.</td>{" "}
+                        {/* 대체 메시지 */}
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              )}
             </div>
           </div>
         </div>
@@ -306,11 +414,11 @@ const UserManagement = () => {
                   <span>닉네임 : {targetUser.userNickname}</span>
                   <span>
                     현재등급 :
-                    {targetUser.managementUserStatus != null
+                    {targetUser.managementUserStatus !== null
                       ? targetUser.managementUserStatus
                       : "해당없음"}
                   </span>
-                  {targetUser.managementUserStatus == "ban" && (
+                  {targetUser.managementUserStatus === "ban" && (
                     <span>
                       삭제일 :{targetUser.managementDeleteAt.split("T")[0]}
                     </span>
@@ -318,10 +426,10 @@ const UserManagement = () => {
                 </div>
                 <div className="input-box">
                   <div className="button-type">
-                    {targetUser.managementUserStatus == null ? (
+                    {targetUser.managementUserStatus === null ? (
                       <>
                         <button onClick={() => setBan(!ban)}>벤</button>
-                        {loginDto.managementUserStatus == "host" && (
+                        {loginDto.managementUserStatus === "host" && (
                           <button
                             onClick={() =>
                               gradeChangeSubmit({
@@ -336,7 +444,7 @@ const UserManagement = () => {
                           </button>
                         )}
                       </>
-                    ) : targetUser.managementUserStatus == "ban" ? (
+                    ) : targetUser.managementUserStatus === "ban" ? (
                       <>
                         <button
                           onClick={() => {
@@ -349,8 +457,8 @@ const UserManagement = () => {
                           벤취소
                         </button>
                       </>
-                    ) : targetUser.managementUserStatus == "admin" &&
-                      loginDto.managementUserStatus == "host" ? (
+                    ) : targetUser.managementUserStatus === "admin" &&
+                      loginDto.managementUserStatus === "host" ? (
                       <>
                         <button
                           onClick={() => {
@@ -469,6 +577,7 @@ const UserManagement = () => {
               </div>
             </div>
           </div>
+
           <div className="login-bg" onClick={() => setIsOpen(!isOpen)}></div>
         </>
       )}

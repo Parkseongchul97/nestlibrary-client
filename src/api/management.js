@@ -47,3 +47,10 @@ export const everyRole = async (
   const response = await authorize.get(`/management/user`, { params });
   return response.data; // 필요에 따라 데이터를 반환
 };
+
+export const allPost = async (channelCode, userNickname) => {
+  const response = await authorize.get(
+    `/management/${channelCode}/${userNickname}`
+  );
+  return response.data;
+};

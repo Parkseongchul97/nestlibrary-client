@@ -1,6 +1,6 @@
 .management-box {
   display: flex;
-  width: 1000px;
+  width: 80%;
   flex-direction: column;
 }
 
@@ -40,6 +40,7 @@ table {
   border-collapse: collapse;
 
   overflow: hidden;
+
   tr {
     border-bottom: 1px solid black;
     line-height: 2;
