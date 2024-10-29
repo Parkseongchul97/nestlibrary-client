@@ -1,13 +1,18 @@
 import { useLocation } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+
 import { useEffect, useState } from "react";
-import { findUser as byNickname } from "../api/message";
+
 import "../assets/userManagement.scss";
-import { everyRole } from "../api/management.js";
-import FindUser from "../components/FindUser";
-import { all } from "axios";
+import {
+  everyRole,
+  addRole,
+  removeRole,
+  loginUserChannelGrade,
+} from "../api/management.js";
+
 import { IoIosArrowBack } from "react-icons/io";
 import { useAuth } from "../contexts/AuthContext.js";
+import { sendCode, checkEmail } from "../api/email.js";
 
 import "../assets/login.scss";
 
@@ -16,10 +21,13 @@ const UserManagement = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearch, setIsSearch] = useState(true);
   const [inputNickname, setInputNickname] = useState(null);
-  const [toNickname, setToNickname] = useState(""); //
+
   const [ban, setBan] = useState(false);
   const [host, setHost] = useState(false);
   const [send, setSent] = useState(false);
+  const [emailCode, setEmailCode] = useState("");
+
+  const [loginDto, setLoginDto] = useState("");
 
   const [managementDTO, setManagementDTO] = useState({
     managementUserStatus: "",
@@ -32,25 +40,6 @@ const UserManagement = () => {
   const location = useLocation();
   const [targetUser, setTargetUser] = useState("");
   const channelCode = location.state?.channelCode;
-  const {
-    data: findUser,
-    isLoading,
-    errors,
-  } = useQuery({
-    queryKey: ["findUser", toNickname],
-    queryFn: () => byNickname(toNickname),
-    enabled: toNickname.length > 1,
-  });
-
-  const findSubmit = () => {
-    setToNickname(inputNickname);
-    setIsOpen(true);
-  };
-  /*
-  const selectedUser = (targetUser) => {
-    // 여기서 필요한곳에 타겟 유저.필요한정보 담기
-    setViewNickname(targetUser?.userNickname);
-  };*/
 
   const allUser = async (data) => {
     if (inputNickname.trim().length < 1) {
@@ -62,16 +51,51 @@ const UserManagement = () => {
     setInputNickname("");
   };
 
+  // 관리자 리스트
   const adminList = async () => {
     const response = await everyRole(channelCode, null, "admin");
     setSelectedUser(response);
     setIsSearch(false);
   };
+  // 차단리스트
   const banList = async () => {
     const response = await everyRole(channelCode, null, "ban");
     setSelectedUser(response);
     setIsSearch(false);
   };
+
+  // 이메일 발송
+  const goEmail = async (data) => {
+    const response = await sendCode(data);
+    alert("이메일로 인증번호가 발송되었습니다!");
+  };
+  // 인증코드 확인
+  const codeCheck = async (data) => {
+    const response = await checkEmail(emailCode);
+    let result = null;
+    if (response.data) {
+      result = window.confirm("정말 호스트를 양도하시겠습니까?");
+      if (result) {
+        addRole(data);
+        alert("양도 되었습니다");
+        adminList();
+        setIsOpen(false);
+      } else {
+        alert("취소되었습니다");
+      }
+    } else {
+      alert("인증번호가 일치하지 않습니다");
+    }
+  };
+
+  const loginUser = async () => {
+    const response = await loginUserChannelGrade(channelCode);
+    setLoginDto(response.data);
+  };
+
+  useEffect(() => {
+    loginUser();
+  }, [loginDto]);
 
   useEffect(() => {
     setBan(false);
@@ -93,18 +117,44 @@ const UserManagement = () => {
     }
   };
   const updateInfo = (data) => {
-    if (data.userNickname != user.userNickname) {
+    if (
+      data.userNickname != user.userNickname &&
+      data.managementUserStatus != "host"
+    ) {
       setIsOpen(!isOpen);
 
       setTargetUser(data);
       setManagementDTO({
-        userEmail: data.userNickname,
+        userEmail: data.userEmail,
         channelCode: channelCode,
       });
     }
   };
 
-  const gradeChangeSubmit = () => {};
+  const gradeChangeSubmit = async (data) => {
+    let result = null;
+    if (data.managementUserStatus == "admin") {
+      result = window.confirm("정말 관리자로 임명하시겠습니까?");
+      if (result) {
+        await addRole(data);
+        adminList();
+        alert("관리자가 추가 되었습니다");
+        setIsOpen(false);
+        return;
+      } else {
+        alert("취소되었습니따");
+        return;
+      }
+    }
+
+    if (managementDTO.managementUserStatus == "ban") {
+      await addRole(managementDTO);
+      banList();
+      return;
+    }
+
+    setIsOpen(false);
+  };
   const handleRadioChange = (e) => {
     setManagementDTO({
       ...managementDTO,
@@ -113,12 +163,41 @@ const UserManagement = () => {
     });
   };
 
-  const agree = (data) => {
-    setBan(false);
-    setHost(false);
-    const result = window.confirm(data);
+  const cancle = async (code) => {
+    await removeRole(code);
   };
 
+  const agree = (data) => {
+    // 값에 따라서 추가 or 삭제 + 메시지 까지
+    setBan(false);
+    setHost(false);
+    let result = null;
+    if (data.managementUserStatus == "ban") {
+      result = window.confirm("벤을 취소 하시겠습니까? ");
+      if (result) {
+        cancle(data.managementCode);
+        alert("완료되었습니다");
+        banList();
+        setIsOpen(false);
+      } else {
+        alert("취소되었습니다");
+      }
+    } else if (data.managementUserStatus == "admin") {
+      result = window.confirm("관리자 권한을 취소 하시겠습니까? ? ");
+      if (result) {
+        cancle(data.managementCode);
+        alert("완료되었습니다");
+        adminList();
+        setIsOpen(false);
+      } else {
+        alert("취소되었습니다");
+      }
+    }
+  };
+
+  useEffect(() => {
+    console.log(loginDto);
+  }, [targetUser]);
   return (
     <>
       <div className="main-box">
@@ -243,9 +322,20 @@ const UserManagement = () => {
                     {targetUser.managementUserStatus == null ? (
                       <>
                         <button onClick={() => setBan(!ban)}>벤</button>
-                        <button onClick={() => agree("admin")}>
-                          관리자로임명
-                        </button>
+                        {loginDto.managementUserStatus == "host" && (
+                          <button
+                            onClick={() =>
+                              gradeChangeSubmit({
+                                userEmail: targetUser.userEmail,
+                                managementUserStatus: "admin",
+                                channelCode: channelCode,
+                                banDate: 0,
+                              })
+                            }
+                          >
+                            관리자로임명
+                          </button>
+                        )}
                       </>
                     ) : targetUser.managementUserStatus == "ban" ? (
                       <>
@@ -256,17 +346,18 @@ const UserManagement = () => {
                         >
                           벤연장
                         </button>
-                        <button onClick={() => agree("banCancle?")}>
+                        <button onClick={() => agree(targetUser)}>
                           벤취소
                         </button>
                       </>
-                    ) : targetUser.managementUserStatus == "admin" ? (
+                    ) : targetUser.managementUserStatus == "admin" &&
+                      loginDto.managementUserStatus == "host" ? (
                       <>
                         <button
                           onClick={() => {
                             setHost(false);
                             setBan(false);
-                            agree("관리자 권한을 삭제하시겠습니까?");
+                            agree(targetUser);
                           }}
                         >
                           관리자 취소
@@ -350,12 +441,30 @@ const UserManagement = () => {
                       <input
                         type="text
                         "
+                        value={emailCode}
+                        onChange={(e) => setEmailCode(e.target.value)}
                       />
                     </div>
-                    <button onClick={() => setSent(true)}>
+                    <button
+                      onClick={() => {
+                        setSent(true);
+                        goEmail(user.userEmail);
+                      }}
+                    >
                       {send ? "재발송" : "발송"}
                     </button>
-                    <button>확인</button>
+                    <button
+                      onClick={() =>
+                        codeCheck({
+                          userEmail: targetUser.userEmail,
+                          managementUserStatus: "host",
+                          channelCode: channelCode,
+                          banDate: 0,
+                        })
+                      }
+                    >
+                      확인
+                    </button>
                   </>
                 )}
               </div>
