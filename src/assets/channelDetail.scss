@@ -64,6 +64,7 @@
     }
   }
   .channel-main {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -119,7 +120,7 @@
   background: #f4f4f4;
   width: 100%;
   max-width: 600px;
-  height: 400px;
+  height: 100%;
   .channel-post {
     display: flex;
     justify-content: space-between;
@@ -170,6 +171,7 @@
 }
 .is-best-box {
   display: flex;
+  margin-bottom: 10px;
   .is-all {
     display: flex;
     background-color: #000;

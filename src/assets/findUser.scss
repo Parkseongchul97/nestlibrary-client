@@ -1,0 +1,38 @@
+.find-user-box {
+  width: 300px;
+  justify-content: start;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: white;
+  .find-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    input {
+      width: 100%;
+      margin-right: 10px;
+    }
+    button {
+    }
+  }
+  .find-user-list-box {
+    height: 500px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    .find-user-list {
+      padding: 5px;
+      display: flex;
+      justify-content: space-between;
+      button {
+        border: none;
+        background-color: antiquewhite;
+      }
+    }
+  }
+}

@@ -154,10 +154,7 @@ const CommentComponent = ({
               </>
             ) : (
               <>
-                <p className="comment-text">
-                  {isPostUser && <FaFeatherPointed />}
-                  {comment.commentContent}
-                </p>
+                <p className="comment-text">{comment.commentContent}</p>
               </>
             )}
 
@@ -194,7 +191,7 @@ const CommentComponent = ({
       )}
 
       {newReComment.commentParentsCode === comment.commentCode && (
-        <>
+        <div className="re-comment-form-box">
           <div className="re-comment-form">
             <input
               type="text"
@@ -216,7 +213,7 @@ const CommentComponent = ({
               </button>
             </div>
           </div>
-        </>
+        </div>
       )}
       {comment?.reCommentDTO?.map((reCommentDTO) => (
         <CommentComponent
