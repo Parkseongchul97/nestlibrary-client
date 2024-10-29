@@ -7,10 +7,61 @@
 .channel-box {
   width: 100%;
   align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   .channel-header {
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 30px 30px 0px 0px;
+    width: 100%;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
+    margin-bottom: 10px;
+    .channel-header-left {
+      display: flex;
+      a {
+        font-size: 2rem;
+        font-weight: bold;
+      }
+
+      .channel-img {
+        width: 50px;
+        height: 50px;
+        background-color: white;
+        border-radius: 50%;
+      }
+    }
+
+    .channel-header-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .channel-header-auth {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        p {
+          margin-right: 8px;
+          font-size: 1.2rem;
+          font-weight: bold;
+        }
+        .write-btn {
+          background-color: red;
+          padding: 5px 8px;
+          border-radius: 5px;
+          color: white;
+          font-size: 1.2rem;
+          font-weight: bold;
+          margin: 5px;
+        }
+        svg {
+          cursor: pointer;
+        }
+      }
+    }
   }
   .channel-main {
     display: flex;
@@ -19,10 +70,12 @@
   }
 }
 .tag-box {
+  border-radius: 10px;
   display: flex;
   justify-content: flex-start;
   overflow: scroll;
-  width: 80%;
+  max-width: 600px;
+  width: 100%;
   background-color: black;
   &::-webkit-scrollbar {
     width: 100%;

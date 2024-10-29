@@ -8,13 +8,14 @@ import {
   addImg,
   removeChannel,
 } from "../api/channel";
-import FindUser from "../components/FindUser";
+
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { checkEmail, sendCode } from "../api/email";
 import { findUser as byNickname } from "../api/message";
 import { useQuery } from "@tanstack/react-query";
-import UserMenu from "../components/UserMenu";
+import UserMenu from "../components/user/UserMenu";
+import FindUser from "../components/user/FindUser";
 
 const ChannelUpdate = () => {
   const { user } = useAuth(); // 발신자(로그인유저)

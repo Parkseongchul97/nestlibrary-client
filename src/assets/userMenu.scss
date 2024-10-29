@@ -1,26 +1,40 @@
 .user-profile {
   width: 100%;
   display: flex;
+  justify-content: flex-start;
   height: 100%;
   cursor: pointer;
-  .user-profile-nickname {
-    margin-left: 5px;
+  .user-nickname-box {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    width: 100%;
-    font-weight: bold;
+    .user-profile-nickname {
+      margin-left: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      font-weight: bold;
+    }
+  }
+  .time-box {
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 1;
+    align-self: center;
+
     .time {
       font-weight: bold;
     }
   }
-  .user-profile-img {
-    align-self: center;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-  }
 }
+.user-profile-img {
+  align-self: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+
 .profile-actions {
   display: flex;
   flex-direction: column;

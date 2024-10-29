@@ -1,33 +1,34 @@
-.post-detail-box{
+.post-detail-box {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  width: 90%;
+  background-color: white;
+  border-radius: 20px;
+  margin-bottom: 10px;
   .post-detail {
-
     padding: 100px;
     width: 100%;
     max-width: 1000px;
   }
-
 }
 
-.comment-form{
+.comment-form {
   display: flex;
   padding: 10px;
   background-color: #eee;
   height: 50px;
   justify-content: space-between;
   align-items: center;
-  .comment-add{
+  .comment-add {
     padding-left: 10px;
     width: 80%;
     height: 40px;
   }
-  .comment-add-status{
+  .comment-add-status {
     display: flex;
     justify-content: flex-end;
-    .comment-submit{
+    .comment-submit {
       text-wrap: nowrap;
       background-color: #ddd;
       cursor: pointer;
@@ -39,5 +40,4 @@
       margin: 0px 3px;
     }
   }
- 
 }

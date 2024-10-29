@@ -1,13 +1,14 @@
-import { useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   addComment as addAPI,
   updateComment as updateAPI,
   removeComment as deleteAPI,
-} from "../api/comment";
-import "../assets/comment.scss";
-import UserMenu from "./UserMenu";
+} from "../../api/comment";
+import "../../assets/comment.scss";
+import UserMenu from "../user/UserMenu";
+import { FaFeatherPointed } from "react-icons/fa6";
 const CommentComponent = ({
   channelCode,
   comment,
@@ -18,6 +19,7 @@ const CommentComponent = ({
   isWriter,
 }) => {
   const { user, token } = useAuth();
+  const [isPostUser, setIsPostUser] = useState(false);
   const [newReComment, setNewReComment] = useState({
     commentContent: "",
     postCode: postCode,
@@ -101,7 +103,9 @@ const CommentComponent = ({
         updateComment();
       }
   };
-
+  useEffect(() => {
+    setIsPostUser(isWriter === comment.user.userEmail);
+  }, [isWriter]);
   return (
     <div className="comment-content-box" id={"comment-code-" + id}>
       {comment?.commentContent === null ? (
@@ -111,8 +115,15 @@ const CommentComponent = ({
       ) : (
         <>
           {" "}
-          <div className="comment-content">
-            {isWriter && "!!글쓴이!!"}
+          <div
+            className={
+              user?.userEmail === comment?.user?.userEmail
+                ? "comment-content-my"
+                : isPostUser
+                ? "comment-content-writer"
+                : "comment-content"
+            }
+          >
             <UserMenu
               user={comment?.user}
               time={comment?.commentCreatedAt}
@@ -120,6 +131,7 @@ const CommentComponent = ({
               userMenuToggle={() => userMenuToggle(comment.commentCode)}
               channelCode={channelCode}
             />
+
             {isChange === comment.commentCode &&
             user !== undefined &&
             user.userEmail === comment?.user?.userEmail ? (
@@ -141,8 +153,14 @@ const CommentComponent = ({
                 </div>
               </>
             ) : (
-              <p className="comment-text">{comment.commentContent}</p>
+              <>
+                <p className="comment-text">
+                  {isPostUser && <FaFeatherPointed />}
+                  {comment.commentContent}
+                </p>
+              </>
             )}
+
             <div className="btn-box">
               {/*이거나 관리자인 경우*/}
               {user.userEmail === comment?.user?.userEmail && (

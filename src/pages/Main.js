@@ -2,12 +2,12 @@ import "../assets/main.scss";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import PostListComponent from "../components/PostListComponent";
+import PostListComponent from "../components/post/PostListComponent";
 
 import { useAuth } from "../contexts/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";
 
-import UserMenu from "../components/UserMenu";
+import UserMenu from "../components/user/UserMenu";
 
 const Main = () => {
   const { channelList, setPage } = useOutletContext();
@@ -47,7 +47,7 @@ const Main = () => {
           <div className="sub-title">OUR COMMUNITY</div>
           <ul className="channel-list">
             {channelList.map((channel) => (
-              <li className="channel-box" key={channel?.channelCode}>
+              <li className="main-channel-box" key={channel?.channelCode}>
                 <div className="channel-main-header">
                   <Link
                     to={`/channel/${channel?.channelCode}`}
@@ -70,6 +70,7 @@ const Main = () => {
                       <PostListComponent
                         post={post}
                         key={post?.postCode}
+                        page={1}
                         channelCode={channel.channelCode}
                       />
                     ))}

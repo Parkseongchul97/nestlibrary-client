@@ -1,25 +1,26 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import CommentComponent from "../components/CommentComponent";
-import "../assets/postDetail.scss";
-
-// 리액트 쿼리(React Query)
-// 서버에 데이터에 특화되어 비동기 작업을 훨씬 쉽게 처리할 수 있는 라이브러리
+import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
+import CommentComponent from "../post/CommentComponent";
+import "../../assets/postDetail.scss";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { addComment as addCommentAPI, viewComment } from "../api/comment";
-import { viewPost } from "../api/post";
-import { likeState as state, like, unLike } from "../api/postLike";
-import TimeFormat from "../components/TimeFormat";
-import Page from "../components/Page";
-import { remove } from "../api/post";
-const PostDetail = () => {
+import { addComment as addCommentAPI, viewComment } from "../../api/comment";
+import { viewPost } from "../../api/post";
+import { likeState as state, like, unLike } from "../../api/postLike";
+import Page from "../Page";
+import { remove } from "../../api/post";
+import UserMenu from "../user/UserMenu";
+import { IoIosStar } from "react-icons/io";
+import { FaCircleDown, FaCircleUp } from "react-icons/fa6";
+const PostDetail = ({ postCode, page }) => {
   const [isOpenUser, setIsOpenUser] = useState(false);
-  const { postCode } = useParams();
   const { user, token } = useAuth();
   const location = useLocation();
+
   const query = new URLSearchParams(location.search);
-  const page = query.get("page") || 1;
+  const commentPage = query.get("comment_page") || 1;
+
+  const [postPage, setPostPage] = useState(page);
   const [newComment, setNewComment] = useState({
     commentContent: "",
     postCode: postCode,
@@ -43,8 +44,8 @@ const PostDetail = () => {
     error,
   } = useQuery({
     // 데이터, 로딩중인지, 에러발생
-    queryKey: ["comment", postCode, page],
-    queryFn: () => viewComment(postCode, page),
+    queryKey: ["comment", postCode, commentPage],
+    queryFn: () => viewComment(postCode, commentPage),
     // refetchInterval: 1000, // 해당 시간마다 데이터갱식하여 실시간 처럼 처리
   });
 
@@ -142,7 +143,18 @@ const PostDetail = () => {
 
   useEffect(() => {
     loadingPost();
-  }, []);
+  }, [postCode, page]);
+  useEffect(() => {
+    setPostPage(page);
+  }, [page]);
+
+  useEffect(() => {
+    setNewComment({
+      commentContent: "",
+      postCode: postCode,
+      userEmail: user?.userEmail,
+    });
+  }, [postCode]);
 
   // 시점이 다를때마다 useEffect 추가
 
@@ -155,22 +167,26 @@ const PostDetail = () => {
 
   return (
     <div className="post-detail-box">
-      <div className="post-detail">
-        <h1 className="post-title">{post?.postTitle}</h1>
-        <TimeFormat time={post?.postCreatedAt} />
+      <div className="post-header">
+        <div>
+          <Link
+            className="channel-tag"
+            to={
+              "/channel/" +
+              post?.channelCode +
+              "/" +
+              post?.channelTag?.channelTagCode
+            }
+          >
+            {post?.channelTag?.channelTagName}
+          </Link>{" "}
+          <h1 className="post-title">{post?.postTitle}</h1>
+        </div>
         <div>조회수 :{post?.postViews} </div>
-        <div>작성자 :{post?.user?.userNickname} </div>
-        <Link
-          className="channel-tag"
-          to={
-            "/channel/" +
-            post?.channelCode +
-            "/" +
-            post?.channelTag?.channelTagCode
-          }
-        >
-          {post?.channelTag?.channelTagName}
-        </Link>
+        <div>
+          <UserMenu user={post?.user} time={post?.postCreatedAt} />{" "}
+        </div>
+
         <div
           className="post-content"
           dangerouslySetInnerHTML={{ __html: post?.postContent }}
@@ -179,7 +195,18 @@ const PostDetail = () => {
         {!token ? null : likeState.data ? (
           <button onClick={unLikeSubmit}>추천취소</button>
         ) : (
-          <button onClick={likeSubmit}>추천</button>
+          <button onClick={likeSubmit}>
+            <IoIosStar
+              size={28}
+              style={{
+                border: "1px solid black",
+                borderRadius: "50%",
+                backgroundColor: "blue",
+                color: "yellow",
+                marginRight: "5px",
+              }}
+            />
+          </button>
         )}
         {token && post?.user?.userEmail === user.userEmail && (
           <>
@@ -237,16 +264,19 @@ const PostDetail = () => {
                   isOpenUser={isOpenUser}
                   userMenuToggle={userMenuToggle}
                   channelCode={post?.channelCode}
-                  isWriter={postUserEmail === comment.user.userEmail}
+                  isWriter={postUserEmail}
                 />
               ))
             )}
           </div>
-
-          <Page
-            page={page}
-            totalPages={Math.ceil(commentList.data?.paging.totalPage / 10)}
-          />
+          <div className="paging-box">
+            <Page
+              isComment={true}
+              page={postPage}
+              commentPage={commentPage}
+              totalPages={Math.ceil(commentList.data?.paging.totalPage / 10)}
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import TimeFormat from "./TimeFormat";
-import "../assets/userMenu.scss";
+import TimeFormat from "../TimeFormat";
+import "../../assets/userMenu.scss";
 import { Link } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import { userRole, addRole, removeRole } from "../api/management";
+import { useAuth } from "../../contexts/AuthContext";
+import { addRole, removeRole } from "../../api/management";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { loginUserChannelGrade, userChannelGrade } from "../api/management";
-import { sendCode, checkEmail } from "../api/email";
+import { loginUserChannelGrade, userChannelGrade } from "../../api/management";
+import { sendCode, checkEmail } from "../../api/email";
 import { FaRegCheckCircle, FaBan } from "react-icons/fa";
 
 const UserMenu = ({
@@ -18,7 +18,7 @@ const UserMenu = ({
   noneImg,
 }) => {
   const [managementDTO, setManagementDTO] = useState({
-    userEmail: user.userEmail,
+    userEmail: user?.userEmail,
     managementUserStatus: "",
     channelCode: "",
     banDate: 0,
@@ -48,8 +48,8 @@ const UserMenu = ({
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["gradeCheck", channelCode, user.userEmail],
-    queryFn: () => userChannelGrade(channelCode, user.userEmail),
+    queryKey: ["gradeCheck", channelCode, user?.userEmail],
+    queryFn: () => userChannelGrade(channelCode, user?.userEmail),
     enabled: !!channelCode,
     // refetchInterval: 1000,
   });
@@ -77,7 +77,6 @@ const UserMenu = ({
   }, [channelCode, token]);
 
   const banCanle = () => {
-    console.log(userGrade?.data?.managementCode);
     removeRoleMutatoin.mutate(userGrade?.data?.managementCode);
     userMenuToggle();
 
@@ -154,22 +153,27 @@ const UserMenu = ({
             }
           />
         )}
-        <div>
+        <div className="user-nickname-box">
           <p className="user-profile-nickname">
             {userGrade?.data !== undefined &&
             userGrade?.data?.managementUserStatus === "host" ? (
-              <FaRegCheckCircle style={{ color: "orange" }} />
+              <FaRegCheckCircle
+                style={{ color: "orange", marginRight: "5px" }}
+              />
             ) : userGrade?.data?.managementUserStatus === "admin" ? (
-              <FaRegCheckCircle style={{ color: "blue" }} />
+              <FaRegCheckCircle style={{ color: "blue", marginRight: "5px" }} />
             ) : userGrade?.data?.managementUserStatus === "ban" ? (
-              <FaBan style={{ color: "red" }} />
-            ) : (
-              <FaRegCheckCircle style={{ color: "black" }} />
-            )}
+              <FaBan style={{ color: "red", marginRight: "5px" }} />
+            ) : null}
             {user?.userNickname}
           </p>
         </div>
-        <div>{time !== undefined && <TimeFormat time={time} />}</div>
+        {time !== undefined && (
+          <div className="time-box">
+            {" "}
+            <TimeFormat time={time} />
+          </div>
+        )}
       </div>
       {isOpenUser && token && loginUser.userEmail !== user?.userEmail && (
         <div className="profile-actions">

@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
-import { findUser as byNickname } from "../api/message";
-import UserMenu from "./UserMenu";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { addMessage } from "../api/message";
-import "../assets/messageWrite.scss";
+import { useAuth } from "../../contexts/AuthContext";
+import { useQueryClient } from "@tanstack/react-query";
+import { addMessage } from "../../api/message";
+import "../../assets/messageWrite.scss";
 import { useLocation, useNavigate } from "react-router-dom";
-import FindUser from "./FindUser";
+import FindUser from "../user/FindUser";
 const MessageWrite = () => {
   const { user } = useAuth(); // 발신자(로그인유저)
   const [message, setMessage] = useState({
@@ -28,8 +26,6 @@ const MessageWrite = () => {
     // 단순 화면단에 보일 닉네임
     toUser !== undefined ? toUser.nickname : ""
   );
-  const queryClient = useQueryClient();
-
   const navigate = useNavigate();
 
   const submitMessage = async () => {

@@ -6,12 +6,11 @@ import LoginWait from "./pages/loginWait";
 
 import Mypage from "./pages/Mypage";
 import ChannelDetail from "./pages/ChannelDetail";
-import PostDetail from "./pages/PostDetail";
 
-import PostWrite from "./components/PostWrite";
+import PostWrite from "./components/post/PostWrite";
 import ChannelUpdate from "./pages/ChannelUpdate";
 import Messages from "./pages/Messages";
-import MessageWrite from "./components/MessageWrite";
+import MessageWrite from "./components/messages/MessageWrite";
 
 import UserHelp from "./pages/UserHelp";
 import UserManagement from "./pages/UserManagement";
@@ -60,9 +59,24 @@ const router = createBrowserRouter([
         element: <ChannelDetail />,
         children: [
           {
-            path: "best",
+            path: "post/:postCode",
             element: <ChannelDetail />,
           },
+          {
+            path: "best",
+            element: <ChannelDetail />,
+            children: [
+              {
+                index: true,
+                element: <ChannelDetail />,
+              },
+              {
+                path: "post/:postCode",
+                element: <ChannelDetail />,
+              },
+            ],
+          },
+
           {
             path: ":channelTagCode",
             children: [
@@ -71,8 +85,22 @@ const router = createBrowserRouter([
                 element: <ChannelDetail />,
               },
               {
+                path: "post/:postCode",
+                element: <ChannelDetail />,
+              },
+              {
                 path: "best",
                 element: <ChannelDetail />,
+                children: [
+                  {
+                    index: true,
+                    element: <ChannelDetail />,
+                  },
+                  {
+                    path: "post/:postCode",
+                    element: <ChannelDetail />,
+                  },
+                ],
               },
             ],
           },
@@ -81,11 +109,6 @@ const router = createBrowserRouter([
       {
         path: "user/help",
         element: <UserHelp />,
-      },
-
-      {
-        path: "/post/:postCode",
-        element: <PostDetail />,
       },
     ],
   },

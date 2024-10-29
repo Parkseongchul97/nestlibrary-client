@@ -31,3 +31,7 @@ export const remove = async (postCode) => {
 export const viewPost = async (postCode) => {
   return await instance.get(`post/${postCode}`);
 };
+
+export const getPageNum = async (postCode) => {
+  return await authorize.get(`page/${postCode}`);
+};

@@ -1,11 +1,18 @@
+.push-list-box {
+  top: 70px;
+  position: fixed;
+}
 .push-box {
-  top: 100px;
-  position: absolute;
   display: flex;
-  background-color: white;
+  background-color: #dddddd;
+  margin-bottom: 3px;
+  justify-content: space-between;
   align-items: center;
   a,
   p {
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
     margin-left: 0.3rem;
     text-wrap: nowrap;
     font-size: 0.9rem;
@@ -14,7 +21,7 @@
     color: gray;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: block;
+    flex-grow: 1;
   }
   button {
     background-color: antiquewhite;

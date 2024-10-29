@@ -11,12 +11,16 @@ import { useState } from "react";
 import { addSub, checkSub, removeSub } from "../api/subscribe";
 import { useAuth } from "../contexts/AuthContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import PostListComponent from "../components/PostListComponent";
+import PostListComponent from "../components/post/PostListComponent";
 import "../assets/channelDetail.scss";
 import "../assets/main.scss";
 import Page from "../components/Page";
 import Search from "../components/Search";
+import PostDetail from "../components/post/PostDetail";
+import UserMenu from "../components/user/UserMenu";
 
+import { BsBookmarkStarFill, BsBookmarkPlusFill } from "react-icons/bs";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
 const ChannelDetail = () => {
   const { user, token } = useAuth(); // 로그인 유저
   const { channelCode, channelTagCode } = useParams();
@@ -26,12 +30,16 @@ const ChannelDetail = () => {
   const queryClient = useQueryClient();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
-  let page = query.get("page") || 1;
 
+  let page = query.get("page") || 1;
+  const [isOpenDetail, setIsOpenDetail] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState(""); // 검색어
   const [searchTarget, setSearchTarget] = useState("title"); // 기본 검색 대상: 제목
+  const { postCode } = useParams();
   const fetch = async () => {
+    setPosts([]);
     const info = await channelInfo(channelCode);
+
     setChannel(info.data);
     const channelPosts =
       viewType === "best" && channelTagCode === undefined // 베스트면서 채널 태그코드가 없으면
@@ -55,14 +63,7 @@ const ChannelDetail = () => {
         : await allPosts(channelCode, page, searchTarget, searchKeyword); // 태그가 없으면 모든 게시글 가져오기
     setPosts(channelPosts.data);
   };
-  useEffect(() => {
-    // 3가지 채널 태그코드가있으면 -> 상세태그 채널 태그코드가 없으면 best
-    // if (channelTagCode === undefined) {
-    //   setViewType("all");
-    // } else {
-    //   setViewType("best");
-    // }
-  }, [viewType]);
+
   useEffect(() => {
     fetch();
   }, [channelCode, channelTagCode, page, viewType]);
@@ -124,6 +125,7 @@ const ChannelDetail = () => {
       favoriteCount: channel?.favoriteCount - 1,
     });
   };
+
   if (isLoading) return <>로딩</>;
   if (error) return <>에러</>;
   return (
@@ -131,29 +133,61 @@ const ChannelDetail = () => {
       <div className="channel-detail-box">
         <div className="channel-box">
           <div className="channel-header">
-            {!token ? null : data?.data ? (
-              <button onClick={removeSubSubmit}>구독취소</button>
-            ) : (
-              <button onClick={addSubSubmit}>구독</button>
-            )}
-            {token && (
-              <Link to="/write" state={{ isChannelCode: channelCode }}>
-                글쓰기
-              </Link>
-            )}
-            <h1>{channel?.channelName}</h1>
-            <p>구독자수 : {channel?.favoriteCount}</p>
-            <img
-              src={
-                channel?.channelImgUrl != null
-                  ? "http://192.168.10.51:8083/channel/" +
-                    channelCode +
-                    "/" +
-                    channel?.channelImgUrl
-                  : "http://192.168.10.51:8083/%EA%B8%B0%EB%B3%B8%EB%8C%80%EB%AC%B8.jpg"
-              }
-            />
+            <div className="channel-header-left">
+              <img
+                className="channel-img"
+                src={
+                  channel?.channelImgUrl != null
+                    ? "http://192.168.10.51:8083/channel/" +
+                      channelCode +
+                      "/" +
+                      channel?.channelImgUrl
+                    : "http://192.168.10.51:8083/%EA%B8%B0%EB%B3%B8%EB%8C%80%EB%AC%B8.jpg"
+                }
+              />
+              <div className="channel-header-left-box">
+                <Link to={"/channel/" + channelCode}>
+                  {channel?.channelName}
+                </Link>
+
+                <p>{channel?.channelInfo}</p>
+                <p>생성일 {channel?.channelCreatedAt}</p>
+              </div>
+            </div>
+
+            <div className="channel-header-right">
+              <div className="channel-header-auth">
+                <p>구독자수 {channel?.favoriteCount}</p>
+                {!token ? null : data?.data ? (
+                  <FaHeart
+                    onClick={removeSubSubmit}
+                    size={"2rem"}
+                    style={{ color: "red" }}
+                  />
+                ) : (
+                  <FaRegHeart
+                    onClick={addSubSubmit}
+                    size={"2rem"}
+                    style={{ color: "red" }}
+                  />
+                )}
+                {token && (
+                  <Link
+                    className="write-btn"
+                    to="/write"
+                    state={{ isChannelCode: channelCode }}
+                  >
+                    글쓰기
+                  </Link>
+                )}
+              </div>
+              <UserMenu
+                user={channel?.host}
+                channelCode={channel?.channelCode}
+              />
+            </div>
           </div>
+          {postCode && <PostDetail postCode={postCode} page={page} />}
           <div className="channel-main">
             <div className="tag-box">
               <Link
@@ -199,9 +233,14 @@ const ChannelDetail = () => {
               ) : (
                 posts?.postList?.map((post) => (
                   <PostListComponent
+                    page={page}
+                    postCode={postCode}
                     post={post}
                     key={post?.postCode}
                     channelCode={channelCode}
+                    channelTagCode={channelTagCode}
+                    isOpenDetail={isOpenDetail}
+                    setIsOpenDetail={setIsOpenDetail}
                   />
                 ))
               )}
