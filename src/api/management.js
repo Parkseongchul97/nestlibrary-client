@@ -32,3 +32,18 @@ export const removeRole = async (managementCode) => {
   const response = await authorize.delete(`/role/${managementCode}`);
   return response;
 };
+
+export const everyRole = async (
+  channelCode,
+  userNickname,
+  managementUserStatus
+) => {
+  const params = {
+    channelCode,
+    userNickname,
+    managementUserStatus,
+  };
+
+  const response = await authorize.get(`/management/user`, { params });
+  return response.data; // 필요에 따라 데이터를 반환
+};

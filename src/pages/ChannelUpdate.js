@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   updateInfo,
   addTags,
@@ -8,11 +8,25 @@ import {
   addImg,
   removeChannel,
 } from "../api/channel";
+
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { checkEmail, sendCode } from "../api/email";
+import { findUser as byNickname } from "../api/message";
+import { useQuery } from "@tanstack/react-query";
+import UserMenu from "../components/user/UserMenu";
 import FindUser from "../components/user/FindUser";
 
 const ChannelUpdate = () => {
+  const { user } = useAuth(); // 발신자(로그인유저)
   const { channelCode } = useParams();
   const [previewUrl, setPreviewUrl] = useState("");
+
+  const [isDelete, setIsDelete] = useState(false);
+  const [code, setCode] = useState("");
+  const [reCode, setReCode] = useState(false);
+  const navigate = useNavigate();
+
   const [chan, setChan] = useState({
     channelCode: channelCode,
     channelImg: null,
@@ -51,6 +65,16 @@ const ChannelUpdate = () => {
     }
   };
 
+  const {
+    data: findUser,
+    isLoading,
+    errors,
+  } = useQuery({
+    queryKey: ["findUser", toNickname],
+    queryFn: () => byNickname(toNickname),
+    enabled: toNickname.length > 1,
+  });
+
   useEffect(() => {
     update();
   }, []);
@@ -82,7 +106,7 @@ const ChannelUpdate = () => {
 
   const remove = async () => {
     await removeChannel(channelCode);
-    window.location.href = "/";
+    navigate("/");
   };
 
   let formData = new FormData();
@@ -129,6 +153,24 @@ const ChannelUpdate = () => {
     document.querySelector(".change-input-file").value = "";
   };
 
+  const getCode = async () => {
+    setReCode(true);
+    await sendCode(user.userEmail);
+    alert("인증번호가 발송되었습니다");
+  };
+  const submitCode = async () => {
+    const response = await checkEmail(code);
+    if (response.data) {
+      const result = window.confirm("정말 삭제하실 건가요?");
+      if (result) {
+        alert("삭제 되었습니다 ");
+        remove();
+      } else {
+        alert("삭제가 취소 되었습니다");
+      }
+    }
+  };
+
   const findSubmit = () => {
     setToNickname(inputNickname);
     setIsOpen(true);
@@ -168,6 +210,14 @@ const ChannelUpdate = () => {
             }
           />
           <button onClick={infoSubmit}> 변경 </button>
+          <Link
+            state={{
+              channelCode: channelCode,
+            }}
+            to="/managment"
+          >
+            유저관리 페이지
+          </Link>
           <ul>
             차단 리스트
             {channelInfos.banList.map((bans) => (
@@ -244,7 +294,26 @@ const ChannelUpdate = () => {
                 : `http://192.168.10.51:8083/channel/${channelCode}/${channelInfos.channelImgUrl}`)
             }
           />
-          <button onClick={remove}>채널삭제</button>
+          <button
+            onClick={() => {
+              setIsDelete(!isDelete);
+            }}
+          >
+            채널삭제
+          </button>
+          {isDelete && (
+            <>
+              <div>채널 삭제는 이메일 인증코드가 필요 합니다 </div>
+              <input
+                type="text"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+              />
+              <button onClick={getCode}>{reCode ? "재발송" : "발송"}</button>
+              <button onClick={submitCode}>확인</button>
+            </>
+          )}
+          <Link to={"/channel/" + channelCode}>바로가기</Link>
         </>
       )}
     </>

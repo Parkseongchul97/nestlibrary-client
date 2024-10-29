@@ -4,6 +4,13 @@ const instance = axios.create({
   baseURL: "http://localhost:8080/api/email/",
 });
 
+const authorize = axios.create({
+  baseURL: "http://localhost:8080/api/email/private/",
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  },
+});
+// 신규 가입시 인증코드 발송
 export const sendEmail = async (userEmail) => {
   try {
     const response = await instance.get("code", {
@@ -18,7 +25,19 @@ export const sendEmail = async (userEmail) => {
     return false; // 오류 발생 시 false 반환
   }
 };
+// 채널삭제시 인증코드
+export const sendCode = async (userEmail) => {
+  try {
+    const response = await authorize.get("code", {
+      params: { userEmail },
+    });
+    return response.data;
+  } catch (error) {
+    return false; // 오류 발생 시 false 반환
+  }
+};
 
+// 인증코드 일치 불일치 여부
 export const checkEmail = async (code) => {
   return await instance.post("code?code=" + code);
 };
