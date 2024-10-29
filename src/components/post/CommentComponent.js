@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   addComment as addAPI,
   updateComment as updateAPI,
   removeComment as deleteAPI,
-} from "../api/comment";
-import "../assets/comment.scss";
-import UserMenu from "./UserMenu";
+} from "../../api/comment";
+import "../../assets/comment.scss";
+import UserMenu from "../user/UserMenu";
 import { FaFeatherPointed } from "react-icons/fa6";
 const CommentComponent = ({
   channelCode,

@@ -1,19 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import CommentComponent from "../components/CommentComponent";
-import "../assets/postDetail.scss";
-
-// 리액트 쿼리(React Query)
-// 서버에 데이터에 특화되어 비동기 작업을 훨씬 쉽게 처리할 수 있는 라이브러리
+import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
+import CommentComponent from "../post/CommentComponent";
+import "../../assets/postDetail.scss";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { addComment as addCommentAPI, viewComment } from "../api/comment";
-import { viewPost } from "../api/post";
-import { likeState as state, like, unLike } from "../api/postLike";
-import TimeFormat from "../components/TimeFormat";
-import Page from "../components/Page";
-import { remove } from "../api/post";
-import UserMenu from "./UserMenu";
+import { addComment as addCommentAPI, viewComment } from "../../api/comment";
+import { viewPost } from "../../api/post";
+import { likeState as state, like, unLike } from "../../api/postLike";
+import Page from "../Page";
+import { remove } from "../../api/post";
+import UserMenu from "../user/UserMenu";
+import { IoIosStar } from "react-icons/io";
+import { FaCircleDown, FaCircleUp } from "react-icons/fa6";
 const PostDetail = ({ postCode, page }) => {
   const [isOpenUser, setIsOpenUser] = useState(false);
   const { user, token } = useAuth();
@@ -150,6 +148,14 @@ const PostDetail = ({ postCode, page }) => {
     setPostPage(page);
   }, [page]);
 
+  useEffect(() => {
+    setNewComment({
+      commentContent: "",
+      postCode: postCode,
+      userEmail: user?.userEmail,
+    });
+  }, [postCode]);
+
   // 시점이 다를때마다 useEffect 추가
 
   // 데이터 로딩중일 때 처리
@@ -161,24 +167,26 @@ const PostDetail = ({ postCode, page }) => {
 
   return (
     <div className="post-detail-box">
-      <div className="post-detail">
-        <h1 className="post-title">{post?.postTitle}</h1>
-
+      <div className="post-header">
+        <div>
+          <Link
+            className="channel-tag"
+            to={
+              "/channel/" +
+              post?.channelCode +
+              "/" +
+              post?.channelTag?.channelTagCode
+            }
+          >
+            {post?.channelTag?.channelTagName}
+          </Link>{" "}
+          <h1 className="post-title">{post?.postTitle}</h1>
+        </div>
         <div>조회수 :{post?.postViews} </div>
         <div>
           <UserMenu user={post?.user} time={post?.postCreatedAt} />{" "}
         </div>
-        <Link
-          className="channel-tag"
-          to={
-            "/channel/" +
-            post?.channelCode +
-            "/" +
-            post?.channelTag?.channelTagCode
-          }
-        >
-          {post?.channelTag?.channelTagName}
-        </Link>
+
         <div
           className="post-content"
           dangerouslySetInnerHTML={{ __html: post?.postContent }}
@@ -187,7 +195,18 @@ const PostDetail = ({ postCode, page }) => {
         {!token ? null : likeState.data ? (
           <button onClick={unLikeSubmit}>추천취소</button>
         ) : (
-          <button onClick={likeSubmit}>추천</button>
+          <button onClick={likeSubmit}>
+            <IoIosStar
+              size={28}
+              style={{
+                border: "1px solid black",
+                borderRadius: "50%",
+                backgroundColor: "blue",
+                color: "yellow",
+                marginRight: "5px",
+              }}
+            />
+          </button>
         )}
         {token && post?.user?.userEmail === user.userEmail && (
           <>

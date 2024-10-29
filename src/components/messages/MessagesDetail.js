@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { oneMessage } from "../api/message";
+import { oneMessage } from "../../api/message";
 import { IoIosArrowBack } from "react-icons/io";
-import "../assets/messagesDetail.scss";
-import UserMenu from "./UserMenu";
-const MessagesDetail = ({ setIsOpen, isOpen, messagesCode }) => {
+import "../../assets/messagesDetail.scss";
+import UserMenu from "../user/UserMenu";
+const MessagesDetail = ({ setIsOpen, messagesCode }) => {
   const [message, setMessage] = useState();
   const findMessage = async () => {
     const response = await oneMessage(messagesCode);

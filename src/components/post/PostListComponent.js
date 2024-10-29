@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
-import TimeFormat from "./TimeFormat";
-import { FaFaceGrinStars } from "react-icons/fa6";
+import TimeFormat from "../TimeFormat";
 import { IoIosStar } from "react-icons/io";
-import "../assets/postList.scss";
-import UserMenu from "./UserMenu";
+import "../../assets/postList.scss";
+import UserMenu from "../user/UserMenu";
 const PostListComponent = ({ channelTagCode, post, postCode, page }) => {
   if (!post) {
     return null;
@@ -50,7 +49,6 @@ const PostListComponent = ({ channelTagCode, post, postCode, page }) => {
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
           <div className="post-start">
-            {/* <span className="post-ather">{post?.user.userNickname}</span> */}
             <UserMenu
               user={post?.user}
               noneImg={true}

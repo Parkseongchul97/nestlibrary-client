@@ -7,10 +7,10 @@ import LoginWait from "./pages/loginWait";
 import Mypage from "./pages/Mypage";
 import ChannelDetail from "./pages/ChannelDetail";
 
-import PostWrite from "./components/PostWrite";
+import PostWrite from "./components/post/PostWrite";
 import ChannelUpdate from "./pages/ChannelUpdate";
 import Messages from "./pages/Messages";
-import MessageWrite from "./components/MessageWrite";
+import MessageWrite from "./components/messages/MessageWrite";
 
 import UserHelp from "./pages/UserHelp";
 

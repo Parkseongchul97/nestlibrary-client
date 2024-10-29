@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import TimeFormat from "./TimeFormat";
-import "../assets/userMenu.scss";
+import TimeFormat from "../TimeFormat";
+import "../../assets/userMenu.scss";
 import { Link } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import { addRole, removeRole } from "../api/management";
+import { useAuth } from "../../contexts/AuthContext";
+import { addRole, removeRole } from "../../api/management";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { loginUserChannelGrade, userChannelGrade } from "../api/management";
+import { loginUserChannelGrade, userChannelGrade } from "../../api/management";
 import { FaRegCheckCircle, FaBan } from "react-icons/fa";
 
 const UserMenu = ({

@@ -1,10 +1,9 @@
-import { Link } from "react-router-dom";
-import UserMenu from "./UserMenu";
-import { useAuth } from "../contexts/AuthContext";
-import MessagesDetail from "./MessagesDetail";
+import UserMenu from "../user/UserMenu";
+import { useAuth } from "../../contexts/AuthContext";
+import MessagesDetail from "../messages/MessagesDetail";
 import { useEffect, useState } from "react";
 import { IoMailOpenOutline, IoMailOutline } from "react-icons/io5";
-import TimeFormat from "./TimeFormat";
+import TimeFormat from "../TimeFormat";
 const MessageList = ({
   message,
   setIsOpen,

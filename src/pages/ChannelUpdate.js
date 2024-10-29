@@ -8,7 +8,7 @@ import {
   addImg,
   removeChannel,
 } from "../api/channel";
-import FindUser from "../components/FindUser";
+import FindUser from "../components/user/FindUser";
 
 const ChannelUpdate = () => {
   const { channelCode } = useParams();

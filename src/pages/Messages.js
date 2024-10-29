@@ -10,7 +10,7 @@ import {
   removeMessage,
 } from "../api/message";
 import Search from "../components/Search";
-import MessageList from "../components/MessageList";
+import MessageList from "../components/messages/MessageList";
 import Page from "../components/Page";
 const Messages = () => {
   const queryClient = useQueryClient();

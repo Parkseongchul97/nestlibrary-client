@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "../assets/login.scss";
 import { useState } from "react";
 import { login } from "../api/user";
-import KakaoLogin from "../components/kakaoLogin";
+import KakaoLogin from "../components/user/kakaoLogin";
 import { useAuth } from "../contexts/AuthContext";
 import { findpass } from "../api/email";
 

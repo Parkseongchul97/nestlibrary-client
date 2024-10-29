@@ -1,9 +1,9 @@
-import React, { useState, useRef, useMemo, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import JoditEditor from "jodit-react";
-import { useLocation, useParams } from "react-router-dom";
-import { add, update, write } from "../api/post";
-import "../assets/edit.scss";
-import { useAuth } from "../contexts/AuthContext";
+import { useLocation } from "react-router-dom";
+import { add, update, write } from "../../api/post";
+import "../../assets/edit.scss";
+import { useAuth } from "../../contexts/AuthContext";
 
 const PostWrite = () => {
   const { user } = useAuth();

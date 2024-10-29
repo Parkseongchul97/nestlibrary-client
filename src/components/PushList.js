@@ -17,6 +17,9 @@ const PushList = ({ push }) => {
   });
   const removeSubmit = () => {
     removeMutation.mutate(push.pushCode);
+    if (page === -1 || undefined) {
+      alert("삭제된 게시글입니다!");
+    }
   };
   const postPaging = async () => {
     const result = await getPageNum(push.postCode);
@@ -24,12 +27,13 @@ const PushList = ({ push }) => {
   };
   useEffect(() => {
     postPaging();
-    console.log("내 포스트 코드 : "+ push?.postCode + "내 페이지 : + " + page)
-  }, []);
+  }, [push]);
 
   return (
     <div className="push-box">
-      {push?.postCode !== undefined ? (
+      {page === undefined || page === -1 ? (
+        <p onClick={removeSubmit}>삭제된 게시글 입니다</p>
+      ) : push?.postCode !== undefined ? (
         <Link
           to={`/channel/${push.channelCode}/post/${push.postCode}?page=${page}`}
           onClick={removeSubmit}

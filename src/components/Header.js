@@ -6,7 +6,7 @@ import "../assets/header.scss";
 import Login from "../pages/Login";
 import { kakaoLogout } from "../user/kakaoCode";
 import { useAuth } from "../contexts/AuthContext";
-import UserMenu from "./UserMenu";
+import UserMenu from "../components/user/UserMenu";
 import SubChannelList from "./SubChannelList";
 import { IoIosMail } from "react-icons/io";
 import { TbMessageCircleExclamation } from "react-icons/tb";
@@ -190,7 +190,7 @@ const Header = ({ onSearch }) => {
                 <input
                   className="search"
                   type="text"
-                  placeholder="찾기"
+                  placeholder="채널 찾기"
                   onChange={(e) => setKeyword(e.target.value)}
                   value={keyword}
                   onKeyDown={enter}
