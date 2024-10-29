@@ -31,9 +31,7 @@ const PushList = ({ push }) => {
 
   return (
     <div className="push-box">
-      {page === undefined || page === -1 ? (
-        <p onClick={removeSubmit}>삭제된 게시글 입니다</p>
-      ) : push?.postCode !== undefined ? (
+      {push?.postCode !== undefined ? (
         <Link
           to={`/channel/${push.channelCode}/post/${push.postCode}?page=${page}`}
           onClick={removeSubmit}
@@ -41,6 +39,8 @@ const PushList = ({ push }) => {
           {push.pushMassage}
           <TimeFormat time={push.pushCreatedAt} />
         </Link>
+      ) : page === undefined || page === -1 ? (
+        <p onClick={removeSubmit}>삭제된 게시글 입니다</p>
       ) : (
         <p onClick={removeSubmit}>
           {push.pushMassage}
