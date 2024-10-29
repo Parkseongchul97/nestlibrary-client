@@ -21,7 +21,7 @@
 }
 .comment-content-box {
   margin-left: 40px;
-  border-left: 0.5px solid #ddd;
+  border-left: 0.5px solid #454545;
 }
 .comment-content,
 .comment-content-writer,
@@ -30,10 +30,11 @@
   padding: 10px;
   flex-direction: column;
   background-color: #ddd;
-  margin-bottom: 10px;
-
+  border: 0.5px solid;
+  margin-bottom: 5px;
+  border-left: none;
   .comment-text {
-    padding-left: 20px;
+    padding-left: 50px;
   }
   .btn-box {
     display: flex;
@@ -48,38 +49,46 @@
     }
   }
 }
-
-.re-comment-form {
+.re-comment-form-box {
   display: flex;
-  padding: 10px;
-  background-color: #eee;
-  height: 50px;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  margin-bottom: 5px;
-  .re-comment-add {
-    padding-left: 10px;
-    width: 80%;
-    height: 40px;
-  }
-  .re-comment-add-status {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+
+  .re-comment-form {
+    width: 100%;
     display: flex;
+    padding: 10px;
+    height: 50px;
     justify-content: flex-end;
-    .re-comment-submit {
-      text-wrap: nowrap;
-      background-color: #ddd;
-      cursor: pointer;
-      padding: 5px 10px;
-      font-weight: bold;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 10px;
-      margin: 0px 3px;
+    align-items: center;
+    margin-bottom: 5px;
+    .re-comment-add {
+      padding-left: 50px;
+      width: 80%;
+      height: 40px;
+    }
+    .re-comment-add-status {
+      display: flex;
+      justify-content: flex-end;
+      .re-comment-submit {
+        text-wrap: nowrap;
+        background-color: #ddd;
+        cursor: pointer;
+        padding: 5px 10px;
+        font-weight: bold;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 10px;
+        margin: 0px 3px;
+      }
     }
   }
 }
 .edit-comment-form {
-  display: felx;
+  display: flex;
   align-items: center;
   .edit-comment-add {
     padding-left: 20px;
@@ -97,8 +106,26 @@
   }
 }
 .comment-content-writer {
-  border: 1px solid #000000;
+  .user-profile-box {
+    .user-profile {
+      .user-nickname-box {
+        .user-profile-nickname {
+          display: inline;
+          box-shadow: inset 0 -10px 0 #90f87b;
+        }
+      }
+    }
+  }
 }
 .comment-content-my {
-  border: 1px solid blue;
+  .user-profile-box {
+    .user-profile {
+      .user-nickname-box {
+        .user-profile-nickname {
+          display: inline;
+          box-shadow: inset 0 -10px 0 #f7f078;
+        }
+      }
+    }
+  }
 }

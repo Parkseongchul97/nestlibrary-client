@@ -16,16 +16,17 @@ const PostListComponent = ({ channelTagCode, post, postCode, page }) => {
         }
       >
         {post?.bestPoint > 50 && (
-          <IoIosStar
-            size={28}
-            style={{
-              border: "1px solid black",
-              borderRadius: "50%",
-              backgroundColor: "blue",
-              color: "yellow",
-              marginRight: "5px",
-            }}
-          />
+          <Link to={"/channel/" + post?.channelCode + "/best"}>
+            <IoIosStar
+              size={28}
+              style={{
+                borderRadius: "50%",
+                backgroundColor: "blue",
+                color: "yellow",
+                marginRight: "5px",
+              }}
+            />
+          </Link>
         )}
         <Link
           className="channel-tag"

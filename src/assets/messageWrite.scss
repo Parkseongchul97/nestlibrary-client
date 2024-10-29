@@ -1,3 +1,44 @@
 .write-box {
-  padding-top: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  background-color: #d4d4d4;
+  padding: 10px;
+  .write-header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  #message-title {
+    align-self: flex-end;
+    padding: 5px;
+    padding-left: 10px;
+    width: 50%;
+    margin-bottom: 20px;
+  }
+  #message-content {
+    width: 100%;
+    padding: 5px;
+    padding-left: 10px;
+    height: 500px;
+    margin-bottom: 10px;
+  }
+  .write-bottom {
+    padding-right: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    button {
+      margin-left: 10px;
+      border: none;
+      padding: 5px 8px;
+      font-size: 1.2rem;
+      border-radius: 10px;
+    }
+  }
 }

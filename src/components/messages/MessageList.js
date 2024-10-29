@@ -49,15 +49,36 @@ const MessageList = ({
   return (
     <div className="message-box">
       <div className="message-main" key={message.messagesCode}>
-        <input
-          checked={isCheck}
-          value={message.messagesCode}
-          type="checkbox"
-          onChange={() => {
-            setIsCheck(!isCheck);
-            checkboxInput();
-          }}
-        />
+        <div className="message-left">
+          <input
+            checked={isCheck}
+            value={message.messagesCode}
+            type="checkbox"
+            onChange={() => {
+              setIsCheck(!isCheck);
+              checkboxInput();
+            }}
+          />
+          {user.userEmail === message.messagesFromUser.userEmail ? (
+            <div className="message-user">
+              <div>받은사람</div>
+              <UserMenu
+                user={message.messagesToUser}
+                isOpenUser={isOpenUser === message.messagesCode}
+                userMenuToggle={() => userMenuToggle(message.messagesCode)}
+              />
+            </div>
+          ) : (
+            <div className="message-user">
+              <div>보낸사람</div>
+              <UserMenu
+                user={message.messagesFromUser}
+                isOpenUser={isOpenUser === message.messagesCode}
+                userMenuToggle={() => userMenuToggle(message.messagesCode)}
+              />
+            </div>
+          )}
+        </div>
         <div
           onClick={() => {
             openDetail(message.messagesCode);
@@ -67,27 +88,9 @@ const MessageList = ({
         >
           {message.messagesTitle}
         </div>
-        <div className="message-user">
+        <div className="message-right">
           {/*내가 받은사람인지 보낸사람인지 구분 내가 보낸사람이면*/}
-          {user.userEmail === message.messagesFromUser.userEmail ? (
-            <>
-              <div>받은사람</div>
-              <UserMenu
-                user={message.messagesToUser}
-                isOpenUser={isOpenUser === message.messagesCode}
-                userMenuToggle={() => userMenuToggle(message.messagesCode)}
-              />
-            </>
-          ) : (
-            <>
-              <div>보낸사람</div>
-              <UserMenu
-                user={message.messagesFromUser}
-                isOpenUser={isOpenUser === message.messagesCode}
-                userMenuToggle={() => userMenuToggle(message.messagesCode)}
-              />
-            </>
-          )}
+
           <TimeFormat
             time={message.messagesSentAt}
             className="message-time"

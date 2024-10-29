@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { useQueryClient } from "@tanstack/react-query";
 import { addMessage } from "../../api/message";
 import "../../assets/messageWrite.scss";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import FindUser from "../user/FindUser";
 const MessageWrite = () => {
   const { user } = useAuth(); // 발신자(로그인유저)
@@ -59,36 +58,47 @@ const MessageWrite = () => {
   }, []);
 
   return (
-    <div className="write-box">
-      <FindUser
-        toNickname={toNickname}
-        inputNickname={inputNickname}
-        setInputNickname={setInputNickname}
-        findSubmit={findSubmit}
-        viewNickname={viewNickname}
-        deleteToUser={deleteToUser}
-        selectedUser={selectedUser}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      />
-      <input
-        placeholder="제목을 입력하세요"
-        type="text"
-        value={message.messagesTitle}
-        onChange={(e) =>
-          setMessage({ ...message, messagesTitle: e.target.value })
-        }
-      />
-      <textarea
-        placeholder="내용을 입력하세요"
-        value={message?.messagesContent}
-        onChange={(e) =>
-          setMessage({ ...message, messagesContent: e.target.value })
-        }
-      />
-      <span>쪽지 발송에는 50pt가 소모됩니다</span>
-      <button onClick={submitMessage}>발송</button>
-    </div>
+    <>
+      <div className="main-box">
+        <div className="write-box">
+          <div className="write-header">
+            <Link to="/messages">내 쪽지함으로</Link>
+            <FindUser
+              toNickname={toNickname}
+              inputNickname={inputNickname}
+              setInputNickname={setInputNickname}
+              findSubmit={findSubmit}
+              viewNickname={viewNickname}
+              deleteToUser={deleteToUser}
+              selectedUser={selectedUser}
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+            />
+            <input
+              id="message-title"
+              placeholder="제목을 입력하세요"
+              type="text"
+              value={message.messagesTitle}
+              onChange={(e) =>
+                setMessage({ ...message, messagesTitle: e.target.value })
+              }
+            />
+          </div>
+          <textarea
+            id="message-content"
+            placeholder="내용을 입력하세요"
+            value={message?.messagesContent}
+            onChange={(e) =>
+              setMessage({ ...message, messagesContent: e.target.value })
+            }
+          />
+          <div className="write-bottom">
+            <span>쪽지 발송에는 50pt가 소모됩니다</span>
+            <button onClick={submitMessage}>발송</button>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 export default MessageWrite;

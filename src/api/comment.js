@@ -14,7 +14,7 @@ const authorize = axios.create({
 export const viewComment = async (postCode, commentPage) => {
   return await instance.get(
     `post/${postCode}/comment?comment_page=${
-      commentPage !== undefined ? commentPage : 1
+      commentPage === undefined || commentPage === null ? 1 : commentPage
     }`
   );
 };

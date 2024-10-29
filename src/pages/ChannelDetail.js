@@ -268,7 +268,7 @@ const ChannelDetail = () => {
                 onClick={() => {
                   setViewType("all");
                 }}
-                to={`/channel/${channelCode}/best`}
+                to={`/channel/${channelCode}`}
               >
                 전체글
               </Link>

@@ -71,7 +71,8 @@ const Page = ({ page, totalPages, pageBtnOnClick, isComment, commentPage }) => {
                 }
               }}
             >
-              맨앞으로
+              <FaChevronLeft />
+              <FaChevronLeft />
             </Link>
           </li>
         )}
@@ -161,7 +162,8 @@ const Page = ({ page, totalPages, pageBtnOnClick, isComment, commentPage }) => {
                 }
               }}
             >
-              맨뒤로
+              <FaChevronRight />
+              <FaChevronRight />
             </Link>
           </li>
         )}

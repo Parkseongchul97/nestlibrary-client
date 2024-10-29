@@ -10,15 +10,16 @@ import { likeState as state, like, unLike } from "../../api/postLike";
 import Page from "../Page";
 import { remove } from "../../api/post";
 import UserMenu from "../user/UserMenu";
-import { IoIosStar } from "react-icons/io";
-import { FaCircleDown, FaCircleUp } from "react-icons/fa6";
+import { HiStar } from "react-icons/hi";
 const PostDetail = ({ postCode, page }) => {
   const [isOpenUser, setIsOpenUser] = useState(false);
   const { user, token } = useAuth();
   const location = useLocation();
 
   const query = new URLSearchParams(location.search);
-  const commentPage = query.get("comment_page") || 1;
+  const [commentPage, setCommentPage] = useState(
+    query.get("comment_page") || 1
+  );
 
   const [postPage, setPostPage] = useState(page);
   const [newComment, setNewComment] = useState({
@@ -54,7 +55,14 @@ const PostDetail = ({ postCode, page }) => {
     mutationFn: addCommentAPI,
     onSuccess: (result) => {
       if (result.data !== "실패") {
-        queryClient.invalidateQueries({ queryKey: ["comment", postCode] });
+        queryClient.invalidateQueries({
+          queryKey: ["comment", postCode, commentPage],
+        });
+        setCommentPage(
+          commentList.data.paging.totalPage + (1 % 10) === 0
+            ? Math.floor(commentList.data.paging.totalPage / 10)
+            : Math.floor(commentList.data.paging.totalPage / 10 + 1)
+        );
       } else {
         alert("댓글 작성이 제한된 상태입니다");
       }
@@ -156,6 +164,15 @@ const PostDetail = ({ postCode, page }) => {
     });
   }, [postCode]);
 
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: ["comment", postCode, commentPage],
+    });
+  }, [commentPage]);
+  useEffect(() => {
+    setCommentPage(query.get("comment_page") || 1);
+  }, [query.get("comment_page")]);
+
   // 시점이 다를때마다 useEffect 추가
 
   // 데이터 로딩중일 때 처리
@@ -168,7 +185,7 @@ const PostDetail = ({ postCode, page }) => {
   return (
     <div className="post-detail-box">
       <div className="post-header">
-        <div>
+        <div className="post-header-top">
           <Link
             className="channel-tag"
             to={
@@ -182,102 +199,131 @@ const PostDetail = ({ postCode, page }) => {
           </Link>{" "}
           <h1 className="post-title">{post?.postTitle}</h1>
         </div>
-        <div>조회수 :{post?.postViews} </div>
-        <div>
-          <UserMenu user={post?.user} time={post?.postCreatedAt} />{" "}
+        <div className="post-header-bottom">
+          <div className="post-header-bottom-left">
+            <p>글쓴이 : </p>
+            <UserMenu user={post?.user} time={post?.postCreatedAt} />{" "}
+          </div>
+          <div className="post-header-bottom-right">
+            <p>조회수 : {post?.postViews}</p>
+            <p>추천수 : {post?.likeCount}</p>
+            <p>댓글수 : {post?.commentCount}</p>
+          </div>
         </div>
-
-        <div
-          className="post-content"
-          dangerouslySetInnerHTML={{ __html: post?.postContent }}
-        />
-        <div>추천수 : {post?.likeCount}</div>
+      </div>
+      <div
+        className="post-content"
+        dangerouslySetInnerHTML={{ __html: post?.postContent }}
+      />
+      <div className="post-like">
         {!token ? null : likeState.data ? (
-          <button onClick={unLikeSubmit}>추천취소</button>
-        ) : (
-          <button onClick={likeSubmit}>
-            <IoIosStar
-              size={28}
+          <>
+            <HiStar
+              className="un-like"
+              onClick={unLikeSubmit}
+              size={"5rem"}
               style={{
-                border: "1px solid black",
+                borderRadius: "50%",
+                backgroundColor: "#ddd",
+                color: "#eee",
+                marginRight: "5px",
+              }}
+            />
+            <p>추천 취소</p>
+          </>
+        ) : (
+          <>
+            <HiStar
+              className="like"
+              onClick={likeSubmit}
+              size={"5rem"}
+              style={{
                 borderRadius: "50%",
                 backgroundColor: "blue",
                 color: "yellow",
                 marginRight: "5px",
               }}
             />
-          </button>
+            <p>추천</p>
+          </>
         )}
+      </div>
+      <div className="post-edit">
         {token && post?.user?.userEmail === user.userEmail && (
           <>
             <Link
+              className="edit-btn"
               to="/write"
               state={{ isPost: post, isChannelCode: post?.channelCode }}
             >
               수정
             </Link>
-            <button onClick={removePost}>삭제</button>
+            <p className="edit-btn" onClick={removePost}>
+              삭제
+            </p>
           </>
         )}
-
-        <div className="comment">
-          {token && (
-            <>
-              <div className="comment-form">
-                <input
-                  className="comment-add"
-                  type="text"
-                  placeholder="댓글 추가.."
-                  value={newComment.commentContent}
-                  onChange={(e) => {
-                    setNewComment({
-                      ...newComment,
-                      commentContent: e.target.value,
-                    });
-                  }}
-                  onKeyUp={(e) => enterAdd(e)}
-                />
-                <div className="comment-add-status">
-                  <button
-                    type="button"
-                    className="comment-submit"
-                    onClick={addComment}
-                  >
-                    등록
-                  </button>
-                </div>
-              </div>
-            </>
-          )}
-          <div className="comment-list">
-            {isLoading &&
-            likeLoading &&
-            Array.isArray(commentList.data.commentList) ? (
-              <p>댓글이 없습니당</p>
-            ) : (
-              commentList.data.commentList.map((comment) => (
-                <CommentComponent
-                  id={comment.commentCode}
-                  comment={comment}
-                  postCode={postCode}
-                  key={comment.commentCode}
-                  isOpenUser={isOpenUser}
-                  userMenuToggle={userMenuToggle}
-                  channelCode={post?.channelCode}
-                  isWriter={postUserEmail}
-                />
-              ))
-            )}
-          </div>
-          <div className="paging-box">
-            <Page
-              isComment={true}
-              page={postPage}
-              commentPage={commentPage}
-              totalPages={Math.ceil(commentList.data?.paging.totalPage / 10)}
-            />
-          </div>
+      </div>
+      <div className="comment">
+        <div className="comment-header">
+          전체 댓글 수 [{post?.commentCount}]
         </div>
+        <div className="comment-list">
+          {isLoading &&
+          likeLoading &&
+          Array.isArray(commentList.data.commentList) ? (
+            <p>댓글이 없습니당</p>
+          ) : (
+            commentList.data.commentList.map((comment) => (
+              <CommentComponent
+                id={comment.commentCode}
+                comment={comment}
+                postCode={postCode}
+                key={comment.commentCode}
+                isOpenUser={isOpenUser}
+                userMenuToggle={userMenuToggle}
+                channelCode={post?.channelCode}
+                isWriter={postUserEmail}
+              />
+            ))
+          )}
+        </div>
+        <div className="paging-box">
+          <Page
+            isComment={true}
+            page={postPage}
+            commentPage={commentPage}
+            totalPages={Math.ceil(commentList.data?.paging.totalPage / 10)}
+          />
+        </div>
+        {token && (
+          <div className="comment-form-box">
+            <div className="comment-form">
+              <input
+                className="comment-add"
+                type="text"
+                placeholder="댓글 추가.."
+                value={newComment.commentContent}
+                onChange={(e) => {
+                  setNewComment({
+                    ...newComment,
+                    commentContent: e.target.value,
+                  });
+                }}
+                onKeyUp={(e) => enterAdd(e)}
+              />
+              <div className="comment-add-status">
+                <button
+                  type="button"
+                  className="comment-submit"
+                  onClick={addComment}
+                >
+                  등록
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

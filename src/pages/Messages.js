@@ -69,7 +69,6 @@ const Messages = () => {
         }
       }
     },
-    // refetchInterval: viewType !== "open" ? 1000 : null,
   });
   const removeMutation = useMutation({
     mutationFn: removeMessage,
@@ -145,7 +144,7 @@ const Messages = () => {
   if (isLoading) return <>로딩중...</>;
   if (error) return <>에러발생...</>;
   return (
-    <div className="page-box">
+    <div className="main-box">
       <div className="message-list-box">
         <div className="messages-header">
           <Link
@@ -201,7 +200,6 @@ const Messages = () => {
           </Link>
         </div>
         <div className="message-main-box">
-          모두선택
           <input
             type="checkbox"
             checked={allCheck}
@@ -209,6 +207,7 @@ const Messages = () => {
               setAllCheck(!allCheck);
             }}
           />
+          모두선택
           {/*메세지 컴포넌트 출력*/}
           {messageList.data === undefined ||
           messageList.data.messagesDTOList.length === 0 ? (

@@ -1,12 +1,6 @@
-.page-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
 .message-list-box {
   width: 100%;
-  max-width: 600px;
+  max-width: 1200px;
   align-self: center;
   padding-top: 80px;
   display: flex;
@@ -39,14 +33,7 @@
     }
   }
 }
-.message-link {
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1.5rem;
-  align-self: center;
-  background-color: antiquewhite;
-  padding: 5px 15px;
-}
+
 .message-user {
   display: flex;
   align-items: center;
@@ -55,8 +42,34 @@
 .is-open {
   margin-left: 10px;
 }
+.message-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .message-left {
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+  }
+  .message-link {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.5rem;
+    align-self: center;
+    background-color: antiquewhite;
+    padding: 5px 15px;
+    width: 100%;
+  }
+  .message-right {
+    justify-content: flex-end;
+    align-items: center;
+    width: 80%;
+    max-width: 200px;
+    display: flex;
+  }
+}
 .message-main-box {
-  width: 500px;
+  width: 100%;
   .messages-box {
     display: flex;
     flex-direction: column;

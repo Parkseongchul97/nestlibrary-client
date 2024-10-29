@@ -17,9 +17,6 @@ const PushList = ({ push }) => {
   });
   const removeSubmit = () => {
     removeMutation.mutate(push.pushCode);
-    if (page === -1 || undefined) {
-      alert("삭제된 게시글입니다!");
-    }
   };
   const postPaging = async () => {
     const result = await getPageNum(push.postCode);
@@ -31,9 +28,7 @@ const PushList = ({ push }) => {
 
   return (
     <div className="push-box">
-      {page === undefined || page === -1 ? (
-        <p onClick={removeSubmit}>삭제된 게시글 입니다</p>
-      ) : push?.postCode !== undefined ? (
+      {push?.postCode !== undefined && push.postCode !== 0 ? (
         <Link
           to={`/channel/${push.channelCode}/post/${push.postCode}?page=${page}`}
           onClick={removeSubmit}
@@ -41,11 +36,13 @@ const PushList = ({ push }) => {
           {push.pushMassage}
           <TimeFormat time={push.pushCreatedAt} />
         </Link>
-      ) : (
-        <p onClick={removeSubmit}>
+      ) : push.postCode !== 0 && (page === undefined || page === -1) ? (
+        <Link to={`/channel/${push.channelCode}`} onClick={removeSubmit}>
           {push.pushMassage}
           <TimeFormat time={push.pushCreatedAt} />
-        </p>
+        </Link>
+      ) : (
+        <p onClick={removeSubmit}>삭제된 게시글 입니다</p>
       )}
       <button onClick={removeSubmit}>알림끄기</button>
     </div>
