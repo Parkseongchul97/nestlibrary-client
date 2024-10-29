@@ -149,11 +149,10 @@ const UserManagement = () => {
 
     if (managementDTO.managementUserStatus == "ban") {
       await addRole(managementDTO);
+      setIsOpen(false);
       banList();
       return;
     }
-
-    setIsOpen(false);
   };
   const handleRadioChange = (e) => {
     setManagementDTO({
