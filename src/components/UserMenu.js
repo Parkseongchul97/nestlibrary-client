@@ -103,7 +103,7 @@ const UserMenu = ({
       queryClient.invalidateQueries([
         "gradeCheck",
         channelCode,
-        user.userEmail,
+        user?.userEmail,
       ]);
     },
   });
@@ -261,7 +261,7 @@ const UserMenu = ({
                     onClick={() => {
                       gradeChangeSubmit({
                         userEmail: user.userEmail,
-                        banDate: "",
+                        banDate: 0,
                         managementUserStatus: "admin",
                         channelCode: loginUserGrade?.channel.channelCode,
                       });

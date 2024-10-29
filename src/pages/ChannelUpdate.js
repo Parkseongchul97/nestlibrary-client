@@ -209,6 +209,14 @@ const ChannelUpdate = () => {
             }
           />
           <button onClick={infoSubmit}> 변경 </button>
+          <Link
+            state={{
+              channelCode: channelCode,
+            }}
+            to="/managment"
+          >
+            유저관리 페이지
+          </Link>
           <ul>
             차단 리스트
             {channelInfos.banList.map((bans) => (

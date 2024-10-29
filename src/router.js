@@ -14,6 +14,7 @@ import Messages from "./pages/Messages";
 import MessageWrite from "./components/MessageWrite";
 
 import UserHelp from "./pages/UserHelp";
+import UserManagement from "./pages/UserManagement";
 
 const router = createBrowserRouter([
   {
@@ -99,6 +100,10 @@ const router = createBrowserRouter([
   {
     path: "/update/:channelCode",
     element: <ChannelUpdate />,
+  },
+  {
+    path: "/managment",
+    element: <UserManagement />,
   },
 ]);
 export default router;
