@@ -1,0 +1,66 @@
+.main-post-box {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: column;
+  .channel-main-post {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 32px;
+    .channel-main-left {
+      align-items: center;
+      height: 100%;
+      width: 50%;
+      display: flex;
+      justify-content: flex-start;
+
+      .channel-tag-box {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        width: 80px;
+        .channel-main-tag {
+          border-radius: 10px;
+          padding: 5px;
+          background-color: black;
+          color: white;
+        }
+      }
+      .main-post-link {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        .main-post-text {
+          width: 100%;
+          text-wrap: nowrap;
+          font-size: 0.9rem;
+          font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+            "Malgun Gothic", "맑은 고딕", arial, 굴림, Gulim, sans-serif;
+          color: gray;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: block;
+        }
+        &:hover {
+          color: #5f5f5f;
+        }
+      }
+    }
+    .channel-main-right {
+      width: 40%;
+      display: flex;
+      justify-content: space-between;
+      .user-profile-box {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        .user-profile {
+        }
+      }
+    }
+  }
+}

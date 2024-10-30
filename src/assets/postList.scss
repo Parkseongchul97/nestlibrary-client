@@ -14,40 +14,43 @@
   margin: 0.5rem;
   border-radius: 20px;
   background: #f4f4f4;
-  width: 100%;
-  max-width: 1200px;
+  width: 1200px;
   height: 100%;
   min-height: 500px;
-
   .selected-channel-post,
   .channel-post {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin: 0.5rem 0;
-    border: 1px solid;
-    border-radius: 15px;
-    padding: 2px;
+    padding: 8px 0;
+    border-bottom: 0.5px solid #acacac;
     svg {
       color: red;
       margin-right: 5px;
     }
-    .channel-tag {
-      text-wrap: nowrap;
-      align-self: center;
-      padding: 0.3rem;
-      text-align: center;
-      background: black;
-      color: white;
-      border-radius: 10px;
+    .channel-tag-box {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 60px;
+      .channel-tag {
+        text-wrap: nowrap;
+        align-self: center;
+        padding: 0.3rem;
+        text-align: center;
+        background: black;
+        color: white;
+        border-radius: 10px;
+      }
     }
+
     .post-link {
       justify-content: space-between;
       display: flex;
       align-items: center;
-      width: 93%;
+      width: 540px;
       text-wrap: nowrap;
+      padding-left: 50px;
       &:hover {
         .post-text {
           color: #333;
@@ -55,7 +58,9 @@
         }
       }
       .post-text {
-        margin-left: 0.3rem;
+        display: flex;
+        justify-content: flex-start;
+        width: 500px;
         text-wrap: nowrap;
         font-size: 0.9rem;
         font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
@@ -65,13 +70,48 @@
         text-overflow: ellipsis;
         display: block;
       }
-      .post-end {
-        display: flex;
-        justify-content: flex-end;
-        .comment-count {
-          margin: 0 0.3rem 0 0.3rem;
+    }
+    .post-user {
+      width: 223px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      .user-profile-box {
+        .user-profile {
+          .user-nickname-box {
+            .user-profile-nickname {
+              text-wrap: nowrap;
+              font-size: 0.9rem;
+              font-family: -apple-system, BlinkMacSystemFont,
+                "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", arial, 굴림,
+                Gulim, sans-serif;
+              color: gray;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: block;
+            }
+          }
         }
       }
+    }
+    .post-at {
+      display: flex;
+      justify-content: center;
+      width: 100px;
+    }
+    .post-view {
+      display: flex;
+      justify-content: center;
+      width: 94px;
+    }
+    .post-like {
+      display: flex;
+      justify-content: center;
+      width: 43px;
+    }
+    .post-comment {
+      display: flex;
+      justify-content: center;
+      width: 80px;
     }
   }
 }
@@ -81,8 +121,8 @@
   border-radius: 20px;
   background: #f4f4f4;
   width: 100%;
-  max-width: 600px;
-  height: 70%;
+
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
