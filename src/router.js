@@ -119,6 +119,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+
   {
     path: "/kakao",
     element: <LoginWait />,

@@ -33,9 +33,13 @@ export const viewPost = async (postCode) => {
 };
 
 export const getPageNum = async (postCode) => {
-  return await authorize.get(`page/${postCode}`);
+  return await instance.get(`page/${postCode}`);
 };
 
 export const userPost = async (userEmail) => {
   return await instance.get(`/post/user/${userEmail}`);
+};
+
+export const mostChannel = async (userEmail) => {
+  return await instance.get(`/user/favorite/${userEmail}`);
 };

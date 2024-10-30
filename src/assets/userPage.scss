@@ -1,0 +1,28 @@
+.userPage-box {
+  border: 1px solid black;
+  width: 40%;
+  margin: auto;
+  margin-top: 100px;
+  background-color: #f4f4f4;
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 600;
+  .userPage-title {
+    font-size: 2rem;
+    width: 30%;
+  }
+  .userPage-post {
+    display: flex;
+  }
+}
+
+.userPage-channel-name,
+.userPage-channel-tag {
+  color: white;
+  border-radius: 5px;
+  background-color: black;
+}
+.userPage-post-list {
+  display: flex;
+  flex-direction: column;
+}
