@@ -16,6 +16,8 @@ import { IoIosArrowBack } from "react-icons/io";
 import { useAuth } from "../contexts/AuthContext.js";
 import { sendCode, checkEmail } from "../api/email.js";
 import { getPageNum } from "../api/post.js";
+import { remove } from "../api/post.js";
+import { Link } from "react-router-dom";
 
 import "../assets/login.scss";
 
@@ -24,7 +26,6 @@ const UserManagement = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearch, setIsSearch] = useState(true);
   const [inputNickname, setInputNickname] = useState(null);
-  const [page, setPage] = useState(1);
 
   const [ban, setBan] = useState(false);
   const [host, setHost] = useState(false);
@@ -47,7 +48,47 @@ const UserManagement = () => {
   const [isPost, setIsPost] = useState(false);
   const [author, setAuthor] = useState(null);
   const channelCode = location.state?.channelCode;
+
   const [check, setCheck] = useState([]);
+
+  const [checkArray, setCheckArray] = useState([]);
+
+  const removePost = async () => {
+    if (checkArray.length < 1) {
+      await remove(checkArray[0]);
+    } else {
+      for (let i = 0; i < checkArray.length; i++) {
+        await remove(checkArray[i]);
+      }
+    }
+    postList();
+  };
+
+  const allCheck = () => {
+    if (checkArray.length == post.length) {
+      setCheckArray([]);
+    } else {
+      setCheckArray([]);
+      post.map((posts) => setCheckArray((prev) => [...prev, posts.postCode]));
+    }
+    console.log(checkArray);
+  };
+
+  const addList = (code) => {
+    const numCode = Number(code); // 문자열을 숫자로 변환
+    setCheckArray((prev) => {
+      if (prev.includes(numCode)) {
+        return prev.filter((item) => item !== numCode); // 기존 값 제거
+      } else {
+        return [...prev, numCode]; // 새 값 추가
+      }
+    });
+  };
+
+  useEffect(() => {
+    console.log(checkArray[0]);
+    console.log(checkArray[1]);
+  }, [checkArray]);
 
   const allUser = async (data) => {
     if (inputNickname.trim().length < 1) {
@@ -130,6 +171,7 @@ const UserManagement = () => {
     if (e.key === "Enter" && author != null) {
       postList(author);
     }
+    console.log(checkArray);
   };
 
   const updateInfo = (data) => {
@@ -212,20 +254,10 @@ const UserManagement = () => {
   // 게시글 조회
   const postList = async (author) => {
     const response = await allPost(channelCode, author);
+    setCheckArray([]);
     setPost(response);
   };
 
-  const getPage = async (code) => {
-    const response = await getPageNum(code);
-    setPage(response.data);
-    return response.data;
-  };
-
-  useEffect(() => {
-    {
-      post.map((post) => getPage(post.postCode));
-    }
-  }, [isOpen]);
   useEffect(() => {
     console.log(check);
   }, [check]);
@@ -318,8 +350,22 @@ const UserManagement = () => {
                 <table>
                   <thead>
                     <tr>
-                      <th>삭제</th>
-                      <th>닉네임</th>
+                      <th className="custom-th">
+                        <input
+                          type="checkbox"
+                          checked={
+                            checkArray.length === post.length && post.length > 0
+                          }
+                          onClick={() => allCheck()}
+                        />
+                        <button
+                          className="deleteTh"
+                          onClick={() => removePost()}
+                        >
+                          삭제
+                        </button>
+                      </th>
+                      <th>닉네임 </th>
                       <th>이메일</th>
                       <th>게시판</th>
                       <th>제목</th>
@@ -336,6 +382,8 @@ const UserManagement = () => {
                           channelCode={channelCode}
                           post={post}
                           setCheck={setCheck}
+                          addList={addList}
+                          checkArray={checkArray}
                         />
                       ))
                     ) : (

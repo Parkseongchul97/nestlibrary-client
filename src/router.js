@@ -14,11 +14,18 @@ import Messages from "./pages/Messages";
 import UserHelp from "./pages/UserHelp";
 import UserManagement from "./pages/UserManagement";
 
+import UserPage from "./pages/UserPage";
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
+      {
+        path: "/managment",
+        element: <UserManagement />,
+      },
+
       {
         index: true,
         element: <Main />,
@@ -120,8 +127,8 @@ const router = createBrowserRouter([
     element: <ChannelUpdate />,
   },
   {
-    path: "/managment",
-    element: <UserManagement />,
+    path: "/user/:userNickname",
+    element: <UserPage />,
   },
 ]);
 export default router;

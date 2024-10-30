@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { getPageNum } from "../../api/post";
-const PostManagement = ({ post, channelCode, setCheck, check }) => {
+const PostManagement = ({
+  post,
+  channelCode,
+  setCheck,
+  check,
+  addList,
+  checkArray,
+}) => {
   const [page, setPage] = useState(1);
 
   const pages = async () => {
@@ -8,18 +15,23 @@ const PostManagement = ({ post, channelCode, setCheck, check }) => {
     setPage(response.data);
   };
 
-  const checkList = [];
-
   useEffect(() => {
     pages();
   }, []);
 
   // [1,3,5,7]
+
   return (
     <tr key={post.postCode}>
-      <td>
-        <input type="checkbox" value={post?.postCode} />
+      <td className="custom-input">
+        <input
+          type="checkbox"
+          value={post?.postCode} //
+          onClick={(e) => addList(e.target.value)}
+          checked={checkArray.includes(Number(post?.postCode))}
+        />
       </td>
+
       <td>{post?.user.userNickname}</td>
       <td>{post?.user.userEmail}</td>
       <td>{post?.channelTag.channelTagName}</td>
@@ -38,6 +50,7 @@ const PostManagement = ({ post, channelCode, setCheck, check }) => {
           target="_blank"
           rel="noopener noreferrer"
         >
+          {post.bestPoint >= 50 ? "🔥" : null}
           {post.postTitle}
         </a>
       </td>

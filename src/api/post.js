@@ -35,3 +35,7 @@ export const viewPost = async (postCode) => {
 export const getPageNum = async (postCode) => {
   return await authorize.get(`page/${postCode}`);
 };
+
+export const userPost = async (userEmail) => {
+  return await instance.get(`/post/user/${userEmail}`);
+};
