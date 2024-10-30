@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { addMessage } from "../../api/message";
 import "../../assets/messageWrite.scss";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import FindUser from "../user/FindUser";
 const MessageWrite = ({ toUser, setIsOpenMessage }) => {
   const { user } = useAuth(); // 발신자(로그인유저)
@@ -22,13 +22,13 @@ const MessageWrite = ({ toUser, setIsOpenMessage }) => {
     // 단순 화면단에 보일 닉네임
     toUser !== undefined ? toUser.nickname : ""
   );
-  const navigate = useNavigate();
 
   const submitMessage = async () => {
     const response = await addMessage(message);
-    navigate("/messages");
     setIsOpenMessage(false);
-    return response.data;
+    if (response.data) {
+      alert("발송 완료!");
+    }
   };
   const findSubmit = () => {
     // 찾기버튼 누를시 넣어서 찾고 열어줌

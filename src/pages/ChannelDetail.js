@@ -225,6 +225,15 @@ const ChannelDetail = () => {
               ))}
             </div>
             <div className="post-box">
+              <div className="post-box-header">
+                <div className="header-tag">태그</div>
+                <div className="header-title">제목</div>
+                <div className="header-auth">글쓴이</div>
+                <div className="header-day">작성일</div>
+                <div className="header-view">조회</div>
+                <div className="header-like">추천</div>
+                <div className="header-comment">댓글</div>
+              </div>
               {posts?.postList === undefined || posts?.postList === null ? (
                 <div className="none-post-box">
                   <div>!</div>
