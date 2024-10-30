@@ -200,14 +200,19 @@ const Messages = () => {
           </Link>
         </div>
         <div className="message-main-box">
-          <input
-            type="checkbox"
-            checked={allCheck}
-            onClick={() => {
-              setAllCheck(!allCheck);
-            }}
-          />
-          모두선택
+          {messageList.data === undefined ||
+            (messageList.data.messagesDTOList.length !== 0 && (
+              <label className="all-check">
+                <input
+                  type="checkbox"
+                  checked={allCheck}
+                  onClick={() => {
+                    setAllCheck(!allCheck);
+                  }}
+                />
+                모두선택
+              </label>
+            ))}
           {/*메세지 컴포넌트 출력*/}
           {messageList.data === undefined ||
           messageList.data.messagesDTOList.length === 0 ? (

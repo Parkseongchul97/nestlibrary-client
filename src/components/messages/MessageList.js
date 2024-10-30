@@ -86,33 +86,33 @@ const MessageList = ({
           }}
           className="message-link"
         >
-          {message.messagesTitle}
-        </div>
-        <div className="message-right">
-          {/*내가 받은사람인지 보낸사람인지 구분 내가 보낸사람이면*/}
+          <div className="message-center">{message.messagesTitle}</div>
+          <div className="message-right">
+            {/*내가 받은사람인지 보낸사람인지 구분 내가 보낸사람이면*/}
 
-          <TimeFormat
-            time={message.messagesSentAt}
-            className="message-time"
-          ></TimeFormat>
+            <TimeFormat
+              time={message.messagesSentAt}
+              className="message-time"
+            ></TimeFormat>
 
-          {viewType !== "open" ? (
-            <div className="is-open">
-              {message.messagesRead ? (
-                <IoMailOpenOutline size={"2rem"} />
-              ) : (
-                <IoMailOutline size={"2rem"} />
-              )}
-            </div>
-          ) : (
-            <div className="is-open">
-              {notRead ? (
-                <IoMailOpenOutline size={"2rem"} />
-              ) : (
-                <IoMailOutline size={"2rem"} />
-              )}
-            </div>
-          )}
+            {viewType !== "open" ? (
+              <div className="is-open">
+                {message.messagesRead ? (
+                  <IoMailOpenOutline size={"2rem"} />
+                ) : (
+                  <IoMailOutline size={"2rem"} />
+                )}
+              </div>
+            ) : (
+              <div className="is-open">
+                {notRead ? (
+                  <IoMailOpenOutline size={"2rem"} />
+                ) : (
+                  <IoMailOutline size={"2rem"} />
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
       {isOpen === message.messagesCode && (

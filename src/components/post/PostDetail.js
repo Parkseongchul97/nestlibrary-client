@@ -225,7 +225,7 @@ const PostDetail = ({ postCode, page }) => {
               style={{
                 borderRadius: "50%",
                 backgroundColor: "#ddd",
-                color: "#eee",
+                color: "yellow",
                 marginRight: "5px",
               }}
             />
@@ -239,8 +239,8 @@ const PostDetail = ({ postCode, page }) => {
               size={"5rem"}
               style={{
                 borderRadius: "50%",
-                backgroundColor: "blue",
-                color: "yellow",
+                backgroundColor: "#ddd",
+                color: "#eee",
                 marginRight: "5px",
               }}
             />

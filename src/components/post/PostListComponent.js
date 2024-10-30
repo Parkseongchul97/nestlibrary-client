@@ -12,7 +12,7 @@ const PostListComponent = ({ channelTagCode, post, postCode, page }) => {
     <>
       <div
         className={
-          postCode == post?.postCode ? "selected-channel-post" : "channel-post"
+          postCode === post?.postCode ? "selected-channel-post" : "channel-post"
         }
       >
         {post?.bestPoint > 50 && (

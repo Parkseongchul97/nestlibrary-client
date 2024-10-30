@@ -43,20 +43,28 @@
   margin-left: 10px;
 }
 .message-main {
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: #ddd;
+  margin-bottom: 5px;
   .message-left {
     width: 100%;
     max-width: 300px;
     display: flex;
+    input {
+      cursor: pointer;
+    }
   }
   .message-link {
     cursor: pointer;
     font-weight: bold;
     font-size: 1.5rem;
     align-self: center;
-    background-color: antiquewhite;
+    display: flex;
+    justify-content: space-between;
+
     padding: 5px 15px;
     width: 100%;
   }
@@ -70,6 +78,9 @@
 }
 .message-main-box {
   width: 100%;
+  .all-check {
+    cursor: pointer;
+  }
   .messages-box {
     display: flex;
     flex-direction: column;
