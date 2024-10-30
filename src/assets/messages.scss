@@ -45,13 +45,12 @@
 .message-main {
   height: 50px;
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
-  background-color: #ddd;
   margin-bottom: 5px;
+  border-bottom: 1px solid;
   .message-left {
-    width: 100%;
-    max-width: 300px;
     display: flex;
     input {
       cursor: pointer;
@@ -67,23 +66,28 @@
 
     padding: 5px 15px;
     width: 100%;
+    .message-center {
+      align-self: center;
+    }
   }
   .message-right {
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
-    width: 80%;
-    max-width: 200px;
+    width: 350px;
     display: flex;
+    .maessage-right-right {
+      display: flex;
+      align-items: center;
+    }
   }
 }
 .message-main-box {
   width: 100%;
-  height: 600px;
   .message-main-header {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    padding: 5px;
+
     .check-box {
       display: flex;
       align-items: center;
@@ -135,28 +139,26 @@
       }
     }
   }
-
-  .messages-box {
+}
+.messages-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 600;
+  padding-top: 60px;
+  width: 100%;
+  .messages-header {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: "Pretendard Variable";
-    font-style: normal;
-    font-weight: 600;
-    padding-top: 60px;
-    width: 100%;
-    .messages-header {
-      display: flex;
-      .messages-type {
-        padding: 5px;
-        border-radius: 20px;
-        background-color: beige;
-        margin: 5px;
-      }
+    .messages-type {
+      padding: 5px;
+      border-radius: 20px;
+      background-color: beige;
+      margin: 5px;
     }
   }
 }
-
 .none-message-box {
   padding: 1rem;
   margin: 0.5rem;

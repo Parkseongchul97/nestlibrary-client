@@ -197,6 +197,22 @@ const Messages = () => {
           >
             보낸 메시지
           </Link>
+          {messageList.data === undefined ||
+            (messageList.data.messagesDTOList.length !== 0 && (
+              <button className="delete" onClick={deleteSubmit}>
+                삭제
+              </button>
+            ))}
+          <div className="writer-box">
+            <div
+              className="writer"
+              onClick={() => {
+                setIsOpenMessage(true);
+              }}
+            >
+              쪽지 쓰기
+            </div>
+          </div>
         </div>
         <div className="message-main-box">
           <div className="message-main-header">
@@ -213,21 +229,8 @@ const Messages = () => {
                     />
                     모두선택
                   </label>
-                  <button className="delete" onClick={deleteSubmit}>
-                    삭제
-                  </button>
                 </div>
               ))}
-            <div className="writer-box">
-              <div
-                className="writer"
-                onClick={() => {
-                  setIsOpenMessage(true);
-                }}
-              >
-                쪽지 쓰기
-              </div>
-            </div>
           </div>
           {/*메세지 컴포넌트 출력*/}
           {messageList.data === undefined ||
@@ -237,20 +240,22 @@ const Messages = () => {
               <p>쪽지가 없습니다.</p>
             </div>
           ) : (
-            messageList.data.messagesDTOList?.map((message, index) => (
-              <MessageList
-                message={message}
-                key={message?.messagesCode}
-                setIsOpen={setIsOpen}
-                isOpen={isOpen}
-                isChecked={allCheck}
-                setCheckedList={setCheckedList}
-                checkedList={checkedList}
-                viewType={viewType}
-                isOpenUser={isOpenUser}
-                userMenuToggle={userMenuToggle}
-              />
-            ))
+            <div className="messages-box">
+              {messageList.data.messagesDTOList?.map((message, index) => (
+                <MessageList
+                  message={message}
+                  key={message?.messagesCode}
+                  setIsOpen={setIsOpen}
+                  isOpen={isOpen}
+                  isChecked={allCheck}
+                  setCheckedList={setCheckedList}
+                  checkedList={checkedList}
+                  viewType={viewType}
+                  isOpenUser={isOpenUser}
+                  userMenuToggle={userMenuToggle}
+                />
+              ))}
+            </div>
           )}
         </div>
         {messageList.data.paging !== undefined &&

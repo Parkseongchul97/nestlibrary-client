@@ -30,12 +30,14 @@ const ChannelDetail = () => {
   const queryClient = useQueryClient();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
+  const [isOpenUser, setIsOpenUser] = useState(false);
 
   let page = query.get("page") || 1;
   const [isOpenDetail, setIsOpenDetail] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState(""); // 검색어
   const [searchTarget, setSearchTarget] = useState("title"); // 기본 검색 대상: 제목
   const { postCode } = useParams();
+
   const fetch = async () => {
     setPosts([]);
     const info = await channelInfo(channelCode);
@@ -64,6 +66,13 @@ const ChannelDetail = () => {
     setPosts(channelPosts.data);
   };
 
+  const userMenuToggle = (channelCode) => {
+    if (isOpenUser === channelCode) {
+      setIsOpenUser(null);
+    } else {
+      setIsOpenUser(channelCode);
+    }
+  };
   useEffect(() => {
     fetch();
   }, [channelCode, channelTagCode, page, viewType]);
@@ -184,6 +193,8 @@ const ChannelDetail = () => {
               <UserMenu
                 user={channel?.host}
                 channelCode={channel?.channelCode}
+                isOpenUser={isOpenUser === channelCode}
+                userMenuToggle={() => userMenuToggle(channelCode)}
               />
             </div>
           </div>

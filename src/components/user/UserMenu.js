@@ -165,7 +165,13 @@ const UserMenu = ({
               <FaRegCheckCircle style={{ color: "blue", marginRight: "5px" }} />
             ) : userGrade?.data?.managementUserStatus === "ban" ? (
               <FaBan style={{ color: "red", marginRight: "5px" }} />
-            ) : null}
+            ) : (
+              channelCode !== undefined && (
+                <FaRegCheckCircle
+                  style={{ color: "black", marginRight: "5px" }}
+                />
+              )
+            )}
             {user?.userNickname}
           </p>
         </div>

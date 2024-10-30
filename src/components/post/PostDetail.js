@@ -202,7 +202,13 @@ const PostDetail = ({ postCode, page }) => {
         <div className="post-header-bottom">
           <div className="post-header-bottom-left">
             <p>글쓴이 : </p>
-            <UserMenu user={post?.user} time={post?.postCreatedAt} />{" "}
+            <UserMenu
+              user={post?.user}
+              time={post?.postCreatedAt}
+              isOpenUser={isOpenUser === post?.postCode}
+              userMenuToggle={() => userMenuToggle(post?.postCode)}
+              channelCode={post?.channelCode}
+            />{" "}
           </div>
           <div className="post-header-bottom-right">
             <p>조회수 : {post?.postViews}</p>
@@ -272,8 +278,8 @@ const PostDetail = ({ postCode, page }) => {
           {isLoading &&
           likeLoading &&
           Array.isArray(commentList.data.commentList) ? (
-            <p>댓글이 없습니당</p>
-          ) : (
+            <p className="none-comment">댓글이 없습니당</p>
+          ) : commentList.data.commentList.length > 1 ? (
             commentList.data.commentList.map((comment) => (
               <CommentComponent
                 id={comment.commentCode}
@@ -286,6 +292,8 @@ const PostDetail = ({ postCode, page }) => {
                 isWriter={postUserEmail}
               />
             ))
+          ) : (
+            <p className="none-comment">댓글이 없습니당</p>
           )}
         </div>
         <div className="paging-box">

@@ -47,7 +47,7 @@ const MessageList = ({
   }, [isChecked]);
 
   return (
-    <div className="message-box">
+    <>
       <div className="message-main" key={message.messagesCode}>
         <div className="message-left">
           <input
@@ -59,9 +59,22 @@ const MessageList = ({
               checkboxInput();
             }}
           />
+
+          <div
+            onClick={() => {
+              openDetail(message.messagesCode);
+              setNotRead(true);
+            }}
+            className="message-link"
+          >
+            <div className="message-center">{message.messagesTitle}</div>
+          </div>
+        </div>
+
+        <div className="message-right">
           {user.userEmail === message.messagesFromUser.userEmail ? (
             <div className="message-user">
-              <div>받은사람</div>
+              <div>수신자</div>
               <UserMenu
                 user={message.messagesToUser}
                 isOpenUser={isOpenUser === message.messagesCode}
@@ -70,7 +83,7 @@ const MessageList = ({
             </div>
           ) : (
             <div className="message-user">
-              <div>보낸사람</div>
+              <div>발신자</div>
               <UserMenu
                 user={message.messagesFromUser}
                 isOpenUser={isOpenUser === message.messagesCode}
@@ -78,18 +91,7 @@ const MessageList = ({
               />
             </div>
           )}
-        </div>
-        <div
-          onClick={() => {
-            openDetail(message.messagesCode);
-            setNotRead(true);
-          }}
-          className="message-link"
-        >
-          <div className="message-center">{message.messagesTitle}</div>
-          <div className="message-right">
-            {/*내가 받은사람인지 보낸사람인지 구분 내가 보낸사람이면*/}
-
+          <div className="maessage-right-right">
             <TimeFormat
               time={message.messagesSentAt}
               className="message-time"
@@ -115,6 +117,7 @@ const MessageList = ({
           </div>
         </div>
       </div>
+
       {isOpen === message.messagesCode && (
         <MessagesDetail
           isOpen={isOpen}
@@ -123,7 +126,7 @@ const MessageList = ({
           key={message?.messagesCode}
         />
       )}
-    </div>
+    </>
   );
 };
 export default MessageList;

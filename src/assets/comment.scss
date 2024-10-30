@@ -18,6 +18,11 @@
 .comment-list {
   margin: 20px 0;
   margin-left: -40px;
+  .none-comment {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
 }
 .comment-content-box {
   margin-left: 40px;

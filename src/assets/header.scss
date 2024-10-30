@@ -198,7 +198,9 @@
     margin-left: 20px;
   }
 }
-
+.header-right {
+  justify-content: flex-start;
+}
 #subs {
   color: red;
 }
