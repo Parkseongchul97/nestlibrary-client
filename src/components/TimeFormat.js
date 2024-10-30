@@ -19,6 +19,15 @@ const TimeFormat = ({ time }) => {
     } else if (diff < 604800) {
       // 일
       return rtf.format(-Math.floor(diff / 86400), "days");
+    } else if (diff < 2419200) {
+      // 주
+      return rtf.format(-Math.floor(diff / 604800), "weeks");
+    } else if (diff < 29030400) {
+      // 월
+      return rtf.format(-Math.floor(diff / 2592000), "months");
+    } else {
+      // 년
+      return rtf.format(-Math.floor(diff / 29030400), "years");
     }
   };
   return (

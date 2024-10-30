@@ -29,7 +29,7 @@ const Page = ({ page, totalPages, pageBtnOnClick, isComment, commentPage }) => {
 
   const lastPage = () => {
     // 맨마지막 좌표 페이지로
-    if (num == 0) {
+    if (num === 0) {
       // 값이 딱떨어지는 페이지 숫자라면
       setStart(totalPages - 9);
       // 바로 마지막 페이지로
@@ -103,11 +103,11 @@ const Page = ({ page, totalPages, pageBtnOnClick, isComment, commentPage }) => {
                 <li key={start + i} className={start + i}>
                   <Link
                     className={
-                      isComment && commentPage == start + i
+                      isComment && commentPage === start + i
                         ? "page-link-select"
                         : isComment
                         ? "page-link"
-                        : page == start + i
+                        : page === start + i
                         ? "page-link-select"
                         : "page-link"
                     }
@@ -128,7 +128,7 @@ const Page = ({ page, totalPages, pageBtnOnClick, isComment, commentPage }) => {
                 </li>
               ) : null
           )}
-        {start == totalPages - 9 || start == totalPages - (num - 1) ? null : (
+        {start === totalPages - 9 || start === totalPages - (num - 1) ? null : (
           <li>
             <button
               className="paging-btn-10"

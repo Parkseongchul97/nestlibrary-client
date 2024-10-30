@@ -15,6 +15,7 @@ import {
 import { IoIosArrowBack } from "react-icons/io";
 import { useAuth } from "../contexts/AuthContext.js";
 import { sendCode, checkEmail } from "../api/email.js";
+import { getPageNum } from "../api/post.js";
 import { remove } from "../api/post.js";
 import { Link } from "react-router-dom";
 

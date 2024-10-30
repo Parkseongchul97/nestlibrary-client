@@ -8,6 +8,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";
 
 import UserMenu from "../components/user/UserMenu";
+import MainPostList from "../components/post/MainPostList";
 
 const Main = () => {
   const { channelList, setPage } = useOutletContext();
@@ -65,9 +66,9 @@ const Main = () => {
                 </div>
                 {channel.allPost !== undefined &&
                 channel.allPost.length !== 0 ? (
-                  <div className="post-box">
+                  <div className="main-post-box">
                     {channel.allPost.map((post) => (
-                      <PostListComponent
+                      <MainPostList
                         post={post}
                         key={post?.postCode}
                         page={1}

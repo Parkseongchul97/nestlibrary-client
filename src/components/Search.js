@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-// 페이지 1이 아니라 다른거인 상태에서 검색하면 문제발생!!
+import "../assets/search.scss";
 const Search = ({
   searchKeyword,
   setSearchKeyword,

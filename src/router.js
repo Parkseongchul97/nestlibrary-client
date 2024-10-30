@@ -10,7 +10,6 @@ import ChannelDetail from "./pages/ChannelDetail";
 import PostWrite from "./components/post/PostWrite";
 import ChannelUpdate from "./pages/ChannelUpdate";
 import Messages from "./pages/Messages";
-import MessageWrite from "./components/messages/MessageWrite";
 
 import UserHelp from "./pages/UserHelp";
 import UserManagement from "./pages/UserManagement";
@@ -56,10 +55,6 @@ const router = createBrowserRouter([
             element: <Messages />,
           },
         ],
-      },
-      {
-        path: "/message/write",
-        element: <MessageWrite />,
       },
       {
         path: "channel/:channelCode",

@@ -8,6 +8,7 @@ import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { loginUserChannelGrade, userChannelGrade } from "../../api/management";
 import { sendCode, checkEmail } from "../../api/email";
 import { FaRegCheckCircle, FaBan } from "react-icons/fa";
+import MessageWrite from "../messages/MessageWrite";
 
 const UserMenu = ({
   user,
@@ -42,7 +43,7 @@ const UserMenu = ({
   const [loginUserGrade, setloginUserGrade] = useState(null); // 로그인유저
 
   const queryClient = useQueryClient();
-
+  const [isOpenMessage, setIsOpenMessage] = useState(false);
   const {
     data: userGrade,
     isLoading,
@@ -164,7 +165,13 @@ const UserMenu = ({
               <FaRegCheckCircle style={{ color: "blue", marginRight: "5px" }} />
             ) : userGrade?.data?.managementUserStatus === "ban" ? (
               <FaBan style={{ color: "red", marginRight: "5px" }} />
-            ) : null}
+            ) : (
+              channelCode !== undefined && (
+                <FaRegCheckCircle
+                  style={{ color: "black", marginRight: "5px" }}
+                />
+              )
+            )}
             {user?.userNickname}
           </p>
         </div>
@@ -177,25 +184,39 @@ const UserMenu = ({
       </div>
       {isOpenUser && token && loginUser.userEmail !== user?.userEmail && (
         <div className="profile-actions">
-          <Link
-            state={{
-              toUser: {
-                email: user.userEmail,
-                nickname: user.userNickname,
-              },
-            }}
-            to="/message/write"
-          >
-            쪽지 보내기
-          </Link>
-          <a>유저페이지로 이동</a>
+          <p className="user-accordion" onClick={() => setIsOpenMessage(true)}>
+            쪽지 쓰기
+          </p>
+          {isOpenMessage && (
+            <MessageWrite
+              toUser={{
+                toUser: {
+                  email: user.userEmail,
+                  nickname: user.userNickname,
+                },
+              }}
+              isOpenMessage={isOpenMessage}
+              setIsOpenMessage={setIsOpenMessage}
+            />
+          )}
+          <a className="user-accordion">유저페이지로 이동</a>
 
           {loginUserGrade?.managementUserStatus == "host" && (
             <>
               {userGrade?.data?.managementUserStatus !== "ban" ? (
-                <a onClick={() => setbanOpen(!banOpen)}>차단하기</a>
+                <a
+                  className="user-accordion"
+                  onClick={() => setbanOpen(!banOpen)}
+                >
+                  차단하기
+                </a>
               ) : (
-                <a onClick={() => setbanOpen(!banOpen)}>벤풀기</a>
+                <a
+                  className="user-accordion"
+                  onClick={() => setbanOpen(!banOpen)}
+                >
+                  벤풀기
+                </a>
               )}
               {banOpen && userGrade?.data?.managementUserStatus !== "ban" && (
                 <>
