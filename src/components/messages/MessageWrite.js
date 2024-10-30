@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { addMessage } from "../../api/message";
 import "../../assets/messageWrite.scss";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FindUser from "../user/FindUser";
-const MessageWrite = () => {
+const MessageWrite = ({ toUser, setIsOpenMessage }) => {
   const { user } = useAuth(); // 발신자(로그인유저)
   const [message, setMessage] = useState({
     messagesTitle: "",
@@ -13,9 +13,6 @@ const MessageWrite = () => {
     messagesFromUser: user.userEmail, // 보내는 로그인유저
     messagesToUser: "", // 받을사람
   });
-  const location = useLocation();
-  let toUser = null;
-  toUser = location.state !== null ? location.state.toUser : undefined;
   const [isOpen, setIsOpen] = useState(false);
   const [inputNickname, setInputNickname] = useState(
     toUser !== undefined ? toUser.nickname : ""
@@ -30,6 +27,7 @@ const MessageWrite = () => {
   const submitMessage = async () => {
     const response = await addMessage(message);
     navigate("/messages");
+    setIsOpenMessage(false);
     return response.data;
   };
   const findSubmit = () => {
@@ -52,17 +50,38 @@ const MessageWrite = () => {
   useEffect(() => {
     setMessage(
       toUser !== undefined
-        ? { ...message, messagesToUser: toUser.email }
+        ? { ...message, messagesToUser: toUser.toUser.email }
         : { ...message }
     );
-  }, []);
 
+    if (toUser !== undefined) setViewNickname(toUser.toUser.nickname);
+  }, [toUser]);
+  useEffect(() => {
+    console.log(message.messagesContent.length);
+  }, [message]);
   return (
     <>
-      <div className="main-box">
+      <>
         <div className="write-box">
           <div className="write-header">
-            <Link to="/messages">내 쪽지함으로</Link>
+            <p className="side-btn" onClick={() => setIsOpenMessage(false)}>
+              닫기
+            </p>
+
+            <input
+              id="message-title"
+              placeholder="제목을 입력하세요"
+              type="text"
+              value={message.messagesTitle}
+              onChange={(e) =>
+                setMessage({ ...message, messagesTitle: e.target.value })
+              }
+            />
+            <Link className="side-btn" to="/messages">
+              쪽지함
+            </Link>
+          </div>
+          <div className="write-header-bottom">
             <FindUser
               toNickname={toNickname}
               inputNickname={inputNickname}
@@ -74,30 +93,28 @@ const MessageWrite = () => {
               isOpen={isOpen}
               setIsOpen={setIsOpen}
             />
-            <input
-              id="message-title"
-              placeholder="제목을 입력하세요"
-              type="text"
-              value={message.messagesTitle}
-              onChange={(e) =>
-                setMessage({ ...message, messagesTitle: e.target.value })
-              }
+          </div>
+          <div className="message-content-box">
+            <textarea
+              id="message-content"
+              placeholder="내용을 입력하세요"
+              value={message?.messagesContent}
+              onChange={(e) => {
+                if (e.target.value.length <= 1000) {
+                  setMessage({ ...message, messagesContent: e.target.value });
+                }
+              }}
             />
           </div>
-          <textarea
-            id="message-content"
-            placeholder="내용을 입력하세요"
-            value={message?.messagesContent}
-            onChange={(e) =>
-              setMessage({ ...message, messagesContent: e.target.value })
-            }
-          />
           <div className="write-bottom">
-            <span>쪽지 발송에는 50pt가 소모됩니다</span>
-            <button onClick={submitMessage}>발송</button>
+            <div>글자수 {message.messagesContent.length}/1000</div>
+            <div className="submit-box">
+              <span>쪽지 발송에는 50pt가 소모됩니다</span>
+              <button onClick={submitMessage}>발송</button>
+            </div>
           </div>
         </div>
-      </div>
+      </>
     </>
   );
 };

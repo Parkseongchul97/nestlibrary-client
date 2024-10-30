@@ -12,6 +12,7 @@ import {
 import Search from "../components/Search";
 import MessageList from "../components/messages/MessageList";
 import Page from "../components/Page";
+import MessageWrite from "../components/messages/MessageWrite";
 const Messages = () => {
   const queryClient = useQueryClient();
   const location = useLocation();
@@ -26,6 +27,7 @@ const Messages = () => {
   const [newCheckList, setNewCheckList] = useState([]);
   const [viewType, setViewType] = useState("open"); // 전체냐 to냐 from이냐 구분
   const [isOpenUser, setIsOpenUser] = useState(null);
+  const [isOpenMessage, setIsOpenMessage] = useState(false);
   const userMenuToggle = (code) => {
     if (isOpenUser === code) {
       setIsOpenUser(null);
@@ -195,24 +197,38 @@ const Messages = () => {
           >
             보낸 메시지
           </Link>
-          <Link className="messages-type" to="/message/write">
-            쪽지 쓰기
-          </Link>
         </div>
         <div className="message-main-box">
-          {messageList.data === undefined ||
-            (messageList.data.messagesDTOList.length !== 0 && (
-              <label className="all-check">
-                <input
-                  type="checkbox"
-                  checked={allCheck}
-                  onClick={() => {
-                    setAllCheck(!allCheck);
-                  }}
-                />
-                모두선택
-              </label>
-            ))}
+          <div className="message-main-header">
+            {messageList.data === undefined ||
+              (messageList.data.messagesDTOList.length !== 0 && (
+                <div className="check-box">
+                  <label className="all-check">
+                    <input
+                      type="checkbox"
+                      checked={allCheck}
+                      onClick={() => {
+                        setAllCheck(!allCheck);
+                      }}
+                    />
+                    모두선택
+                  </label>
+                  <button className="delete" onClick={deleteSubmit}>
+                    삭제
+                  </button>
+                </div>
+              ))}
+            <div className="writer-box">
+              <div
+                className="writer"
+                onClick={() => {
+                  setIsOpenMessage(true);
+                }}
+              >
+                쪽지 쓰기
+              </div>
+            </div>
+          </div>
           {/*메세지 컴포넌트 출력*/}
           {messageList.data === undefined ||
           messageList.data.messagesDTOList.length === 0 ? (
@@ -256,7 +272,13 @@ const Messages = () => {
           setSearchTarget={setSearchTarget}
         />
       </div>
-      <button onClick={deleteSubmit}>삭제</button>
+
+      {isOpenMessage && (
+        <MessageWrite
+          isOpenMessage={isOpenMessage}
+          setIsOpenMessage={setIsOpenMessage}
+        />
+      )}
     </div>
   );
 };
