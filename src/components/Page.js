@@ -103,11 +103,11 @@ const Page = ({ page, totalPages, pageBtnOnClick, isComment, commentPage }) => {
                 <li key={start + i} className={start + i}>
                   <Link
                     className={
-                      isComment && commentPage === start + i
+                      isComment && Number(commentPage) == start + i
                         ? "page-link-select"
                         : isComment
                         ? "page-link"
-                        : page === start + i
+                        : Number(page) === start + i
                         ? "page-link-select"
                         : "page-link"
                     }

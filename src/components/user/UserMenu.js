@@ -28,6 +28,7 @@ const UserMenu = ({
   const handleRadioChange = (e) => {
     setManagementDTO({
       ...managementDTO,
+      userEmail: user?.userEmail,
       banDate: e.target.value,
       managementUserStatus: "ban",
       channelCode: loginUserGrade?.channel.channelCode,
@@ -61,6 +62,7 @@ const UserMenu = ({
   };
 
   const gradeChangeSubmit = (dto) => {
+    console.log(managementDTO);
     if (dto?.managementUserStatus === "admin") {
       submitRoleMutation.mutate(dto);
     } else if (dto?.managementUserStatus === "host") {
@@ -89,6 +91,7 @@ const UserMenu = ({
     setIsHost(false);
     setManagementDTO({
       ...managementDTO,
+      userEmail: user?.userEmail,
       banDate: "",
       managementUserStatus: "",
       channelCode: "",

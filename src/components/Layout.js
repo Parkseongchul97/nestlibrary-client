@@ -5,7 +5,6 @@ import { useEffect, useState, useCallback } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 const Layout = () => {
-  const location = useLocation();
   const currentUrl = window.location.href;
 
   const [channelList, setChannelList] = useState([]);

@@ -19,7 +19,9 @@ const MainPostList = ({ channelTagCode, post, page }) => {
                 post?.channelTag?.channelTagCode
               }
             >
-              {post?.bestPoint > 50 && "🔥"}
+              {post?.channelTag?.channelTagName === "공지"
+                ? "📢"
+                : post?.bestPoint > 50 && "🔥"}
               {post?.channelTag?.channelTagName}
             </Link>
           </div>

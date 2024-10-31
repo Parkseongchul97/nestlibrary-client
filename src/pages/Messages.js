@@ -146,144 +146,161 @@ const Messages = () => {
   if (isLoading) return <>로딩중...</>;
   if (error) return <>에러발생...</>;
   return (
-    <div className="main-box">
-      <div className="message-list-box">
-        <div className="messages-header">
-          <Link
-            className={
-              viewType === "open" ? "messages-selected-type" : "messages-type"
-            }
-            to="#"
-            onClick={() => {
-              setViewType("open");
-              AllListRemove();
-            }}
-          >
-            아직안본 메시지
-          </Link>
-          <Link
-            className={
-              viewType === "all" ? "messages-selected-type" : "messages-type"
-            }
-            to="#"
-            onClick={() => {
-              setViewType("all");
-              AllListRemove();
-            }}
-          >
-            모든 메시지
-          </Link>
-          <Link
-            className={
-              viewType === "to" ? "messages-selected-type" : "messages-type"
-            }
-            to="#"
-            onClick={() => {
-              setViewType("to");
-              AllListRemove();
-            }}
-          >
-            받은 메시지
-          </Link>
-          <Link
-            className={
-              viewType === "from" ? "messages-selected-type" : "messages-type"
-            }
-            to="#"
-            onClick={() => {
-              setViewType("from");
-              AllListRemove();
-            }}
-          >
-            보낸 메시지
-          </Link>
-          {messageList.data === undefined ||
-            (messageList.data.messagesDTOList.length !== 0 && (
-              <button className="delete" onClick={deleteSubmit}>
-                삭제
-              </button>
-            ))}
-          <div className="writer-box">
-            <div
-              className="writer"
-              onClick={() => {
-                setIsOpenMessage(true);
-              }}
-            >
-              쪽지 쓰기
-            </div>
-          </div>
-        </div>
-        <div className="message-main-box">
-          <div className="message-main-header">
-            {messageList.data === undefined ||
-              (messageList.data.messagesDTOList.length !== 0 && (
-                <div className="check-box">
-                  <label className="all-check">
-                    <input
-                      type="checkbox"
-                      checked={allCheck}
-                      onClick={() => {
-                        setAllCheck(!allCheck);
-                      }}
-                    />
-                    모두선택
-                  </label>
-                </div>
-              ))}
-          </div>
-          {/*메세지 컴포넌트 출력*/}
-          {messageList.data === undefined ||
-          messageList.data.messagesDTOList.length === 0 ? (
-            <div className="none-message-box">
-              <div>!</div>
-              <p>쪽지가 없습니다.</p>
-            </div>
-          ) : (
-            <div className="messages-box">
-              {messageList.data.messagesDTOList?.map((message, index) => (
-                <MessageList
-                  message={message}
-                  key={message?.messagesCode}
-                  setIsOpen={setIsOpen}
-                  isOpen={isOpen}
-                  isChecked={allCheck}
-                  setCheckedList={setCheckedList}
-                  checkedList={checkedList}
-                  viewType={viewType}
-                  isOpenUser={isOpenUser}
-                  userMenuToggle={userMenuToggle}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-        {messageList.data.paging !== undefined &&
-          messageList.data.paging.totalPage !== 0 && (
-            <div className="page-btn">
-              <Page
-                page={messageList.data.paging.page}
-                totalPages={Math.ceil(messageList.data.paging?.totalPage / 10)}
-                pageBtnOnClick={AllListRemove}
-              />
-            </div>
-          )}
-        <Search
-          isPost={false}
-          onSubmit={searchSubmit}
-          searchKeyword={searchKeyword}
-          searchTarget={searchTarget}
-          setSearchKeyword={setSearchKeyword}
-          setSearchTarget={setSearchTarget}
-        />
-      </div>
+    <div className="message-big-box">
+      <Link to="/messages" className="message-header">
+        쪽지함
+      </Link>
+      <div className="message-container">
+        <div className="message-list-box">
+          <div className="side-box">
+            <div className="messages-side">
+              <div
+                className="writer"
+                onClick={() => {
+                  setIsOpenMessage(true);
+                }}
+              >
+                쪽지 쓰기
+              </div>
 
-      {isOpenMessage && (
-        <MessageWrite
-          isOpenMessage={isOpenMessage}
-          setIsOpenMessage={setIsOpenMessage}
-        />
-      )}
+              <Link
+                className={
+                  viewType === "open"
+                    ? "messages-selected-type"
+                    : "messages-type"
+                }
+                to="#"
+                onClick={() => {
+                  setViewType("open");
+                  AllListRemove();
+                }}
+              >
+                안읽은 쪽지
+              </Link>
+              <Link
+                className={
+                  viewType === "all"
+                    ? "messages-selected-type"
+                    : "messages-type"
+                }
+                to="#"
+                onClick={() => {
+                  setViewType("all");
+                  AllListRemove();
+                }}
+              >
+                모든 쪽지
+              </Link>
+              <Link
+                className={
+                  viewType === "to" ? "messages-selected-type" : "messages-type"
+                }
+                to="#"
+                onClick={() => {
+                  setViewType("to");
+                  AllListRemove();
+                }}
+              >
+                받은 쪽지
+              </Link>
+              <Link
+                className={
+                  viewType === "from"
+                    ? "messages-selected-type"
+                    : "messages-type"
+                }
+                to="#"
+                onClick={() => {
+                  setViewType("from");
+                  AllListRemove();
+                }}
+              >
+                보낸 쪽지
+              </Link>
+            </div>
+          </div>
+          <div className="messages-right">
+            <div className="message-main-box">
+              <div className="message-main-header">
+                <div className="message-main-header-left">
+                  {messageList.data === undefined ||
+                    (messageList.data.messagesDTOList.length !== 0 && (
+                      <div className="check-box">
+                        <input
+                          type="checkbox"
+                          checked={allCheck}
+                          onClick={() => {
+                            setAllCheck(!allCheck);
+                          }}
+                        />
+                      </div>
+                    ))}
+                  <div className="messages-header-title">제목</div>
+                </div>
+                <div className="messages-header-user">유저</div>
+                <div className="messages-header-time">시간</div>
+              </div>
+              {/*메세지 컴포넌트 출력*/}
+              {messageList.data === undefined ||
+              messageList.data.messagesDTOList.length === 0 ? (
+                <div className="none-message-box">
+                  <div>!</div>
+                  <p>쪽지가 없습니다.</p>
+                </div>
+              ) : (
+                <div className="messages-box">
+                  {messageList.data.messagesDTOList?.map((message, index) => (
+                    <MessageList
+                      message={message}
+                      key={message?.messagesCode}
+                      setIsOpen={setIsOpen}
+                      isOpen={isOpen}
+                      isChecked={allCheck}
+                      setCheckedList={setCheckedList}
+                      checkedList={checkedList}
+                      viewType={viewType}
+                      isOpenUser={isOpenUser}
+                      userMenuToggle={userMenuToggle}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+            {messageList.data.paging !== undefined &&
+              messageList.data.paging.totalPage !== 0 && (
+                <div className="messages-page-btn">
+                  <div className="side-bottom">
+                    <div className="delete" onClick={deleteSubmit}>
+                      삭제
+                    </div>
+                  </div>
+                  <Page
+                    page={messageList.data.paging.page}
+                    totalPages={Math.ceil(
+                      messageList.data.paging?.totalPage / 10
+                    )}
+                    pageBtnOnClick={AllListRemove}
+                  />
+                </div>
+              )}
+            <Search
+              isPost={false}
+              onSubmit={searchSubmit}
+              searchKeyword={searchKeyword}
+              searchTarget={searchTarget}
+              setSearchKeyword={setSearchKeyword}
+              setSearchTarget={setSearchTarget}
+            />
+          </div>
+        </div>
+
+        {isOpenMessage && (
+          <MessageWrite
+            isOpenMessage={isOpenMessage}
+            setIsOpenMessage={setIsOpenMessage}
+          />
+        )}
+      </div>
     </div>
   );
 };

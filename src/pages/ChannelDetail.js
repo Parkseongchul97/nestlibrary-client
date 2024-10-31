@@ -18,9 +18,9 @@ import Page from "../components/Page";
 import Search from "../components/Search";
 import PostDetail from "../components/post/PostDetail";
 import UserMenu from "../components/user/UserMenu";
-
-import { BsBookmarkStarFill, BsBookmarkPlusFill } from "react-icons/bs";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
+import AnnouncementPost from "../components/post/AnnouncementPost";
+import { loginUserChannelGrade } from "../api/management";
 const ChannelDetail = () => {
   const { user, token } = useAuth(); // 로그인 유저
   const { channelCode, channelTagCode } = useParams();
@@ -37,7 +37,18 @@ const ChannelDetail = () => {
   const [searchKeyword, setSearchKeyword] = useState(""); // 검색어
   const [searchTarget, setSearchTarget] = useState("title"); // 기본 검색 대상: 제목
   const { postCode } = useParams();
+  const [loginUserGrade, setloginUserGrade] = useState(null); //로그인 유저의 권한
 
+  const loginGrade = async () => {
+    const response = await loginUserChannelGrade(channelCode);
+    setloginUserGrade(response.data);
+    console.log(response.data);
+  };
+  useEffect(() => {
+    if (channelCode !== undefined && channelCode !== null && token !== null) {
+      loginGrade();
+    }
+  }, [token, channelCode]);
   const fetch = async () => {
     setPosts([]);
     const info = await channelInfo(channelCode);
@@ -75,7 +86,7 @@ const ChannelDetail = () => {
   };
   useEffect(() => {
     fetch();
-  }, [channelCode, channelTagCode, page, viewType]);
+  }, [channelCode, channelTagCode, page, viewType, postCode]);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["subscribe", channelCode],
@@ -180,6 +191,11 @@ const ChannelDetail = () => {
                     style={{ color: "red" }}
                   />
                 )}
+
+                {(loginUserGrade?.managementUserStatus === "host" ||
+                  loginUserGrade?.managementUserStatus === "admin") && (
+                  <Link to={`/update/${channelCode}`}>채널수정</Link>
+                )}
                 {token && (
                   <Link
                     className="write-btn"
@@ -198,7 +214,13 @@ const ChannelDetail = () => {
               />
             </div>
           </div>
-          {postCode && <PostDetail postCode={postCode} page={page} />}
+          {postCode && (
+            <PostDetail
+              postCode={postCode}
+              page={page}
+              loginUserGrade={loginUserGrade}
+            />
+          )}
           <div className="channel-main">
             <div className="tag-box">
               <Link
@@ -230,7 +252,7 @@ const ChannelDetail = () => {
                   onClick={() => setSearchKeyword("")}
                 >
                   {}
-                  {}
+                  {channelTag.channelTagName === "공지" && "📢"}
                   {channelTag.channelTagName}
                 </Link>
               ))}
@@ -245,6 +267,11 @@ const ChannelDetail = () => {
                 <div className="header-like">추천</div>
                 <div className="header-comment">댓글</div>
               </div>
+              <AnnouncementPost
+                channelCode={channelCode}
+                isOpenDetail={isOpenDetail}
+                setIsOpenDetail={setIsOpenDetail}
+              />
               {posts?.postList === undefined || posts?.postList === null ? (
                 <div className="none-post-box">
                   <div>!</div>
@@ -265,15 +292,7 @@ const ChannelDetail = () => {
                 ))
               )}
             </div>
-            {posts?.paging !== undefined && posts?.paging.totalPage !== 0 && (
-              <div className="page-btn">
-                <Page
-                  page={posts?.paging.page}
-                  totalPages={Math.ceil(posts?.paging.totalPage / 10)}
-                />
-              </div>
-            )}
-            <div className="is-best-box">
+            <div className="page-btn">
               <Link
                 className={viewType === "best" ? "is-best" : "is-all"}
                 onClick={() => {
@@ -283,6 +302,12 @@ const ChannelDetail = () => {
               >
                 인기글
               </Link>
+              {posts?.paging !== undefined && posts?.paging.totalPage !== 0 && (
+                <Page
+                  page={posts?.paging.page}
+                  totalPages={Math.ceil(posts?.paging.totalPage / 10)}
+                />
+              )}
               <Link
                 className={viewType === "all" ? "is-best" : "is-all"}
                 onClick={() => {
@@ -304,9 +329,6 @@ const ChannelDetail = () => {
           </div>
         </div>
       </div>
-      {channel?.host.userEmail == user.userEmail && (
-        <Link to={`/update/${channelCode}`}>채널수정</Link>
-      )}
     </>
   );
 };
