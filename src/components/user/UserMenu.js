@@ -9,6 +9,7 @@ import { loginUserChannelGrade, userChannelGrade } from "../../api/management";
 import { sendCode, checkEmail } from "../../api/email";
 import { FaRegCheckCircle, FaBan } from "react-icons/fa";
 import MessageWrite from "../messages/MessageWrite";
+import { useNavigate } from "react-router-dom";
 
 const UserMenu = ({
   user,
@@ -28,10 +29,12 @@ const UserMenu = ({
   const handleRadioChange = (e) => {
     setManagementDTO({
       ...managementDTO,
+      userEmail: user?.userEmail,
       banDate: e.target.value,
       managementUserStatus: "ban",
       channelCode: loginUserGrade?.channel.channelCode,
     });
+    console.log(managementDTO);
   };
 
   const [isHost, setIsHost] = useState(false);
@@ -42,6 +45,7 @@ const UserMenu = ({
 
   const [loginUserGrade, setloginUserGrade] = useState(null); // 로그인유저
 
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [isOpenMessage, setIsOpenMessage] = useState(false);
   const {
@@ -89,10 +93,13 @@ const UserMenu = ({
     setIsHost(false);
     setManagementDTO({
       ...managementDTO,
+      userEmail: user?.userEmail,
       banDate: "",
       managementUserStatus: "",
       channelCode: "",
     });
+    console.log(managementDTO);
+    console.log("몇번");
   }, [isOpenUser]);
 
   const [banOpen, setbanOpen] = useState(false);
@@ -135,12 +142,24 @@ const UserMenu = ({
       setCode("");
     }
   };
+  const goUserPage = () => {
+    navigate("/user/" + user.userEmail);
+  };
 
   if (isLoading) return <>로딩중</>;
   if (error) return <>에러;;</>;
   return (
     <div className="user-profile-box">
-      <div className="user-profile" onClick={userMenuToggle}>
+      <div
+        className="user-profile"
+        onClick={
+          token === null
+            ? goUserPage
+            : loginUser.userEmail !== user?.userEmail
+            ? userMenuToggle
+            : goUserPage
+        }
+      >
         {!noneImg && (
           <img
             className="user-profile-img"
@@ -199,7 +218,9 @@ const UserMenu = ({
               setIsOpenMessage={setIsOpenMessage}
             />
           )}
-          <a className="user-accordion">유저페이지로 이동</a>
+          <Link to={"/user/" + user.userEmail}>
+            <a className="user-accordion">유저페이지로 이동</a>
+          </Link>
 
           {loginUserGrade?.managementUserStatus == "host" && (
             <>

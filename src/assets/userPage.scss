@@ -1,28 +1,251 @@
+.userPage-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 100px;
+  width: 100%;
+}
+
 .userPage-box {
-  border: 1px solid black;
-  width: 40%;
-  margin: auto;
-  margin-top: 100px;
+  border-radius: 50px 50px 0px 0px;
+  width: 100%;
+  max-width: 1200px;
+
   background-color: #f4f4f4;
   font-family: "Pretendard Variable";
   font-style: normal;
   font-weight: 600;
   .userPage-title {
     font-size: 2rem;
-    width: 30%;
+    margin-bottom: 20px;
   }
   .userPage-post {
     display: flex;
   }
 }
-
-.userPage-channel-name,
-.userPage-channel-tag {
-  color: white;
-  border-radius: 5px;
-  background-color: black;
+.user-channel {
+  display: flex;
+  padding: 2rem;
+  justify-content: space-around;
+  width: 100%;
+  padding-bottom: 0;
 }
-.userPage-post-list {
+
+.userPage-userProfile {
+  display: flex;
+
+  img {
+    width: 150px;
+    height: 150px;
+    margin-right: 20px;
+    border-radius: 50%;
+  }
+}
+.user-text {
+  display: flex;
+
+  flex-direction: column;
+  line-height: 2;
+}
+.user-message {
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: flex-start;
+}
+.user-point {
+  font-size: 1.5rem;
+}
+.user-text-main {
+  font-size: 2rem;
+}
+.userPage-content {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.userPage-post-list {
+  padding: 2rem;
+  margin: 0.5rem;
+}
+
+.userPage-channelDetail {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.userPage-channel-item {
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.5px solid #acacac;
+  padding: 10px;
+}
+.userPage-post-item {
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.5px solid #acacac;
+  padding: 5px;
+  .postList-channel-title {
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .postList-tag {
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .postList-title {
+    width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .postList-at {
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .postList-view {
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .postList-like {
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .postList-comment {
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+  }
+}
+.RecentPost-post {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px 0;
+  border-bottom: 0.5px solid #acacac;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.RecentPost-channel-name {
+  width: 200px;
+  display: flex;
+  justify-content: center;
+}
+.RecentPost-channel-name-text {
+  background: white;
+  color: black;
+  padding: 0.3rem;
+  border-radius: 10px;
+}
+.RecentPost-tag {
+  width: 60px;
+  text-align: center;
+
+  text-wrap: nowrap;
+  align-self: center;
+  padding: 0.3rem;
+  text-align: center;
+  background: black;
+  color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.RecentPost-text {
+  width: 500px;
+}
+.RecentPost-at {
+  width: 100px;
+  display: flex;
+  justify-content: center;
+}
+.RecentPost-view,
+.RecentPost-like,
+.RecentPost-comment {
+  width: 50px;
+  display: flex;
+  justify-content: center;
+}
+.userPage-channelList {
+  width: 35%;
+}
+.userPage-channelList-info {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+.userPage-channel-rank {
+  width: 10%;
+  display: flex;
+  justify-content: center;
+}
+
+.userPage-channel-title {
+  width: 40%;
+  display: flex;
+  justify-content: center;
+}
+.userPage-channel-post {
+  width: 25%;
+
+  display: flex;
+  justify-content: center;
+}
+.userPage-channel-comment {
+  width: 25%;
+  display: flex;
+  justify-content: center;
+}
+.userPage-favorate-rank {
+  width: 10%;
+  display: flex;
+  justify-content: center;
+}
+.userPage-favorate-title {
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  background: white;
+  color: black;
+  padding: 0.3rem;
+  border-radius: 10px;
+}
+.userPage-favorate-post {
+  width: 25%;
+  display: flex;
+  justify-content: center;
+}
+.userPage-favorate-comment {
+  width: 25%;
+  display: flex;
+  justify-content: center;
+}
+.userPage-post-null {
+  width: 100%;
+  text-align: center;
+  padding: 100px;
+  font-size: 2rem;
+}
+.userPage-favorate-null {
+  width: 100%;
+  text-align: center;
+  padding: 50px;
+  font-size: 1.3rem;
 }

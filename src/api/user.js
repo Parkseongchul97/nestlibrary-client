@@ -51,3 +51,7 @@ export const updatePass = async (userEmail, userPassword) => {
     `/password?userEmail=${userEmail}&userPassword=${userPassword}`
   );
 };
+
+export const userPageInfo = async (userEmail) => {
+  return await instance.get(`/userInfo/${userEmail}`);
+};
