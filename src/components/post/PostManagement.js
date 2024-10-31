@@ -55,7 +55,7 @@ const PostManagement = ({
         </a>
       </td>
 
-      <td>{post.postCreatedAt}</td>
+      <td>{post.postCreatedAt.split("T")[0]}</td>
       <td>{post.postViews}</td>
       <td>{post.commentCount}</td>
     </tr>

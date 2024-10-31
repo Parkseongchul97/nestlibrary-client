@@ -12,9 +12,9 @@ import ChannelUpdate from "./pages/ChannelUpdate";
 import Messages from "./pages/Messages";
 
 import UserHelp from "./pages/UserHelp";
-import UserManagement from "./pages/UserManagement";
 
 import UserPage from "./pages/UserPage";
+import Error from "./pages/Error";
 
 const router = createBrowserRouter([
   {
@@ -22,8 +22,12 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: "/managment",
-        element: <UserManagement />,
+        path: "/update/:channelCode",
+        element: <ChannelUpdate />,
+      },
+      {
+        path: "/user/:userEmail",
+        element: <UserPage />,
       },
 
       {
@@ -114,6 +118,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+
   {
     path: "/kakao",
     element: <LoginWait />,
@@ -122,13 +127,10 @@ const router = createBrowserRouter([
     path: "/write",
     element: <PostWrite />,
   },
+
   {
-    path: "/update/:channelCode",
-    element: <ChannelUpdate />,
-  },
-  {
-    path: "/user/:userNickname",
-    element: <UserPage />,
+    path: "/error",
+    element: <Error />,
   },
 ]);
 export default router;

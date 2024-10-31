@@ -1,0 +1,133 @@
+.channelUpdate-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 100px;
+  width: 100%;
+  background-color: #f4f4f4;
+}
+
+.channelUpdate-box {
+  width: 100%;
+  max-width: 1200px;
+  border: 1px solid black;
+  padding: 50px;
+  background-color: #f4f4f4;
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.channelUpdate-channelName {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+.tagList {
+  font-size: 2rem;
+  padding: 20px;
+}
+.tagInfo {
+  font-size: 1.3rem;
+  padding-left: 20px;
+}
+.channelUpdate-tagList {
+  border: 1px solid black;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 15px;
+}
+.channelUpdate-tag {
+  padding: 10px;
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  border-radius: 10px;
+}
+.cancle-ikon {
+  font-size: 20px;
+  margin-left: 10px;
+}
+.channelUpdate-allTag {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0px 20px;
+}
+.channelUpdate-addTag {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+  input {
+    font-size: 25px;
+  }
+  button {
+    margin-left: 10px;
+  }
+}
+.cancle-ikon:hover {
+  color: red;
+  cursor: pointer;
+}
+.channelUpdate-img {
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 15px;
+  width: 100%;
+  padding: 20px;
+}
+.channelUpdate-imgUpdate {
+  font-size: 2rem;
+  padding: 20px;
+}
+.channelUpdate-content {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.channelUpdate-right {
+  width: 100%;
+}
+.channelUpdate-left {
+  font-size: 2rem;
+  line-height: 2;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    padding: 8px 4px;
+    border-radius: 20px;
+    color: white;
+    font-size: 1.3rem;
+    width: 20%;
+    margin: 10px;
+  }
+  div:hover {
+    color: red;
+    cursor: pointer;
+  }
+}
+.channelUpdate-header {
+  display: flex;
+  align-items: center;
+}
+.channelUpdate-link {
+  padding: 10px;
+  background-color: black;
+  a {
+    color: white;
+  }
+  border-radius: 10px;
+}

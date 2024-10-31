@@ -21,7 +21,7 @@ import { Link } from "react-router-dom";
 
 import "../assets/login.scss";
 
-const UserManagement = () => {
+const UserManagement = ({ channelCode }) => {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isSearch, setIsSearch] = useState(true);
@@ -42,12 +42,11 @@ const UserManagement = () => {
   });
 
   const [selectedUser, setSelectedUser] = useState([]);
-  const location = useLocation();
+
   const [targetUser, setTargetUser] = useState("");
   const [post, setPost] = useState([]);
   const [isPost, setIsPost] = useState(false);
   const [author, setAuthor] = useState(null);
-  const channelCode = location.state?.channelCode;
 
   const [check, setCheck] = useState([]);
 
@@ -264,7 +263,7 @@ const UserManagement = () => {
 
   return (
     <>
-      <div className="main-box">
+      <div className="management-container">
         <div className="management-box">
           <div className="title">유저 관리 페이지 </div>
           <div className="main-content">

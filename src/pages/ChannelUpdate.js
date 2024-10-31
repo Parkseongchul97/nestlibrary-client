@@ -8,6 +8,9 @@ import {
   addImg,
   removeChannel,
 } from "../api/channel";
+import "../assets/channelUpdate.scss";
+import { TbXboxX } from "react-icons/tb";
+import { IoIosArrowForward } from "react-icons/io";
 
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
@@ -16,6 +19,7 @@ import { findUser as byNickname } from "../api/message";
 import { useQuery } from "@tanstack/react-query";
 import UserMenu from "../components/user/UserMenu";
 import FindUser from "../components/user/FindUser";
+import UserManagement from "./UserManagement";
 
 const ChannelUpdate = () => {
   const { user } = useAuth(); // 발신자(로그인유저)
@@ -26,11 +30,12 @@ const ChannelUpdate = () => {
   const [code, setCode] = useState("");
   const [reCode, setReCode] = useState(false);
   const navigate = useNavigate();
+  const [view, setView] = useState("door");
 
   const [chan, setChan] = useState({
     channelCode: channelCode,
     channelImg: null,
-    change: "",
+    change: 0,
   });
   const [isOpen, setIsOpen] = useState(false);
   const [inputNickname, setInputNickname] = useState("");
@@ -126,13 +131,6 @@ const ChannelUpdate = () => {
     }
   };
 
-  // 필요한것 벤 리스트 O  , 관리자 리스트  O, (현재가진 태그 목록 O  + 태그 추가 / 삭제 기능 O ) , 사진변경 O , 소개 변경 O
-  // 수정되는 부분을 같은 vo가 처리하는 부분끼리 나누기
-  // img => channelDTO
-  // info => channel
-  // tag  => channelTag
-  // ban , admin  => management
-
   const reset = () => {
     if (channelInfos.channelImgUrl != null) {
       setPreviewUrl(
@@ -186,136 +184,168 @@ const ChannelUpdate = () => {
     setInputNickname("");
   };
 
+  const getOpenType = (data) => {
+    setView(data);
+  };
+
   return (
     <>
-      {error ? (
-        <div className="error-message">{error}</div>
-      ) : (
-        <>
-          <ul>
-            관리자들
-            {channelInfos.adminList.map((admins, index) =>
-              index === 0 ? (
-                <li key={admins.userEmail}>호스트 : {admins.userEmail}</li>
-              ) : (
-                <li key={admins.userEmail}>관리자 : {admins.userEmail}</li>
-              )
-            )}
-          </ul>
-          채널소개 :{" "}
-          <input
-            value={channelInfos.channelInfo}
-            onChange={(e) =>
-              setChannelInfos({ ...channelInfos, channelInfo: e.target.value })
-            }
-          />
-          <button onClick={infoSubmit}> 변경 </button>
-          <Link
-            state={{
-              channelCode: channelCode,
-            }}
-            to="/managment"
-          >
-            유저관리 페이지
-          </Link>
-          <ul>
-            차단 리스트
-            {channelInfos.banList.map((bans) => (
-              <li key={bans.userEmail}>{bans.userEmail}</li>
-            ))}
-          </ul>
-          <FindUser
-            toNickname={toNickname}
-            inputNickname={inputNickname}
-            setInputNickname={setInputNickname}
-            findSubmit={findSubmit}
-            viewNickname={viewNickname}
-            deleteToUser={deleteToUser}
-            selectedUser={selectedUser}
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-          />
-          <div>
-            <ul>
-              태그 리스트
-              {channelInfos.channelTag.map((channelTags, index) => (
-                <>
-                  <li key={channelTags.channelTagCode}>
-                    {channelTags.channelTagName}
-                  </li>
-                  {!(
-                    channelTags.channelTagName == "일반" ||
-                    channelTags.channelTagName == "공지"
-                  ) ? (
-                    <button
-                      key={index}
-                      onClick={() => tagDelete(channelTags.channelTagCode)}
-                    >
-                      삭제
-                    </button>
-                  ) : null}
-                </>
-              ))}
-            </ul>
-            <input
-              type="text"
-              value={tags.channelTagName}
-              onChange={(e) =>
-                setTags({ ...tags, channelTagName: e.target.value })
-              }
-            />
-            <button onClick={getTag}>추가</button>
-          </div>
-          <p>이미지 </p>
-          추가:
-          <input
-            className="change-input-file"
-            type="file"
-            accept={"image/*"}
-            onChange={(e) => {
-              const file = e.target.files[0];
-              if (file) {
-                setPreviewUrl(URL.createObjectURL(file));
-                setChan({ ...chan, channelImg: file, change: 1 });
-              } else {
-                setPreviewUrl(false);
-                setChan({ ...chan, channelImg: null, change: 0 });
-              }
-            }}
-          />
-          <button onClick={imgUpdate}>사진 수정</button>
-          <button onClick={reset}>기존 사진 </button>
-          <button onClick={regular}>기본 사진</button>
-          <img
-            src={
-              previewUrl ||
-              (channelInfos.channelImgUrl === null
-                ? "http://192.168.10.51:8083/%EA%B8%B0%EB%B3%B8%EB%8C%80%EB%AC%B8.jpg"
-                : `http://192.168.10.51:8083/channel/${channelCode}/${channelInfos.channelImgUrl}`)
-            }
-          />
-          <button
-            onClick={() => {
-              setIsDelete(!isDelete);
-            }}
-          >
-            채널삭제
-          </button>
-          {isDelete && (
+      <div className="channelUpdate-container">
+        <div className="channelUpdate-box">
+          {error ? (
+            <div className="error-message">{error}</div>
+          ) : (
             <>
-              <div>채널 삭제는 이메일 인증코드가 필요 합니다 </div>
-              <input
-                type="text"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-              />
-              <button onClick={getCode}>{reCode ? "재발송" : "발송"}</button>
-              <button onClick={submitCode}>확인</button>
+              <div className="channelUpdate-header">
+                <div className="channelUpdate-channelName">
+                  {channelInfos.channelName}
+                </div>
+                <div className="channelUpdate-link">
+                  <Link to={"/channel/" + channelCode}>바로가기</Link>
+                </div>
+              </div>
+              <div className="channelUpdate-content">
+                <div className="channelUpdate-left">
+                  <div
+                    style={{ color: view === "door" ? "red" : "white" }}
+                    onClick={() => getOpenType("door")}
+                  >
+                    대문수정
+                  </div>
+                  <div onClick={() => getOpenType("user")}>유저관리</div>
+                  <div onClick={() => getOpenType("channel")}>채널관리</div>
+                </div>
+                <div className="channelUpdate-right">
+                  {view === "door" ? (
+                    <>
+                      <div className="channelUpdate-img">
+                        <div className="channelUpdate-imgUpdate">
+                          이미지 수정
+                        </div>
+                        <input
+                          className="change-input-file"
+                          type="file"
+                          accept={"image/*"}
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              setPreviewUrl(URL.createObjectURL(file));
+                              setChan({ ...chan, channelImg: file, change: 1 });
+                            } else {
+                              setPreviewUrl(false);
+                              setChan({ ...chan, channelImg: null, change: 0 });
+                            }
+                          }}
+                        />
+                        <button onClick={imgUpdate}>사진 수정</button>
+                        <button onClick={reset}>기존 사진 </button>
+                        <button onClick={regular}>기본 사진</button>
+                        <img
+                          src={
+                            previewUrl ||
+                            (channelInfos.channelImgUrl === null
+                              ? "http://192.168.10.51:8083/%EA%B8%B0%EB%B3%B8%EB%8C%80%EB%AC%B8.jpg"
+                              : `http://192.168.10.51:8083/channel/${channelCode}/${channelInfos.channelImgUrl}`)
+                          }
+                        />
+                        채널소개 :{" "}
+                        <input
+                          value={channelInfos.channelInfo}
+                          onChange={(e) =>
+                            setChannelInfos({
+                              ...channelInfos,
+                              channelInfo: e.target.value,
+                            })
+                          }
+                        />
+                        <button onClick={infoSubmit}> 변경 </button>
+                      </div>
+                    </>
+                  ) : view === "user" ? (
+                    <UserManagement channelCode={channelCode} />
+                  ) : (
+                    <>
+                      <div className="channelUpdate-tagList">
+                        <div className="tagList"> 태그 리스트</div>
+                        <div className="tagInfo">
+                          원하는 게시판의 이름을 만들어보세요 (공지,일반
+                          게시판은 고정게시판입니다)
+                        </div>
+                        <div className="channelUpdate-allTag">
+                          {channelInfos.channelTag.map((channelTags, index) => (
+                            <>
+                              {!(
+                                channelTags.channelTagName == "일반" ||
+                                channelTags.channelTagName == "공지"
+                              ) ? (
+                                <div
+                                  className="channelUpdate-tag"
+                                  key={channelTags.channelTagCode}
+                                >
+                                  {channelTags.channelTagName}
+                                  <TbXboxX
+                                    className="cancle-ikon"
+                                    onClick={() =>
+                                      tagDelete(channelTags.channelTagCode)
+                                    }
+                                  />
+                                </div>
+                              ) : (
+                                <div
+                                  className="channelUpdate-tag"
+                                  key={channelTags.channelTagCode}
+                                >
+                                  {channelTags.channelTagName}
+                                </div>
+                              )}
+                            </>
+                          ))}
+                        </div>
+                        <div className="channelUpdate-addTag">
+                          <input
+                            type="text"
+                            value={tags.channelTagName}
+                            onChange={(e) =>
+                              setTags({
+                                ...tags,
+                                channelTagName: e.target.value,
+                              })
+                            }
+                          />
+                          <button onClick={getTag}>태그 추가</button>
+                          <button
+                            onClick={() => {
+                              setIsDelete(!isDelete);
+                            }}
+                          >
+                            채널삭제
+                          </button>
+                          {isDelete && (
+                            <>
+                              <div>
+                                채널 삭제는 이메일 인증코드가 필요 합니다{" "}
+                              </div>
+                              <input
+                                type="text"
+                                value={code}
+                                onChange={(e) => setCode(e.target.value)}
+                              />
+                              <button onClick={getCode}>
+                                {reCode ? "재발송" : "발송"}
+                              </button>
+                              <button onClick={submitCode}>확인</button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
             </>
           )}
-          <Link to={"/channel/" + channelCode}>바로가기</Link>
-        </>
-      )}
+        </div>
+      </div>
     </>
   );
 };
