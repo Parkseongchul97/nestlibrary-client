@@ -74,7 +74,7 @@ const MessageList = ({
         <div className="message-right">
           {user.userEmail === message.messagesFromUser.userEmail ? (
             <div className="message-user">
-              <div>수신자</div>
+              <div className="user-left">수신자</div>
               <UserMenu
                 user={message.messagesToUser}
                 isOpenUser={isOpenUser === message.messagesCode}
@@ -83,7 +83,7 @@ const MessageList = ({
             </div>
           ) : (
             <div className="message-user">
-              <div>발신자</div>
+              <div className="user-left">발신자</div>
               <UserMenu
                 user={message.messagesFromUser}
                 isOpenUser={isOpenUser === message.messagesCode}

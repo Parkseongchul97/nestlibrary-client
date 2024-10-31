@@ -8,7 +8,7 @@ import {
 } from "../../api/comment";
 import "../../assets/comment.scss";
 import UserMenu from "../user/UserMenu";
-import { FaFeatherPointed } from "react-icons/fa6";
+
 const CommentComponent = ({
   channelCode,
   comment,
@@ -17,8 +17,10 @@ const CommentComponent = ({
   isOpenUser,
   userMenuToggle,
   isWriter,
+  loginUserGrade,
 }) => {
   const { user, token } = useAuth();
+  const [isComposing, setIsComposing] = useState(false);
   const [isPostUser, setIsPostUser] = useState(false);
   const [newReComment, setNewReComment] = useState({
     commentContent: "",
@@ -95,17 +97,18 @@ const CommentComponent = ({
 
   const enterSubmit = (e, type) => {
     if (type === "add")
-      if (e.code === "Enter" || e.code === "NumpadEnter") {
+      if (e.code === "Enter" || (e.code === "NumpadEnter" && !isComposing)) {
         addReComment();
       }
     if (type === "update")
-      if (e.code === "Enter" || e.code === "NumpadEnter") {
+      if (e.code === "Enter" || (e.code === "NumpadEnter" && !isComposing)) {
         updateComment();
       }
   };
   useEffect(() => {
     setIsPostUser(isWriter === comment.user.userEmail);
   }, [isWriter]);
+
   return (
     <div className="comment-content-box" id={"comment-code-" + id}>
       {comment?.commentContent === null ? (
@@ -113,106 +116,107 @@ const CommentComponent = ({
           <p className="none-comment">삭제된 댓글입니다...</p>
         </div>
       ) : (
-        <>
-          {" "}
-          <div
-            className={
-              user?.userEmail === comment?.user?.userEmail
-                ? "comment-content-my"
-                : isPostUser
-                ? "comment-content-writer"
-                : "comment-content"
-            }
-          >
-            <UserMenu
-              user={comment?.user}
-              time={comment?.commentCreatedAt}
-              isOpenUser={isOpenUser === comment.commentCode}
-              userMenuToggle={() => userMenuToggle(comment.commentCode)}
-              channelCode={channelCode}
-            />
+        <div
+          className={
+            user?.userEmail === comment?.user?.userEmail
+              ? "comment-content-my"
+              : isPostUser
+              ? "comment-content-writer"
+              : "comment-content"
+          }
+        >
+          <UserMenu
+            user={comment?.user}
+            time={comment?.commentCreatedAt}
+            isOpenUser={isOpenUser === comment.commentCode}
+            userMenuToggle={() => userMenuToggle(comment.commentCode)}
+            channelCode={channelCode}
+          />
+          {isChange === comment.commentCode &&
+          user !== undefined &&
+          user.userEmail === comment?.user?.userEmail ? (
+            <div className="edit-comment-form">
+              <input
+                className="edit-comment-add"
+                type="text"
+                value={changeComment.commentContent}
+                onChange={(e) =>
+                  setChangeComment({
+                    ...changeComment,
+                    commentContent: e.target.value,
+                  })
+                }
+                onKeyDown={(e) => enterSubmit(e, "update")}
+                onCompositionStart={() => setIsComposing(true)}
+                onCompositionEnd={() => setIsComposing(false)}
+              />
+              <button onClick={updateComment}>변경</button>
+            </div>
+          ) : (
+            <p className="comment-text">{comment.commentContent}</p>
+          )}
 
-            {isChange === comment.commentCode &&
-            user !== undefined &&
-            user.userEmail === comment?.user?.userEmail ? (
+          <div className="btn-box">
+            {user.userEmail === comment?.user?.userEmail && (
               <>
-                <div className="edit-comment-form">
-                  <input
-                    className="edit-comment-add"
-                    type="text"
-                    value={changeComment.commentContent}
-                    onChange={(e) =>
+                {isChange !== 0 ? (
+                  <button onClick={() => setIsChange(0)}>취소</button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setIsChange(comment.commentCode);
                       setChangeComment({
                         ...changeComment,
-                        commentContent: e.target.value,
-                      })
-                    }
-                    onKeyDown={(e) => enterSubmit(e, "update")}
-                  />
-                  <button onClick={updateComment}>변경</button>
-                </div>
-              </>
-            ) : (
-              <>
-                <p className="comment-text">{comment.commentContent}</p>
+                        commentCode: comment.commentCode,
+                        commentContent: comment.commentContent,
+                        commentParentsCode: comment.commentParentsCode,
+                      });
+                    }}
+                  >
+                    수정
+                  </button>
+                )}
               </>
             )}
-
-            <div className="btn-box">
-              {/*이거나 관리자인 경우*/}
-              {user.userEmail === comment?.user?.userEmail && (
-                <>
-                  {isChange !== 0 ? (
-                    <button onClick={() => setIsChange(0)}>취소</button>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        setIsChange(comment.commentCode);
-                        setChangeComment({
-                          ...changeComment,
-                          commentCode: comment.commentCode,
-                          commentContent: comment.commentContent,
-                          commentParentsCode: comment.commentParentsCode,
-                        });
-                      }}
-                    >
-                      수정
-                    </button>
-                  )}
-                  <button onClick={() => deleteComment(comment.commentCode)}>
-                    삭제
-                  </button>
-                </>
-              )}
-              {token && <button onClick={recommentToggle}>ㄴ답글</button>}
-            </div>
-          </div>
-        </>
-      )}
-
-      {newReComment.commentParentsCode === comment.commentCode && (
-        <div className="re-comment-form-box">
-          <div className="re-comment-form">
-            <input
-              type="text"
-              placeholder="답글 추가.."
-              className="re-comment-add"
-              value={newReComment.commentContent}
-              onChange={(e) =>
-                setNewReComment({
-                  ...newReComment,
-                  commentContent: e.target.value,
-                  commentParentsCode: comment.commentCode,
-                })
-              }
-              onKeyDown={(e) => enterSubmit(e, "add")}
-            />
-            <div className="re-comment-add-status">
-              <button className="re-comment-submit" onClick={addReComment}>
-                등록
+            {(user.userEmail === comment?.user?.userEmail ||
+              (loginUserGrade &&
+                (loginUserGrade.managementUserStatus === "host" ||
+                  loginUserGrade.managementUserStatus === "admin"))) && (
+              <button onClick={() => deleteComment(comment.commentCode)}>
+                삭제
               </button>
-            </div>
+            )}
+
+            {token && <button onClick={recommentToggle}>ㄴ답글</button>}
           </div>
+
+          {newReComment.commentParentsCode === comment.commentCode && (
+            <div className="re-comment-form-box">
+              <div className="re-comment-form">
+                <input
+                  type="text"
+                  placeholder="답글 추가.."
+                  className="re-comment-add"
+                  value={newReComment.commentContent}
+                  onChange={(e) =>
+                    setNewReComment({
+                      ...newReComment,
+                      commentContent: e.target.value,
+                      commentParentsCode: comment.commentCode,
+                    })
+                  }
+                  onKeyDown={(e) => enterSubmit(e, "add")}
+                  onCompositionStart={() => setIsComposing(true)}
+                  onCompositionEnd={() => setIsComposing(false)}
+                />
+                <div className="re-comment-add-status">
+                  <button className="re-comment-submit" onClick={addReComment}>
+                    등록
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
       {comment?.reCommentDTO?.map((reCommentDTO) => (
@@ -225,6 +229,7 @@ const CommentComponent = ({
           userMenuToggle={userMenuToggle}
           channelCode={channelCode}
           isWriter={isWriter}
+          loginUserGrade={loginUserGrade}
         />
       ))}
     </div>

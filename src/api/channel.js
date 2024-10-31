@@ -13,6 +13,11 @@ export const channelInfo = async (channelCode) => {
   const response = await instance.get(`/channel/${channelCode}`);
   return response; // 채널 정보 반환
 };
+// 공지 게시글
+export const channelAnnouncement = async (channelCode) => {
+  const response = await instance.get(`/channel/announcement/${channelCode}`);
+  return response;
+};
 
 // 전체 게시글 API
 export const allPosts = async (channelCode, page, target, keyword) => {

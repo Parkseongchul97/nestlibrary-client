@@ -1,30 +1,39 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
-.header {
+.header-contariner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
   z-index: 100;
   font-family: "Pretendard Variable";
   width: 100%;
   background-color: #000;
-  display: flex;
-  height: 60px;
-  justify-content: space-between;
-  align-items: center;
   position: fixed;
 }
-.header-left,
-.header-right,
-.header-center {
+.header {
+  display: flex;
+  width: 1200px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-right {
+  flex-grow: 1;
   width: 100%;
   height: 100%;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   display: flex;
   text-wrap: nowrap;
 }
 .header-left {
-  justify-content: flex-end;
-  width: 80%;
-  a {
+  height: 100%;
+  align-items: center;
+  display: flex;
+  text-wrap: nowrap;
+  .logo {
+    cursor: pointer;
     font-size: 2.5rem;
     font-family: "Bebas Neue", sans-serif;
     font-weight: 400;
@@ -38,14 +47,6 @@
   }
 }
 
-[class^="header-center-"] {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.header-center-menu {
-  margin-right: 40px;
-}
 .channel-menu,
 .info {
   display: flex;
@@ -61,10 +62,17 @@
   }
 }
 
-.header-center-search {
-  height: 65%;
+.header-right-search {
+  margin-left: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
   border-radius: 20px;
   background-color: #e5e5e5;
+  .search-input {
+    background-color: #e5e5e5;
+  }
   #channel-search {
     background-color: #e5e5e5;
     width: 40px;
@@ -95,7 +103,7 @@
     }
   }
 }
-.user-info {
+.header-right-user {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -109,20 +117,7 @@
     border-radius: 50%;
   }
 }
-.hidden-btn {
-  background-color: #e5e5e5;
-  width: 35px;
-  height: 35px;
-  padding: 0px;
-  border: none;
-  display: none;
-  border-radius: 100%;
-  cursor: pointer;
-  svg {
-    height: 25px;
-    width: 25px;
-  }
-}
+
 .header-right {
   p {
     color: white;
@@ -160,54 +155,6 @@
     position: absolute;
   }
 }
-@media screen and (min-width: 1000px) {
-  .header-center-search input {
-    width: 90%;
-  }
-}
-
-@media screen and (max-width: 700px) {
-  .user-nickname {
-    display: none;
-  }
-  #logout-btn {
-    display: none;
-  }
-  #mypage-btn {
-    display: none;
-  }
-  .header-center {
-    width: 370%;
-  }
-  #search {
-    display: none;
-  }
-  .hidden-btn {
-    display: block;
-    background-color: black;
-
-    svg {
-      width: 40px;
-      height: 80%;
-      cursor: pointer;
-      border-radius: 100%;
-      color: white;
-    }
-  }
-  .header-left a {
-    margin-left: 20px;
-  }
-}
-.header-right {
-  justify-content: flex-start;
-}
-#subs {
-  color: red;
-}
-
-#all {
-  color: red;
-}
 
 .sub-box {
   display: flex;
@@ -231,7 +178,3 @@
     }
   }
 }
-/*
-@media screen and (max-width: 700px) {
-
-}*/

@@ -65,6 +65,7 @@ const UserMenu = ({
   };
 
   const gradeChangeSubmit = (dto) => {
+    console.log(managementDTO);
     if (dto?.managementUserStatus === "admin") {
       submitRoleMutation.mutate(dto);
     } else if (dto?.managementUserStatus === "host") {

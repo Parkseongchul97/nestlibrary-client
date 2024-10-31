@@ -1,43 +1,107 @@
-.message-list-box {
-  width: 100%;
-  max-width: 1200px;
-  align-self: center;
-  padding-top: 80px;
+.message-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.message-big-box {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 100px;
+}
+.message-header {
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1200px;
+  background-color: #d5d5d5;
+}
+.message-list-box {
+  padding: 6px;
+  width: 1200px;
+  align-self: center;
+
+  display: flex;
   align-items: center;
   justify-content: center;
-
-  .messages-header {
-    padding: 20px;
-    background-color: aliceblue;
-    display: flex;
-    justify-content: space-around;
+  background: #f4f4f4;
+  .messages-right {
     width: 100%;
+    flex-grow: 1;
+  }
+}
+.side-box {
+  display: flex;
+  height: 600px;
+  width: 150px;
+  margin-right: 5px;
+  border-right: 0.5px solid #acacac;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  .messages-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 300px;
+
+    .writer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-wrap: nowrap;
+      padding: 8px 4px;
+      font-size: 0.9rem;
+      border: none;
+      border-radius: 20px;
+      background-color: #d5d5d5;
+      color: black;
+      cursor: pointer;
+      &:hover {
+        background-color: #868686;
+      }
+    }
+
     .messages-type {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-wrap: nowrap;
+      padding: 8px 4px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      background-color: #d5d5d5;
+      color: black;
+      cursor: pointer;
+      &:hover {
+        background-color: #868686;
+      }
+    }
+    .messages-selected-type {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       background-color: black;
       padding: 8px 4px;
       border-radius: 20px;
       color: white;
-      font-size: 1.1rem;
-      &:hover {
-        background-color: red;
-      }
-    }
-    .messages-selected-type {
-      background-color: rgb(0, 255, 76);
-      padding: 8px 4px;
-      border-radius: 20px;
-      color: black;
-      font-size: 1.1rem;
+      font-size: 0.9rem;
     }
   }
+  .side-bottom {
+  }
 }
-
 .message-user {
+  width: 300px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  .user-left {
+    padding-right: 20px;
+  }
 }
 .is-open {
   margin-left: 10px;
@@ -49,8 +113,9 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 5px;
-  border-bottom: 1px solid;
+  border-bottom: 0.5px solid #acacac;
   .message-left {
+    flex-grow: 1;
     display: flex;
     input {
       cursor: pointer;
@@ -58,8 +123,7 @@
   }
   .message-link {
     cursor: pointer;
-    font-weight: bold;
-    font-size: 1.5rem;
+
     align-self: center;
     display: flex;
     justify-content: space-between;
@@ -73,7 +137,7 @@
   .message-right {
     justify-content: space-between;
     align-items: center;
-    width: 350px;
+    width: 450px;
     display: flex;
     .maessage-right-right {
       display: flex;
@@ -87,59 +151,45 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+    padding: 8px 0px;
+    border-bottom: 0.5px solid #acacac;
+    text-wrap: nowrap;
+    font-size: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+      "Malgun Gothic", "맑은 고딕", arial, 굴림, Gulim, sans-serif;
+    color: black;
 
-    .check-box {
-      display: flex;
-      align-items: center;
-      .all-check {
-        cursor: pointer;
-      }
-      .delete {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        margin-left: 5px;
-        width: 50px;
-        padding: 5px 8px;
-        font-size: 1rem;
-        border: none;
-        border-radius: 10px;
-        height: 30px;
-        background-color: black;
-        color: rgb(255, 255, 255);
-        cursor: pointer;
-        &:hover {
-          color: red;
-        }
-      }
+    .messages-header-time {
+      width: 90px;
+      padding-left: 30px;
+
+      border-left: 0.5px solid #acacac;
     }
-
-    .writer-box {
+    .message-main-header-left {
       display: flex;
-      justify-content: flex-end;
-      flex-grow: 1;
-      .writer {
+      justify-content: space-between;
+      align-items: center;
+      width: 550px;
+      .messages-header-title {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-left: 5px;
-        width: 90px;
-        padding: 5px 8px;
-        font-size: 1rem;
-        border: none;
-        border-radius: 10px;
-        height: 30px;
-        background-color: #f5f5f5;
-        color: black;
-        cursor: pointer;
-        &:hover {
-          background-color: #d5d5d5;
+        flex-grow: 1;
+        border-left: 0.5px solid #acacac;
+        border-right: 0.5px solid #acacac;
+      }
+      .check-box {
+        padding-right: 5px;
+        display: flex;
+        align-items: center;
+        .all-check {
+          cursor: pointer;
         }
       }
     }
   }
 }
+
 .messages-box {
   display: flex;
   flex-direction: column;
@@ -147,8 +197,9 @@
   font-family: "Pretendard Variable";
   font-style: normal;
   font-weight: 600;
-  padding-top: 60px;
+  padding-top: 5px;
   width: 100%;
+  height: 550px;
   .messages-header {
     display: flex;
     .messages-type {
@@ -186,5 +237,27 @@
     color: #413f3fb9;
     font-size: 1.5rem;
     font-weight: bold;
+  }
+}
+.messages-page-btn {
+  .delete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-wrap: nowrap;
+    width: 50px;
+    padding: 8px 4px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    background-color: #d5d5d5;
+    color: black;
+    cursor: pointer;
+    margin-bottom: 10px;
+    &:hover {
+      background-color: #868686;
+    }
+  }
+  .paging {
+    border-top: 0.5px solid #acacac;
   }
 }

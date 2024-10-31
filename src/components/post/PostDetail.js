@@ -11,10 +11,14 @@ import Page from "../Page";
 import { remove } from "../../api/post";
 import UserMenu from "../user/UserMenu";
 import { HiStar } from "react-icons/hi";
-const PostDetail = ({ postCode, page }) => {
+import { FaFire } from "react-icons/fa";
+import { RiFireFill, RiFireLine } from "react-icons/ri";
+import { loginUserChannelGrade } from "../../api/management";
+const PostDetail = ({ postCode, page, loginUserGrade }) => {
   const [isOpenUser, setIsOpenUser] = useState(false);
   const { user, token } = useAuth();
   const location = useLocation();
+  const [isComposing, setIsComposing] = useState(false);
 
   const query = new URLSearchParams(location.search);
   const [commentPage, setCommentPage] = useState(
@@ -72,7 +76,9 @@ const PostDetail = ({ postCode, page }) => {
 
   // 댓글추가
   const addComment = () => {
-    if (newComment.commentContent !== "") {
+    if (newComment.commentContent.trim() === "" && !isComposing) {
+      return;
+    } else {
       addmutation.mutate(newComment); // 리액트쿼리
       setNewComment({ ...newComment, commentContent: "" });
     }
@@ -133,10 +139,11 @@ const PostDetail = ({ postCode, page }) => {
     });
   };
   const enterAdd = (e) => {
-    if (e.code === "Enter" || e.code === "NumpadEnter") {
+    if ((e.code === "Enter" || e.code === "NumpadEnter") && !isComposing) {
       addComment();
     }
   };
+
   const removePost = async () => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {
       await remove(postCode);
@@ -195,6 +202,7 @@ const PostDetail = ({ postCode, page }) => {
               post?.channelTag?.channelTagCode
             }
           >
+            {post?.channelTag?.channelTagName === "공지" && "📢"}
             {post?.channelTag?.channelTagName}
           </Link>{" "}
           <h1 className="post-title">{post?.postTitle}</h1>
@@ -224,33 +232,30 @@ const PostDetail = ({ postCode, page }) => {
       <div className="post-like">
         {!token ? null : likeState.data ? (
           <>
-            <HiStar
+            <RiFireFill
               className="un-like"
               onClick={unLikeSubmit}
-              size={"5rem"}
+              size={"7rem"}
               style={{
                 borderRadius: "50%",
-                backgroundColor: "#ddd",
-                color: "yellow",
-                marginRight: "5px",
+                backgroundColor: "orange",
+                color: "red",
               }}
             />
-            <p>추천 취소</p>
           </>
         ) : (
           <>
-            <HiStar
+            <RiFireFill
               className="like"
               onClick={likeSubmit}
-              size={"5rem"}
+              size={"7rem"}
               style={{
+                border: "1px solid",
                 borderRadius: "50%",
-                backgroundColor: "#ddd",
-                color: "#eee",
-                marginRight: "5px",
+                backgroundColor: "#acacac",
+                color: "white",
               }}
             />
-            <p>추천</p>
           </>
         )}
       </div>
@@ -264,6 +269,11 @@ const PostDetail = ({ postCode, page }) => {
             >
               수정
             </Link>
+          </>
+        )}
+        {(post?.user?.userEmail === user.userEmail ||
+          loginUserGrade?.managementUserStatus === "host") && (
+          <>
             <p className="edit-btn" onClick={removePost}>
               삭제
             </p>
@@ -279,7 +289,7 @@ const PostDetail = ({ postCode, page }) => {
           likeLoading &&
           Array.isArray(commentList.data.commentList) ? (
             <p className="none-comment">댓글이 없습니당</p>
-          ) : commentList.data.commentList.length > 1 ? (
+          ) : commentList.data.commentList.length > 0 ? (
             commentList.data.commentList.map((comment) => (
               <CommentComponent
                 id={comment.commentCode}
@@ -290,6 +300,7 @@ const PostDetail = ({ postCode, page }) => {
                 userMenuToggle={userMenuToggle}
                 channelCode={post?.channelCode}
                 isWriter={postUserEmail}
+                loginUserGrade={loginUserGrade}
               />
             ))
           ) : (
@@ -319,6 +330,8 @@ const PostDetail = ({ postCode, page }) => {
                   });
                 }}
                 onKeyUp={(e) => enterAdd(e)}
+                onCompositionStart={() => setIsComposing(true)}
+                onCompositionEnd={() => setIsComposing(false)}
               />
               <div className="comment-add-status">
                 <button

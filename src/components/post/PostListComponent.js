@@ -2,7 +2,13 @@ import { Link } from "react-router-dom";
 import TimeFormat from "../TimeFormat";
 import "../../assets/postList.scss";
 import UserMenu from "../user/UserMenu";
-const PostListComponent = ({ channelTagCode, post, postCode, page }) => {
+const PostListComponent = ({
+  channelTagCode,
+  post,
+  postCode,
+  page,
+  isAnnouncement,
+}) => {
   if (!post) {
     return null;
   }
@@ -11,7 +17,11 @@ const PostListComponent = ({ channelTagCode, post, postCode, page }) => {
     <>
       <div
         className={
-          postCode === post?.postCode ? "selected-channel-post" : "channel-post"
+          isAnnouncement
+            ? "announcement-post"
+            : Number(postCode) === post?.postCode
+            ? "selected-channel-post"
+            : "channel-post"
         }
       >
         <div className="channel-tag-box">
@@ -24,7 +34,9 @@ const PostListComponent = ({ channelTagCode, post, postCode, page }) => {
               post?.channelTag?.channelTagCode
             }
           >
-            {post?.bestPoint > 50 && "🔥"}
+            {post?.channelTag?.channelTagName === "공지"
+              ? "📢"
+              : post?.bestPoint > 50 && "🔥"}
             {post?.channelTag?.channelTagName}
           </Link>
         </div>

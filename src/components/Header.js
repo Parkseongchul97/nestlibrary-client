@@ -15,6 +15,7 @@ import { isOpenMessgeCount } from "../api/message";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { findPush, removeAllPush } from "../api/push";
 import PushList from "./PushList";
+import { FaBell } from "react-icons/fa";
 const Header = ({ onSearch }) => {
   const [page, setPage] = useState(false);
   const { user, token } = useAuth();
@@ -81,9 +82,6 @@ const Header = ({ onSearch }) => {
   };
 
   const handleClickOutside = (event) => {
-    if (searchRef.current && !searchRef.current.contains(event.target)) {
-      setIsSearch(false);
-    }
     if (
       subChannelRef.current && // 구독목록 div가 있고 클릭 요소가
       !subChannelRef.current.contains(event.target) &&
@@ -102,25 +100,12 @@ const Header = ({ onSearch }) => {
 
   // 검색창 페이징 처리  미완성 10-16 성일
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 700 && keyword.length > 0) {
-        // 가로길이 700 이상이 아닐때 => 1~699 = > true ! ,  700 이상이면 false false는 닫힘
-        // true false는
-        // 숨겨진 검색창을 관리함
-        setIsSearch(true);
-      } else if (isSearch) {
-        setIsSearch(!(window.innerWidth > 700));
-      }
-    };
     if (isSearch && keyword.length > 0) {
       setIsSearch(true);
     }
     document.addEventListener("mousedown", handleClickOutside);
-    window.addEventListener("resize", handleResize);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      window.removeEventListener("resize", handleResize);
     };
   }, [isSearch]);
   if (isLoading) return <>로딩중...</>;
@@ -132,134 +117,109 @@ const Header = ({ onSearch }) => {
   if (pushError) return <>에러발생...</>;
 
   return (
-    <>
+    <div className="header-contariner">
       <header className="header">
-        <div
-          className="header-left"
-          onClick={() => (window.location.href = "/")}
-        >
-          <Link to={"/"}>Nest Library</Link>
+        <div className="header-left">
+          <div className="logo" onClick={() => (window.location.href = "/")}>
+            Nest Library
+          </div>
+          <div>
+            <div
+              className="channel-menu"
+              id={click}
+              onClick={() => setClick(!click)}
+              ref={subChannelRef}
+            >
+              구독 채널
+            </div>
+            {click && (
+              <div ref={subChannelListRef}>
+                <SubChannelList onClose={setClick} />
+              </div>
+            )}
+          </div>
         </div>
 
-        {!isSearch ? (
-          <>
-            <div ref={searchRef} className="header-center">
-              <div className="header-center-menu">
-                <div>
-                  <div
-                    className="channel-menu"
-                    id={click}
-                    onClick={() => setClick(!click)}
-                    ref={subChannelRef}
-                  >
-                    구독 채널
-                  </div>
-                  {click && (
-                    <div ref={subChannelListRef}>
-                      <SubChannelList onClose={setClick} />
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div id="search" className="header-center-search">
-                <input
-                  className="search"
-                  type="text"
-                  placeholder="찾기"
-                  onChange={(e) => setKeyword(e.target.value)}
-                  value={keyword}
-                  onKeyDown={enter}
-                />
-                <button id="channel-search">
-                  <FontAwesomeIcon
-                    icon={faMagnifyingGlass}
-                    size="1x"
-                    onClick={() => onSearch(keyword)}
-                  />
-                </button>
-              </div>
-              <button className="hidden-btn" onClick={hidenTogle}>
-                <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
-              </button>
-            </div>
-          </>
-        ) : (
-          <>
-            <div ref={searchRef} className="header-center">
-              <div id="hidden-search" className="header-center-search">
-                <input
-                  className="search"
-                  type="text"
-                  placeholder="채널 찾기"
-                  onChange={(e) => setKeyword(e.target.value)}
-                  value={keyword}
-                  onKeyDown={enter}
-                />
-                <button id="channel-search" onClick={() => onSearch(keyword)}>
-                  <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
-                </button>
-              </div>
-            </div>
-          </>
-        )}
-
-        {token === null ? (
-          <div className="header-right">
-            <Link id="login-btn" onClick={openPage} className="info">
-              로그인
-            </Link>
-
-            <Link to={"/register"} className="info">
-              회원가입
-            </Link>
+        <div ref={searchRef} className="header-right">
+          <div id="search" className="header-right-search">
+            <input
+              className="search-input"
+              type="text"
+              placeholder="찾기"
+              onChange={(e) => setKeyword(e.target.value)}
+              value={keyword}
+              onKeyDown={enter}
+            />
+            <button id="channel-search">
+              <FontAwesomeIcon
+                icon={faMagnifyingGlass}
+                size="1x"
+                onClick={() => onSearch(keyword)}
+              />
+            </button>
           </div>
-        ) : (
-          <div className="header-right">
-            {pushCount.data !== undefined && pushCount.data.length && (
-              <button onClick={removeAllSubmit}>알람 다끈다</button>
-            )}
 
-            <div className="info" onClick={() => setIsPush(!isPush)}>
-              알림 숫자 :{" "}
-              {pushCount.data === undefined
-                ? 0
-                : pushCount.data.length > 9
-                ? "10++"
-                : pushCount.data.length}
+          {token === null ? (
+            <div className="header-right-user">
+              <Link id="login-btn" onClick={openPage} className="info">
+                로그인
+              </Link>
+
+              <Link to={"/register"} className="info">
+                회원가입
+              </Link>
             </div>
-            {isPush && (
-              <div className="push-list-box">
-                {pushCount.data.map((push) => (
-                  <PushList push={push} />
+          ) : (
+            <div className="header-right-user">
+              {pushCount.data !== undefined ||
+                (pushCount.data.length !== 0 && (
+                  <p onClick={removeAllSubmit}>모두끄기</p>
                 ))}
+
+              <div
+                className="header-right-push-list"
+                onClick={() => setIsPush(!isPush)}
+              >
+                {pushCount.data === undefined || pushCount.data.length === 0 ? (
+                  <FaBell size={"2rem"} style={{ color: "white" }} />
+                ) : (
+                  <FaBell size={"2rem"} style={{ color: "red" }} />
+                )}
               </div>
-            )}
-            <UserMenu user={user} />
+              {isPush && (
+                <div className="push-list-box">
+                  {pushCount.data.map((push) => (
+                    <PushList push={push} />
+                  ))}
+                </div>
+              )}
+              <UserMenu user={user} />
 
-            <Link id="logout-btn" onClick={logout} className="info">
-              로그아웃
-            </Link>
+              <Link id="logout-btn" onClick={logout} className="info">
+                로그아웃
+              </Link>
 
-            <Link to={"/mypage"} id="mypage-btn" className="info">
-              마이페이지
-            </Link>
-            {messageCount !== undefined &&
-              (messageCount.data === 0 ? (
-                <Link to="/messages" id="message-count">
-                  <IoIosMail size={"2rem"} />
-                </Link>
-              ) : (
-                <Link to="/messages" id="message-count-red">
-                  <TbMessageCircleExclamation size={"2.5rem"} />
-                  <span>{messageCount.data}</span>
-                </Link>
-              ))}
-          </div>
-        )}
+              <Link to={"/mypage"} id="mypage-btn" className="info">
+                마이페이지
+              </Link>
+              {messageCount !== undefined &&
+                (messageCount.data === 0 ? (
+                  <Link to="/messages" id="message-count">
+                    <IoIosMail size={"2rem"} />
+                  </Link>
+                ) : (
+                  <Link to="/messages" id="message-count-red">
+                    <TbMessageCircleExclamation size={"2.5rem"} />
+                    <span>{messageCount.data}</span>
+                  </Link>
+                ))}
+            </div>
+          )}
+        </div>
       </header>
 
       {page && <Login onClose={closeLogin} />}
-    </>
+    </div>
   );
 };
 
