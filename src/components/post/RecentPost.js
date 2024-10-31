@@ -22,7 +22,7 @@ const RecentPost = ({ post }) => {
           {" "}
           <div className="RecentPost-channel-name">
             <span className="RecentPost-channel-name-text">
-              {post.channelName}
+              {post?.channelName}
             </span>
           </div>{" "}
         </Link>
