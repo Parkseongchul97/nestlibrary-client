@@ -15,6 +15,25 @@
   z-index: 20;
   border: 1px solid;
   .message-detail-body {
+    .message-user-box{
+      padding: 5px;
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid #cdcdcd;
+      margin-bottom: 10px;
+      .message-to-user,
+      .message-from-user{
+        border-top: 1px solid #cdcdcd;
+       display: flex;
+       align-items: center;
+       .user-profile-box{
+        padding-left: 8px;
+       
+       }
+      }
+
+    }
+   
     button {
       align-items: center;
       height: 2.5rem;
@@ -24,6 +43,7 @@
       background-color: #f7f8f9;
       margin-bottom: 1rem;
     }
+    .message-detail-content{}
   }
 
   .message-detail-header {

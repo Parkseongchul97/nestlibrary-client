@@ -35,6 +35,7 @@ const Messages = () => {
       setIsOpenUser(code);
     }
   };
+  // 쪽지 열었을때 열린 쪽지 div 색 변경, 다른 탭 눌렀을때 기존 열린 쪽지 닫히게
   const {
     data: messageList,
     isLoading,
