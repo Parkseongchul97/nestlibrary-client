@@ -126,7 +126,6 @@ const Header = ({ onSearch }) => {
           <div>
             <div
               className="channel-menu"
-              id={click}
               onClick={() => setClick(!click)}
               ref={subChannelRef}
             >

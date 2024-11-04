@@ -42,7 +42,6 @@ const ChannelDetail = () => {
   const loginGrade = async () => {
     const response = await loginUserChannelGrade(channelCode);
     setloginUserGrade(response.data);
-    console.log(response.data);
   };
   useEffect(() => {
     if (channelCode !== undefined && channelCode !== null && token !== null) {

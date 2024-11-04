@@ -34,7 +34,6 @@ const UserMenu = ({
       managementUserStatus: "ban",
       channelCode: loginUserGrade?.channel.channelCode,
     });
-    console.log(managementDTO);
   };
 
   const [isHost, setIsHost] = useState(false);
@@ -65,7 +64,6 @@ const UserMenu = ({
   };
 
   const gradeChangeSubmit = (dto) => {
-    console.log(managementDTO);
     if (dto?.managementUserStatus === "admin") {
       submitRoleMutation.mutate(dto);
     } else if (dto?.managementUserStatus === "host") {
@@ -99,8 +97,6 @@ const UserMenu = ({
       managementUserStatus: "",
       channelCode: "",
     });
-    console.log(managementDTO);
-    console.log("몇번");
   }, [isOpenUser]);
 
   const [banOpen, setbanOpen] = useState(false);

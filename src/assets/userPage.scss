@@ -33,12 +33,22 @@
 
 .userPage-userProfile {
   display: flex;
+  .userPage-img-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-  img {
-    width: 150px;
-    height: 150px;
-    margin-right: 20px;
-    border-radius: 50%;
+    img {
+      width: 150px;
+      height: 150px;
+      margin-right: 20px;
+      border-radius: 50%;
+    }
+    .user-page-message {
+      cursor: pointer;
+      margin-top: 10px;
+    }
   }
 }
 .user-text {
@@ -217,6 +227,7 @@
   width: 10%;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .userPage-favorate-title {
   width: 40%;
@@ -226,16 +237,19 @@
   color: black;
   padding: 0.3rem;
   border-radius: 10px;
+  align-items: center;
 }
 .userPage-favorate-post {
   width: 25%;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .userPage-favorate-comment {
   width: 25%;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .userPage-post-null {
   width: 100%;

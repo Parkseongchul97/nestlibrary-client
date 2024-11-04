@@ -7,13 +7,17 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import RecentPost from "../components/post/RecentPost.js";
+import { useAuth } from "../contexts/AuthContext.js";
+import MessageWrite from "../components/messages/MessageWrite.js";
 
 const UserPage = () => {
+  const { token, user: loginUser } = useAuth();
   const { userEmail } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState([]);
   const [channel, setChannel] = useState([]);
   const [user, setUser] = useState();
+  const [isOpenMessage, setIsOpenMessage] = useState(false);
   const getPost = async () => {
     const response = await userPost(userEmail);
     setPost(response.data);
@@ -31,7 +35,6 @@ const UserPage = () => {
   };
 
   useEffect(() => {
-    console.log(userEmail);
     getPost();
     getChannel();
     getUser();
@@ -43,17 +46,29 @@ const UserPage = () => {
         <div className="userPage-box">
           <div className="user-channel">
             <div className="userPage-userProfile">
-              <img
-                className="user-img"
-                src={
-                  user?.userImgUrl !== null
-                    ? "http://192.168.10.51:8083/user/" +
-                      user?.userEmail +
-                      "/" +
-                      user?.userImgUrl
-                    : "http://192.168.10.51:8083/e0680940917fba1b2350c6563c32ad0c.jpg"
-                }
-              />
+              <div className="userPage-img-box">
+                <img
+                  className="user-img"
+                  src={
+                    user?.userImgUrl !== null
+                      ? "http://192.168.10.51:8083/user/" +
+                        user?.userEmail +
+                        "/" +
+                        user?.userImgUrl
+                      : "http://192.168.10.51:8083/e0680940917fba1b2350c6563c32ad0c.jpg"
+                  }
+                />
+                {token && loginUser?.userEmail !== user?.userEmail && (
+                  <div
+                    className="user-page-message"
+                    onClick={() => {
+                      setIsOpenMessage(true);
+                    }}
+                  >
+                    쪽지쓰기
+                  </div>
+                )}
+              </div>
               <div className="user-text">
                 <div className="user-text-main">
                   {user?.userNickname}의 채널 로그
@@ -128,6 +143,18 @@ const UserPage = () => {
           </div>
         </div>
       </div>
+      {isOpenMessage && (
+        <MessageWrite
+          isOpenMessage={isOpenMessage}
+          setIsOpenMessage={setIsOpenMessage}
+          toUser={{
+            toUser: {
+              email: user?.userEmail,
+              nickname: user?.userNickname,
+            },
+          }}
+        />
+      )}
     </>
   );
 };

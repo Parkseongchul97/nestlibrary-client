@@ -4,28 +4,35 @@
   display: none;
 }
 .main-box {
-  #info-change-box {
-    height: 800px;
-    padding: 50px;
-    width: 100%;
-    max-width: 800px;
-    min-width: 550px;
-    background-color: #f4f4f4;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    border-radius: 5rem;
-    .submit-span {
-      color: red;
-      padding-left: 10px;
-    }
+  .info-change-header {
     h1 {
-      font-size: 3rem;
+      font-size: 2rem;
       font-weight: bold;
       align-self: center;
       margin: 10px;
     }
+  }
+  .info-change-main {
+    width: 1200px;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .info-change-left {
+      display: flex;
+      flex-direction: column;
+    }
+    .info-change-right {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .submit-span {
+      color: red;
+      padding-left: 10px;
+    }
+
     .change-input-box {
       padding: 5px;
       display: flex;
