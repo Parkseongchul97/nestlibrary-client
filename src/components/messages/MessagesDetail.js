@@ -12,6 +12,7 @@ const MessagesDetail = ({ setIsOpen, messagesCode }) => {
   useEffect(() => {
     findMessage();
   }, [messagesCode]);
+  // 디테일 외부 클릭할떄? 닫히기
   return (
     <>
       <div className="message-detail-box">
@@ -23,9 +24,13 @@ const MessagesDetail = ({ setIsOpen, messagesCode }) => {
           <div className="balance"></div>
         </div>
         <div className="message-detail-body">
-          발신 :<UserMenu user={message?.messagesToUser} />
-          수신 :<UserMenu user={message?.messagesFromUser} />
-          내용 :{message?.messagesContent}
+          <div className="message-user-box">
+        <div className="message-from-user">발신<UserMenu user={message?.messagesToUser} /></div>
+          <div className="message-to-user">수신<UserMenu user={message?.messagesFromUser} /></div>
+          </div>
+          <div className="message-detail-content">
+         {message?.messagesContent}
+          </div>
         </div>
       </div>
     </>

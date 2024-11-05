@@ -70,7 +70,6 @@ const UserManagement = ({ channelCode }) => {
       setCheckArray([]);
       post.map((posts) => setCheckArray((prev) => [...prev, posts.postCode]));
     }
-    console.log(checkArray);
   };
 
   const addList = (code) => {
@@ -84,10 +83,7 @@ const UserManagement = ({ channelCode }) => {
     });
   };
 
-  useEffect(() => {
-    console.log(checkArray[0]);
-    console.log(checkArray[1]);
-  }, [checkArray]);
+  useEffect(() => {}, [checkArray]);
 
   const allUser = async (data) => {
     if (inputNickname.trim().length < 1) {
@@ -159,18 +155,15 @@ const UserManagement = ({ channelCode }) => {
   }, [isOpen]);
 
   const enter = (e) => {
-    console.log(e.key);
     if (e.key === "Enter" && inputNickname != null) {
       allUser(inputNickname);
     }
   };
 
   const postEnter = (e) => {
-    console.log(e.key);
     if (e.key === "Enter" && author != null) {
       postList(author);
     }
-    console.log(checkArray);
   };
 
   const updateInfo = (data) => {
@@ -256,10 +249,6 @@ const UserManagement = ({ channelCode }) => {
     setCheckArray([]);
     setPost(response);
   };
-
-  useEffect(() => {
-    console.log(check);
-  }, [check]);
 
   return (
     <>

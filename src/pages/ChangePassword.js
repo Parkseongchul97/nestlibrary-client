@@ -1,4 +1,4 @@
-import "../assets/login.scss";
+import "../assets/changePassword.scss";
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { login, updatePass } from "../api/user";
@@ -7,7 +7,6 @@ import { set } from "lodash";
 
 const ChangePassword = ({ onClose }) => {
   const { user, logout: authLogout } = useAuth();
-  const [oldCheck, setOldCheck] = useState(false);
   const [newCheck, setNewCheck] = useState(false);
   const [newpass, setNewPass] = useState("");
   const [newpass2, setNewPass2] = useState("");
@@ -50,32 +49,32 @@ const ChangePassword = ({ onClose }) => {
   return (
     <>
       <div>
-        <div className="login-box">
-          <div className="login-header">
+        <div className="password-box">
+          <div className="password-header">
             <button className="close" onClick={() => onClose(false)}>
               <IoIosArrowBack />
             </button>
             <h3>비밀번호 변경</h3>
             <div className="balance"></div>
           </div>
-          <div className="login-body">
-            <div className="login-form">
-              <div className="input-box">
+          <div className="password-body">
+            <div className="password-form">
+              <div className="password-input-box">
                 <input
                   placeholder="현재 비밀번호"
                   type="password"
-                  className={"login-input-text"}
+                  className={"password-input-text"}
                   value={loginUser.userPassword}
                   onChange={(e) =>
                     setLoginUser({ ...loginUser, userPassword: e.target.value })
                   }
                 />
               </div>
-              <div className="input-box">
+              <div className="password-input-box">
                 <input
                   placeholder="새 비밀번호"
                   type="password"
-                  className={"login-input-text"}
+                  className={"password-input-text"}
                   value={newpass}
                   onChange={(e) => setNewPass(e.target.value)}
                 />
@@ -92,7 +91,7 @@ const ChangePassword = ({ onClose }) => {
                 <input
                   placeholder="새 비밀번호 확인"
                   type="password"
-                  className={"login-input-text"}
+                  className={"password-input-text"}
                   value={newpass2}
                   onChange={(e) => setNewPass2(e.target.value)}
                 />

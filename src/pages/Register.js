@@ -5,8 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { nicknameCheck, register } from "../api/user";
 import { checkEmail, sendEmail } from "../api/email";
 import { FaCheck } from "react-icons/fa";
+import { useAuth } from "../contexts/AuthContext";
 
 const Register = () => {
+  const { token } = useAuth();
   const navigate = useNavigate();
   const [userDTO, setUserDTO] = useState({
     userEmail: "",
@@ -106,6 +108,9 @@ const Register = () => {
       checkNickname();
     }
   }, [userDTO.userNickname]);
+  useEffect(() => {
+    if (token !== null) navigate("/");
+  }, [token]);
 
   const enterSubmit = (e, type) => {
     if (type === "email")
@@ -126,141 +131,159 @@ const Register = () => {
     <>
       <div className="main-box">
         <div id="register-box">
-          <h1>회원가입</h1>
-          <div className="input-box">
-            <input
-              className="register-input-text"
-              placeholder={"이메일을 입력해주세요."}
-              type="text"
-              value={userDTO.userEmail}
-              onChange={(e) =>
-                setUserDTO({ ...userDTO, userEmail: e.target.value })
-              }
-              onKeyDown={(e) => enterSubmit(e, "email")}
-              disabled={codeSubmit}
-            />
+          <div className="register-header">
+            <h1>회원가입</h1>
+          </div>
+          <div className="register-main-box">
+            <div className="register-main">
+              <div className="register-list" id="first-list">
+                <div className="register-list-left">이메일 ID</div>
+                <div className="register-input-box">
+                  <input
+                    className="register-input-text"
+                    placeholder={"이메일을 입력해주세요."}
+                    type="text"
+                    value={userDTO.userEmail}
+                    onChange={(e) =>
+                      setUserDTO({ ...userDTO, userEmail: e.target.value })
+                    }
+                    onKeyDown={(e) => enterSubmit(e, "email")}
+                    disabled={codeSubmit}
+                  />
 
-            <button
-              className="submit-btn"
-              onClick={sendUserEmail}
-              disabled={emailSubmit}
-            >
-              이메일 인증 발송
-            </button>
-          </div>
+                  <button
+                    className="submit-btn"
+                    onClick={sendUserEmail}
+                    disabled={emailSubmit}
+                  >
+                    이메일 인증 발송
+                  </button>
+                </div>
+              </div>
+              <div className="text-div">
+                * 아이디를 이메일 형식으로 입력해 주세요. 예: abcd1234@naver.com
+              </div>
+              <span id="email-span" className="submit-span">
+                {userDTO.userEmail === "" ? (
+                  ""
+                ) : !emailRegExp.test(userDTO.userEmail) ? (
+                  "이메일 주소 형식에 맞춰주세요"
+                ) : !emailSubmit ? (
+                  ""
+                ) : (
+                  <FaCheck color="green" />
+                )}
+              </span>
+              <div className="register-list">
+                <div className="register-list-left">인증번호</div>
+                <div className="register-input-box">
+                  <input
+                    className="register-input-text"
+                    placeholder={"이메일인증번호 입력"}
+                    type="text"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                    onKeyDown={(e) => enterSubmit(e, "code")}
+                    disabled={!emailSubmit}
+                  />
 
-          <div className="text-div">
-            아이디를 이메일 형식으로 입력해 주세요. 예: example@naver.com
+                  <button className="submit-btn" onClick={checkEmailCode}>
+                    이메일 인증 확인
+                  </button>
+                </div>
+              </div>
+              <span id="code-span" className="submit-span">
+                {!emailSubmit ? (
+                  ""
+                ) : codeSubmit ? (
+                  <FaCheck color="green" />
+                ) : (
+                  "인증 대기중"
+                )}
+              </span>
+              <div className="register-list">
+                <div className="register-list-left">비밀번호</div>
+                <div className="register-input-box">
+                  <input
+                    className="register-input-text"
+                    placeholder="비밀번호"
+                    type="password"
+                    value={userDTO.userPassword}
+                    onChange={(e) =>
+                      setUserDTO({ ...userDTO, userPassword: e.target.value })
+                    }
+                    onKeyDown={(e) => enterSubmit(e, "submit")}
+                  />
+                </div>
+              </div>
+              <div className="text-div">
+                * 영문자,숫자,특수문자를 포함한 8~16자리로 구성된 비밀번호를
+                입력해주십시오.
+              </div>
+              <span id="password-span" className="submit-span">
+                {userDTO.userPassword === "" ? (
+                  ""
+                ) : !pwdRegExp.test(userDTO.userPassword) ? (
+                  "영문자,숫자,특수문자를 포함한 8~16자리"
+                ) : (
+                  <FaCheck color="green" />
+                )}
+              </span>
+              <div className="register-list">
+                <div className="register-list-left">비밀번호 확인</div>
+                <div className="register-input-box">
+                  <input
+                    className="register-input-text"
+                    placeholder="비밀번호 확인"
+                    type="password"
+                    value={checkPassword}
+                    onChange={(e) => setcheckPassword(e.target.value)}
+                    onKeyDown={(e) => enterSubmit(e, "submit")}
+                  />
+                </div>
+              </div>
+              <span id="password-check-span" className="submit-span">
+                {checkPassword === "" ? (
+                  ""
+                ) : checkPassword !== userDTO.userPassword ? (
+                  "비밀번호가 일치하지 않습니다"
+                ) : (
+                  <FaCheck color="green" />
+                )}
+              </span>
+              <div className="register-list">
+                <div className="register-list-left">닉네임</div>
+                <div className="register-input-box">
+                  <input
+                    className="register-input-text"
+                    placeholder="닉네임"
+                    type="text"
+                    value={userDTO.userNickname}
+                    onChange={(e) =>
+                      setUserDTO({ ...userDTO, userNickname: e.target.value })
+                    }
+                    onKeyDown={(e) => enterSubmit(e, "submit")}
+                  />
+                </div>
+              </div>
+              <div className="text-div">
+                <p>* 닉네임은 2~10글자 내외로 작성해주십시오.</p>
+                <p>* 추후 닉네임 변경 시 500 포인트 필요</p>
+              </div>
+              <span className="submit-span">
+                {userDTO.userNickname === "" ? (
+                  ""
+                ) : userDTO.userNickname.length < 2 ||
+                  userDTO.userNickname.length > 10 ? (
+                  "2~10글자 내외로 작성하십시오."
+                ) : !nicknameSubmit ? (
+                  "중복 닉네임 입니다."
+                ) : (
+                  <FaCheck color="green" />
+                )}
+              </span>
+            </div>
           </div>
-          <span id="email-span" className="submit-span">
-            {userDTO.userEmail === "" ? (
-              ""
-            ) : !emailRegExp.test(userDTO.userEmail) ? (
-              "이메일 주소 형식에 맞춰주세요"
-            ) : !emailSubmit ? (
-              ""
-            ) : (
-              <FaCheck color="green" />
-            )}
-          </span>
-          <div className="input-box">
-            <input
-              className="register-input-text"
-              placeholder={"이메일인증번호 입력"}
-              type="text"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              onKeyDown={(e) => enterSubmit(e, "code")}
-              disabled={!emailSubmit}
-            />
-
-            <button className="submit-btn" onClick={checkEmailCode}>
-              이메일 인증 확인
-            </button>
-          </div>
-          <span id="code-span" className="submit-span">
-            {!emailSubmit ? (
-              ""
-            ) : codeSubmit ? (
-              <FaCheck color="green" />
-            ) : (
-              "인증 대기중"
-            )}
-          </span>
-          <div className="input-box">
-            <input
-              className="register-input-text"
-              placeholder="비밀번호"
-              type="password"
-              value={userDTO.userPassword}
-              onChange={(e) =>
-                setUserDTO({ ...userDTO, userPassword: e.target.value })
-              }
-              onKeyDown={(e) => enterSubmit(e, "submit")}
-            />
-          </div>
-          <div className="text-div">
-            영문자,숫자,특수문자를 포함한 8~16자리로 구성된 비밀번호를
-            입력해주십시오.
-          </div>
-          <span id="password-span" className="submit-span">
-            {userDTO.userPassword === "" ? (
-              ""
-            ) : !pwdRegExp.test(userDTO.userPassword) ? (
-              "영문자,숫자,특수문자를 포함한 8~16자리"
-            ) : (
-              <FaCheck color="green" />
-            )}
-          </span>
-
-          <div className="input-box">
-            <input
-              className="register-input-text"
-              placeholder="비밀번호 확인"
-              type="password"
-              value={checkPassword}
-              onChange={(e) => setcheckPassword(e.target.value)}
-              onKeyDown={(e) => enterSubmit(e, "submit")}
-            />
-          </div>
-
-          <span id="password-check-span" className="submit-span">
-            {checkPassword === "" ? (
-              ""
-            ) : checkPassword !== userDTO.userPassword ? (
-              "비밀번호가 일치하지 않습니다"
-            ) : (
-              <FaCheck color="green" />
-            )}
-          </span>
-          <div className="input-box">
-            <input
-              className="register-input-text"
-              placeholder="닉네임"
-              type="text"
-              value={userDTO.userNickname}
-              onChange={(e) =>
-                setUserDTO({ ...userDTO, userNickname: e.target.value })
-              }
-              onKeyDown={(e) => enterSubmit(e, "submit")}
-            />
-          </div>
-          <div className="text-div">
-            닉네임은 2~10글자 내외로 작성해주십시오.
-          </div>
-          <span id="nickname-span" className="submit-span">
-            {userDTO.userNickname === "" ? (
-              ""
-            ) : userDTO.userNickname.length < 2 ||
-              userDTO.userNickname.length > 10 ? (
-              "2~10글자 내외로 작성하십시오."
-            ) : !nicknameSubmit ? (
-              "중복 닉네임 입니다."
-            ) : (
-              <FaCheck color="green" />
-            )}
-          </span>
-
           <div id="btn-box">
             <Link to={"/"} className="submit-btn">
               뒤로가기

@@ -7,80 +7,75 @@
 
   #register-box {
     height: 800px;
-
     padding: 50px;
-    width: 100%;
-    max-width: 800px;
-    min-width: 550px;
+    width: 1200px;
     background-color: #f4f4f4;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    border-radius: 5rem;
-    .submit-span {
-      color: red;
-      padding-left: 10px;
-    }
-    h1 {
-      font-size: 3rem;
-      font-weight: bold;
+    align-items: flex-start;
+    .register-header {
       align-self: center;
-      margin: 10px;
-    }
-    #img-file {
-      display: none;
-    }
-    .input-box {
-      padding: 5px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      min-width: 400px;
-      width: 100%;
-      .register-input-text {
-        border-radius: 1rem;
-        padding: 8px;
-        width: 500px;
-        border: 2px solid;
+      h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        align-self: center;
+        margin: 15px;
       }
     }
-    .text-div {
-      margin: 5px;
-      border: 2px solid;
-      border-radius: 1rem;
-      padding: 5px;
-    }
-    .img-box {
-      right: 50px;
-      bottom: 150px;
-      align-self: center;
+    .register-main-box {
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: white;
-      border-radius: 50%;
-      border: 2px solid black;
-      padding: 5px;
-      width: 102px;
-      height: 102px;
-      cursor: pointer;
-      &:hover {
-        border: 2px solid red;
-        #preview-img {
-          border: 2px solid red;
+      width: 100%;
+    }
+    #first-list {
+      border-top: 1px solid #cdcdcd;
+    }
+    .register-list {
+      display: flex;
+      align-items: flex-start;
+      .register-list-left {
+        align-self: center;
+        width: 130px;
+        text-wrap: nowrap;
+        padding: 5px;
+        margin-right: 10px;
+        border-right: 1px solid #cdcdcd;
+      }
+    }
+    .register-main {
+      display: flex;
+      flex-direction: column;
+      .submit-span {
+        height: 20px;
+        color: red;
+        border-bottom: 1px solid #cdcdcd;
+      }
+
+      .register-input-box {
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .input {
+          padding-left: 10px;
+        }
+
+        .register-input-text {
+          padding: 8px;
+          width: 500px;
         }
       }
-      #preview-img {
-        border-radius: 50%;
-        height: 100px;
-        width: 100px;
-      }
-      p {
-        font-weight: bold;
-        font-size: 1rem;
+      .text-div {
+        margin: 5px;
+
+        padding: 5px;
       }
     }
     #btn-box {
+      align-self: center;
+      width: 75%;
       display: flex;
       justify-content: space-between;
       padding: 5px;
@@ -94,14 +89,8 @@
     }
   }
 }
-#preview-box {
-  display: flex;
-  justify-content: flex-end;
-}
-#img-delete {
-  align-self: flex-end;
-}
 .submit-btn {
+  margin-left: 10px;
   display: flex;
   font-family: "Bebas Neue", sans-serif;
   background-color: black;

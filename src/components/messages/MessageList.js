@@ -14,16 +14,11 @@ const MessageList = ({
   viewType,
   isOpenUser,
   userMenuToggle,
+  openDetail,
 }) => {
   const { user } = useAuth();
   const [isCheck, setIsCheck] = useState(isChecked);
-  const openDetail = (code) => {
-    if (isOpen === code) {
-      setIsOpen(0);
-    } else {
-      setIsOpen(code);
-    }
-  };
+
   const [notRead, setNotRead] = useState(false);
   const listChange = (messagesCode) => {
     const list = [...checkedList, messagesCode];
@@ -48,7 +43,14 @@ const MessageList = ({
 
   return (
     <>
-      <div className="message-main" key={message.messagesCode}>
+      <div
+        className={
+          isOpen === message.messagesCode
+            ? "selected-message-main"
+            : "message-main"
+        }
+        key={message.messagesCode}
+      >
         <div className="message-left">
           <input
             checked={isCheck}

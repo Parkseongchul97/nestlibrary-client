@@ -106,6 +106,7 @@
 .is-open {
   margin-left: 10px;
 }
+.selected-message-main,
 .message-main {
   height: 50px;
   display: flex;
@@ -260,4 +261,7 @@
   .paging {
     border-top: 0.5px solid #acacac;
   }
+}
+.selected-message-main {
+  background-color: #868686;
 }
