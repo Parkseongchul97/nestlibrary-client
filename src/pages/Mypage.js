@@ -50,7 +50,7 @@ const Mypage = () => {
   useEffect(() => {
     findUser();
     myChannelInfo();
-  }, [localStorage.getItem("userEmail")]);
+  }, []);
   const deleteImg = () => {
     setUserDTO({ ...userDTO, userImg: null });
     setPreviewUrl(null);
@@ -70,7 +70,10 @@ const Mypage = () => {
   };
 
   useEffect(() => {
-    if (userDTO.userNickname !== "") {
+    if (
+      userDTO.userNickname !== undefined &&
+      userDTO.userNickname !== user.userNickname
+    ) {
       checkNickname();
     }
   }, [userDTO.userNickname]);
@@ -79,7 +82,6 @@ const Mypage = () => {
     const result = await nicknameCheck(userDTO.userNickname, userDTO.userEmail); // 닉네임 중복
     if (result.data !== undefined || result.data !== "") {
     }
-
     setNicknameSubmit(result.data); // true false 반환 중복여부
   };
   const submit = async () => {
@@ -131,7 +133,10 @@ const Mypage = () => {
           <div className="info-change-left">
             <p>내가 관리중인 채널</p>
             {channel.map((channels) => (
-              <Link to={`/update/${channels?.channelCode}`}>
+              <Link
+                to={`/update/${channels?.channelCode}`}
+                key={channels?.channelCode}
+              >
                 {channels?.channelName}
               </Link>
             ))}
@@ -161,7 +166,7 @@ const Mypage = () => {
                   className="change-input-text"
                   placeholder="닉네임"
                   type="text"
-                  value={userDTO.userNickname}
+                  value={userDTO.userNickname || ""}
                   onChange={(e) =>
                     setUserDTO({ ...userDTO, userNickname: e.target.value })
                   }
@@ -178,7 +183,7 @@ const Mypage = () => {
                   className="change-input-text"
                   placeholder="나의 한마디"
                   type="text"
-                  value={userDTO.userInfo}
+                  value={userDTO.userInfo || ""}
                   onChange={(e) =>
                     setUserDTO({ ...userDTO, userInfo: e.target.value })
                   }

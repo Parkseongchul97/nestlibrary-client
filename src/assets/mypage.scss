@@ -56,15 +56,12 @@
       align-items: center;
       background-color: white;
       border-radius: 50%;
-      border: 2px solid black;
+      border: 1px solid black;
       width: 102px;
       height: 102px;
       cursor: pointer;
       &:hover {
-        border: 2px solid red;
-        #preview-img {
-          border: 2px solid red;
-        }
+        border: 1px solid red;
       }
       #preview-img {
         border-radius: 50%;

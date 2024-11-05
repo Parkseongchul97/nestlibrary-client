@@ -22,18 +22,20 @@ const SubChannelList = ({ onClose }) => {
     const response = await mySub();
     setChannelList(response.data);
   };
-
   return (
     <div className="sub-box">
       <ul className="sub-box-ul">
         {token !== null && channelList.length > 0 ? (
           channelList.map((channel) => (
-            <li key={channel.id} className="sub-box-li">
+            <li key={channel?.channelDTO?.channelCode} className="sub-box-li">
               <span
                 className="sub-box-channelName"
                 onClick={() => onClose(false)}
               >
-                <Link to={`/channel/${channel?.channelDTO.channelCode}`}>
+                <Link
+                  to={`/channel/${channel?.channelDTO.channelCode}`}
+                  key={channel?.channelDTO?.channelCode}
+                >
                   {channel?.channelDTO.channelName}
                 </Link>
               </span>
@@ -46,7 +48,7 @@ const SubChannelList = ({ onClose }) => {
             </li>
           ))
         ) : (
-          <div>구독중인 채널이 없습니다</div>
+          <li>구독중인 채널이 없습니다</li>
         )}
       </ul>
     </div>
