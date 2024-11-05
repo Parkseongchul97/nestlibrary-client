@@ -1,9 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import JoditEditor from "jodit-react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { add, update, write } from "../../api/post";
 import "../../assets/edit.scss";
 import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import "../../assets/postWrite.scss";
 
 const PostWrite = () => {
   const { user } = useAuth();
@@ -11,6 +13,7 @@ const PostWrite = () => {
   const isChannelCode = location.state?.isChannelCode; // 추가된 부분
   const isPost = location.state?.isPost;
   const editor = useRef(null);
+  const navigate = useNavigate();
 
   const [post, setPost] = useState({
     postCode: isPost?.postCode ? isPost.postCode : 0,
@@ -64,11 +67,35 @@ const PostWrite = () => {
 
   const config = {
     readonly: false,
-    toolbar: [
-      "bold",
-      "italic",
-      "underline",
-      "strikethrough",
+    toolbar: true,
+    buttons: [
+      {
+        name: "underline", // 버튼 이름
+        action: "underline", // 버튼 동작 (실제 실행할 명령)
+        tooltip: "밑줄", // 툴팁 텍스트
+      },
+      {
+        name: "strikethrough", // 버튼 이름
+        action: "strikethrough", // 버튼 동작 (실제 실행할 명령)
+        tooltip: "취소선", // 툴팁 텍스트
+      },
+      {
+        name: "left", // 버튼 이름
+        action: "left", // 버튼 동작 (실제 실행할 명령)
+        tooltip: "왼쪽", // 툴팁 텍스트
+      },
+      {
+        name: "center", // 버튼 이름
+        action: "center", // 버튼 동작 (실제 실행할 명령)
+        tooltip: "가운데정렬", // 툴팁 텍스트
+      },
+
+      {
+        name: "right", // 버튼 이름
+        action: "right", // 버튼 동작 (실제 실행할 명령)
+        tooltip: "오른쪽 정렬", // 툴팁 텍스트
+      },
+
       "|",
       "ul",
       "ol",
@@ -76,10 +103,24 @@ const PostWrite = () => {
       "outdent",
       "indent",
       "|",
-      "link",
-      "image",
-      "fontsize",
-    ],
+
+      {
+        name: "image", // 버튼 이름
+        action: "image", // 버튼 동작 (실제 실행할 명령)
+        tooltip: "사진추가 ", // 툴팁 텍스트
+      },
+      {
+        name: "fontsize", // 버튼 이름
+        action: "fontsize", // 버튼 동작 (실제 실행할 명령)
+        tooltip: "글짜 크기 ", // 툴팁 텍스트
+      },
+      {
+        name: "video", // 버튼 이름
+        action: "video", // 버튼 동작 (실제 실행할 명령)
+        tooltip: "코드로 동영상 추가 ", // 툴팁 텍스트
+      },
+    ], // 툴바에 표시할 버튼들
+
     uploader: {
       insertImageAsBase64URI: true,
 
@@ -89,6 +130,7 @@ const PostWrite = () => {
     minHeight: 200,
     // 필요에 따라 추가 설정
   };
+
   // 작성
   const addPost = async () => {
     if (post.postTitle.trim().length <= 1) {
@@ -133,43 +175,77 @@ const PostWrite = () => {
 
   return (
     <>
-      <input
-        placeholder="제목을 입력하세요"
-        type="text"
-        value={post.postTitle}
-        onChange={(e) => setPost({ ...post, postTitle: e.target.value })}
-        key={post.postCode}
-      />
+      <div className="postWrite-container">
+        <div className="postWrite-box">
+          <div className="postWrite-channel-name">
+            {Channel?.channelName} 채널
+          </div>
+          <div className="postWrite-main-content">
+            <div className="postWrite-select-tag">
+              <select
+                id="tag"
+                onChange={(e) =>
+                  setPost({
+                    ...post,
+                    channelTag: { channelTagCode: e.target.value },
+                  })
+                }
+                value={post.channelTag.channelTagCode}
+              >
+                {Channel?.channelTag.map((channelTag) => (
+                  <option
+                    value={channelTag.channelTagCode}
+                    key={channelTag.channelTagCode}
+                  >
+                    {channelTag.channelTagName}
+                  </option>
+                ))}
+              </select>
+              <input
+                placeholder="제목을 입력하세요"
+                type="text"
+                value={post.postTitle}
+                onChange={(e) =>
+                  setPost({ ...post, postTitle: e.target.value })
+                }
+                key={post.postCode}
+              />
+            </div>
+            <JoditEditor
+              ref={editor}
+              value={post.postContent}
+              config={config}
+              tabIndex={1}
+              onBlur={(newContent) =>
+                setPost({ ...post, postContent: newContent })
+              }
+              onChange={(newContent) => {}}
+            />
+            <div className="postWrite-button">
+              <>
+                <div className="postWrite-buttones">
+                  <Link
+                    className="postWrite-submit"
+                    to={"/channel/" + Channel.channelCode}
+                  >
+                    취소
+                  </Link>
 
-      <select
-        id="tag"
-        onChange={(e) =>
-          setPost({ ...post, channelTag: { channelTagCode: e.target.value } })
-        }
-        value={post.channelTag.channelTagCode}
-      >
-        {Channel?.channelTag.map((channelTag) => (
-          <option
-            value={channelTag.channelTagCode}
-            key={channelTag.channelTagCode}
-          >
-            {channelTag.channelTagName}
-          </option>
-        ))}
-      </select>
-      <JoditEditor
-        ref={editor}
-        value={post.postContent}
-        config={config}
-        tabIndex={1}
-        onBlur={(newContent) => setPost({ ...post, postContent: newContent })}
-        onChange={(newContent) => {}}
-      />
-      {isPost !== undefined ? (
-        <button onClick={updatePost}>수정</button>
-      ) : (
-        <button onClick={addPost}>작성</button>
-      )}
+                  {isPost !== undefined ? (
+                    <button className="postWrite-submit" onClick={updatePost}>
+                      수정
+                    </button>
+                  ) : (
+                    <button className="postWrite-submit" onClick={addPost}>
+                      작성
+                    </button>
+                  )}
+                </div>
+              </>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

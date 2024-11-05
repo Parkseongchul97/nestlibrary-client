@@ -32,6 +32,7 @@ const AnnouncementPost = ({ channelCode, setIsOpenDetail, isOpenDetail }) => {
             channelTagCode={post.channelTag.channelTagCode}
             isOpenDetail={isOpenDetail}
             setIsOpenDetail={setIsOpenDetail}
+            page={1}
           />
         ) : (
           <div className="none-announcement-post" key={index}>

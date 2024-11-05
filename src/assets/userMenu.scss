@@ -39,13 +39,31 @@
   display: flex;
   flex-direction: column;
   position: absolute;
+  margin-left: 50px;
+  margin-top: -10px;
+
   .user-accordion {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 150px;
-    border: 1px solid;
+    border-top: 1px solid #cdcdcd;
+
     cursor: pointer;
-    background-color: beige;
+    background-color: white;
+    color: black;
+    padding: 7px;
+    font-family: "Pretendard Variable";
+    font-weight: bold;
   }
+}
+.profile-actions > .user-accordion:first-child {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.profile-actions > .user-accordion:last-child {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-top: 1px solid #cdcdcd;
 }

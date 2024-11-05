@@ -22,6 +22,10 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
+        path: "/write",
+        element: <PostWrite />,
+      },
+      {
         path: "/update/:channelCode",
         element: <ChannelUpdate />,
       },
@@ -122,10 +126,6 @@ const router = createBrowserRouter([
   {
     path: "/kakao",
     element: <LoginWait />,
-  },
-  {
-    path: "/write",
-    element: <PostWrite />,
   },
 
   {
