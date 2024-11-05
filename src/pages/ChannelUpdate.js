@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FaCamera } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import {
   updateInfo,
@@ -212,53 +213,89 @@ const ChannelUpdate = () => {
                   >
                     대문수정
                   </div>
-                  <div onClick={() => getOpenType("user")}>유저관리</div>
-                  <div onClick={() => getOpenType("channel")}>채널관리</div>
+                  <div
+                    style={{ color: view === "user" ? "red" : "white" }}
+                    onClick={() => getOpenType("user")}
+                  >
+                    유저관리
+                  </div>
+                  <div
+                    style={{ color: view === "channel" ? "red" : "white" }}
+                    onClick={() => getOpenType("channel")}
+                  >
+                    채널관리
+                  </div>
                 </div>
                 <div className="channelUpdate-right">
                   {view === "door" ? (
                     <>
                       <div className="channelUpdate-img">
-                        <div className="channelUpdate-imgUpdate">
-                          이미지 수정
+                        <div className="channelUpdate-info">
+                          <div className="channelUpdate-text">채널소개</div>
+                          <div className="channelUpdate-input">
+                            <input
+                              value={channelInfos.channelInfo}
+                              onChange={(e) =>
+                                setChannelInfos({
+                                  ...channelInfos,
+                                  channelInfo: e.target.value,
+                                })
+                              }
+                            />
+                            <button onClick={infoSubmit}> 변경 </button>
+                          </div>
                         </div>
-                        <input
-                          className="change-input-file"
-                          type="file"
-                          accept={"image/*"}
-                          onChange={(e) => {
-                            const file = e.target.files[0];
-                            if (file) {
-                              setPreviewUrl(URL.createObjectURL(file));
-                              setChan({ ...chan, channelImg: file, change: 1 });
-                            } else {
-                              setPreviewUrl(false);
-                              setChan({ ...chan, channelImg: null, change: 0 });
-                            }
-                          }}
-                        />
-                        <button onClick={imgUpdate}>사진 수정</button>
-                        <button onClick={reset}>기존 사진 </button>
-                        <button onClick={regular}>기본 사진</button>
-                        <img
-                          src={
-                            previewUrl ||
-                            (channelInfos.channelImgUrl === null
-                              ? "http://192.168.10.51:8083/%EA%B8%B0%EB%B3%B8%EB%8C%80%EB%AC%B8.jpg"
-                              : `http://192.168.10.51:8083/channel/${channelCode}/${channelInfos.channelImgUrl}`)
-                          }
-                        />
-                        채널소개 :{" "}
-                        <input
-                          value={channelInfos.channelInfo}
-                          onChange={(e) =>
-                            setChannelInfos({
-                              ...channelInfos,
-                              channelInfo: e.target.value,
-                            })
-                          }
-                        />
-                        <button onClick={infoSubmit}> 변경 </button>
+                        <div className="channelUpdate-img-container">
+                          <div className="channelUpdate-imgUpdate">
+                            이미지 수정
+                          </div>
+
+                          <label htmlFor="change-channel-img">
+                            <img
+                              className="channelUpdate-channel-img"
+                              src={
+                                previewUrl ||
+                                (channelInfos.channelImgUrl === null
+                                  ? "http://192.168.10.51:8083/%EA%B8%B0%EB%B3%B8%EB%8C%80%EB%AC%B8.jpg"
+                                  : `http://192.168.10.51:8083/channel/${channelCode}/${channelInfos.channelImgUrl}`)
+                              }
+                            />
+                            <div className="channelUpdate-ikon">
+                              <FaCamera />
+                            </div>
+                          </label>
+                        </div>
+                        <div className="channelUpdate-buttones">
+                          <input
+                            className="change-input-file"
+                            type="file"
+                            id="change-channel-img"
+                            accept={"image/*"}
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              if (file) {
+                                setPreviewUrl(URL.createObjectURL(file));
+                                setChan({
+                                  ...chan,
+                                  channelImg: file,
+                                  change: 1,
+                                });
+                              } else {
+                                setPreviewUrl(false);
+                                setChan({
+                                  ...chan,
+                                  channelImg: null,
+                                  change: 0,
+                                });
+                              }
+                            }}
+                          />
+                          <div className="channelUpdate-button-option">
+                            <button onClick={reset}>되돌리기 </button>
+                            <button onClick={regular}>기본 사진</button>
+                            <button onClick={imgUpdate}>적용 하기</button>
+                          </div>
+                        </div>
                       </div>
                     </>
                   ) : view === "user" ? (
@@ -270,6 +307,10 @@ const ChannelUpdate = () => {
                         <div className="tagInfo">
                           원하는 게시판의 이름을 만들어보세요 (공지,일반
                           게시판은 고정게시판입니다)
+                          <p>
+                            * 게시판 삭제시 기존 게시글들은 "일반" 게시판으로
+                            이동합니다
+                          </p>
                         </div>
                         <div className="channelUpdate-allTag">
                           {channelInfos.channelTag.map((channelTags, index) => (

@@ -28,7 +28,7 @@ const SubChannelList = ({ onClose }) => {
       <ul className="sub-box-ul">
         {token !== null && channelList.length > 0 ? (
           channelList.map((channel) => (
-            <li key={channel.id} className="sub-box-li">
+            <li key={channel?.channelDTO.channelCode} className="sub-box-li">
               <span
                 className="sub-box-channelName"
                 onClick={() => onClose(false)}

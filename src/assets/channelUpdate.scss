@@ -4,13 +4,12 @@
   align-items: center;
   padding-top: 100px;
   width: 100%;
-  background-color: #f4f4f4;
 }
 
 .channelUpdate-box {
   width: 100%;
   max-width: 1200px;
-  border: 1px solid black;
+
   padding: 50px;
   background-color: #f4f4f4;
   font-family: "Pretendard Variable";
@@ -20,6 +19,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 20px;
+  margin-bottom: 150px;
 }
 .channelUpdate-channelName {
   font-size: 2rem;
@@ -32,6 +33,7 @@
 .tagInfo {
   font-size: 1.3rem;
   padding-left: 20px;
+  line-height: 1.5;
 }
 .channelUpdate-tagList {
   border: 1px solid black;
@@ -126,8 +128,89 @@
 .channelUpdate-link {
   padding: 10px;
   background-color: black;
+  margin-bottom: 20px;
+  margin-left: 20px;
   a {
     color: white;
   }
   border-radius: 10px;
+}
+.channelUpdate-text {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+.channelUpdate-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.channelUpdate-input {
+  display: flex;
+  input {
+    font-size: 1.5rem;
+  }
+  button {
+    height: 34px;
+  }
+}
+.channelUpdate-buttones {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.channelUpdate-button-option {
+  width: 25%;
+  display: flex;
+  justify-content: space-around;
+  button {
+    padding: 10px;
+    cursor: pointer;
+  }
+}
+#change-channel-img {
+  display: none;
+}
+.channelUpdate-channel-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: white;
+  border: 0.5px solid black;
+}
+
+.channelUpdate-img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+      .channelUpdate-channel-img {
+        opacity: 0.3;
+      }
+    }
+  }
+}
+.channelUpdate-ikon {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    font-size: 40px;
+    position: absolute;
+    opacity: 0;
+  }
+  &:hover {
+    svg {
+      opacity: 1;
+    }
+  }
 }
