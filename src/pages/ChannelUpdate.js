@@ -21,6 +21,7 @@ import { useQuery } from "@tanstack/react-query";
 import UserMenu from "../components/user/UserMenu";
 import FindUser from "../components/user/FindUser";
 import UserManagement from "./UserManagement";
+import { loginUserChannelGrade } from "../api/management";
 
 const ChannelUpdate = () => {
   const { user } = useAuth(); // 발신자(로그인유저)
@@ -32,6 +33,7 @@ const ChannelUpdate = () => {
   const [reCode, setReCode] = useState(false);
   const navigate = useNavigate();
   const [view, setView] = useState("door");
+  const [loginDTO, setLoginDTO] = useState("");
 
   const [chan, setChan] = useState({
     channelCode: channelCode,
@@ -83,6 +85,7 @@ const ChannelUpdate = () => {
 
   useEffect(() => {
     update();
+    loginUser();
   }, []);
 
   const [tags, setTags] = useState({
@@ -187,6 +190,12 @@ const ChannelUpdate = () => {
 
   const getOpenType = (data) => {
     setView(data);
+  };
+
+  const loginUser = async () => {
+    const response = await loginUserChannelGrade(channelCode);
+    setLoginDTO(response.data);
+    console.log(response.data);
   };
 
   return (
@@ -300,7 +309,8 @@ const ChannelUpdate = () => {
                     </>
                   ) : view === "user" ? (
                     <UserManagement channelCode={channelCode} />
-                  ) : (
+                  ) : view === "channel" &&
+                    loginDTO.managementUserStatus === "host" ? (
                     <>
                       <div className="channelUpdate-tagList">
                         <div className="tagList"> 태그 리스트</div>
@@ -313,33 +323,24 @@ const ChannelUpdate = () => {
                           </p>
                         </div>
                         <div className="channelUpdate-allTag">
-                          {channelInfos.channelTag.map((channelTags, index) => (
-                            <>
+                          {channelInfos?.channelTag?.map((channelTags) => (
+                            <div
+                              className="channelUpdate-tag"
+                              key={channelTags?.channelTagCode}
+                            >
+                              {channelTags.channelTagName}
                               {!(
                                 channelTags.channelTagName == "일반" ||
                                 channelTags.channelTagName == "공지"
-                              ) ? (
-                                <div
-                                  className="channelUpdate-tag"
-                                  key={channelTags.channelTagCode}
-                                >
-                                  {channelTags.channelTagName}
-                                  <TbXboxX
-                                    className="cancle-ikon"
-                                    onClick={() =>
-                                      tagDelete(channelTags.channelTagCode)
-                                    }
-                                  />
-                                </div>
-                              ) : (
-                                <div
-                                  className="channelUpdate-tag"
-                                  key={channelTags.channelTagCode}
-                                >
-                                  {channelTags.channelTagName}
-                                </div>
+                              ) && (
+                                <TbXboxX
+                                  className="cancle-ikon"
+                                  onClick={() =>
+                                    tagDelete(channelTags?.channelTagCode)
+                                  }
+                                />
                               )}
-                            </>
+                            </div>
                           ))}
                         </div>
                         <div className="channelUpdate-addTag">
@@ -378,6 +379,12 @@ const ChannelUpdate = () => {
                             </>
                           )}
                         </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="channelUpdate-authorization">
+                        채널관리 권한이 없습니다!
                       </div>
                     </>
                   )}

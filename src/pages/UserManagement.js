@@ -1,5 +1,5 @@
-import { useLocation } from "react-router-dom";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import PostManagement from "../components/post/PostManagement.js";
 
@@ -15,9 +15,8 @@ import {
 import { IoIosArrowBack } from "react-icons/io";
 import { useAuth } from "../contexts/AuthContext.js";
 import { sendCode, checkEmail } from "../api/email.js";
-import { getPageNum } from "../api/post.js";
+
 import { remove } from "../api/post.js";
-import { Link } from "react-router-dom";
 
 import "../assets/login.scss";
 
@@ -25,7 +24,8 @@ const UserManagement = ({ channelCode }) => {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isSearch, setIsSearch] = useState(true);
-  const [inputNickname, setInputNickname] = useState(null);
+  const [inputNickname, setInputNickname] = useState("");
+  const [title, setTitle] = useState("전체 사용자");
 
   const [ban, setBan] = useState(false);
   const [host, setHost] = useState(false);
@@ -46,9 +46,7 @@ const UserManagement = ({ channelCode }) => {
   const [targetUser, setTargetUser] = useState("");
   const [post, setPost] = useState([]);
   const [isPost, setIsPost] = useState(false);
-  const [author, setAuthor] = useState(null);
-
-  const [check, setCheck] = useState([]);
+  const [author, setAuthor] = useState("");
 
   const [checkArray, setCheckArray] = useState([]);
 
@@ -60,7 +58,11 @@ const UserManagement = ({ channelCode }) => {
         await remove(checkArray[i]);
       }
     }
-    postList();
+    if (author.trim().length > 1) {
+      postList(author);
+    } else {
+      allPostList();
+    }
   };
 
   const allCheck = () => {
@@ -135,6 +137,7 @@ const UserManagement = ({ channelCode }) => {
   const loginUser = async () => {
     const response = await loginUserChannelGrade(channelCode);
     setLoginDto(response.data);
+    console.log(response.data);
   };
 
   useEffect(() => {
@@ -155,7 +158,7 @@ const UserManagement = ({ channelCode }) => {
   }, [isOpen]);
 
   const enter = (e) => {
-    if (e.key === "Enter" && inputNickname != null) {
+    if (e.key === "Enter") {
       allUser(inputNickname);
     }
   };
@@ -243,9 +246,19 @@ const UserManagement = ({ channelCode }) => {
       }
     }
   };
-  // 게시글 조회
-  const postList = async (author) => {
-    const response = await allPost(channelCode, author);
+  // 닉네임으로 게시글 조회
+  const postList = async (data) => {
+    if (data.trim().length < 1) {
+      alert("닉네임을 입력해주세요!");
+    } else {
+      const response = await allPost(channelCode, data);
+      setCheckArray([]);
+      setPost(response);
+    }
+  };
+  // 모든 포스트 조회
+  const allPostList = async () => {
+    const response = await allPost(channelCode);
     setCheckArray([]);
     setPost(response);
   };
@@ -254,48 +267,70 @@ const UserManagement = ({ channelCode }) => {
     <>
       <div className="management-container">
         <div className="management-box">
-          <div className="title">유저 관리 페이지 </div>
+          <div className="title">{title}</div>
           <div className="main-content">
             <div className="main-content-left">
-              <div
-                className="all-user"
-                onClick={() => {
-                  setIsSearch(true);
-                  setSelectedUser([]);
-                  setInputNickname("");
-                  setIsPost(false);
-                }}
-              >
-                전체 사용자
-              </div>
-              <div
-                className="admin-user"
-                onClick={() => {
-                  adminList();
-                  setIsPost(false);
-                }}
-              >
-                관리자
-              </div>
-              <div
-                className="ban-user"
-                onClick={() => {
-                  banList();
-                  setIsPost(false);
-                }}
-              >
-                차단리스트
-              </div>
+              <div className="left-content-option">
+                <div
+                  className={
+                    title === "전체 사용자"
+                      ? "selected-management-user"
+                      : "management-user"
+                  }
+                  onClick={() => {
+                    setIsSearch(true);
+                    setSelectedUser([]);
+                    setInputNickname("");
+                    setIsPost(false);
+                    setTitle("전체 사용자");
+                  }}
+                >
+                  전체 사용자
+                </div>
+                <div
+                  className={
+                    title === "관리자"
+                      ? "selected-management-user"
+                      : "management-user"
+                  }
+                  onClick={() => {
+                    adminList();
+                    setIsPost(false);
+                    setTitle("관리자");
+                  }}
+                >
+                  관리자
+                </div>
+                <div
+                  className={
+                    title === "차단리스트"
+                      ? "selected-management-user"
+                      : "management-user"
+                  }
+                  onClick={() => {
+                    banList();
+                    setIsPost(false);
+                    setTitle("차단리스트");
+                  }}
+                >
+                  차단리스트
+                </div>
 
-              <div
-                className="admin-user"
-                onClick={() => {
-                  postList();
-                  setIsPost(true);
-                  setIsSearch(false);
-                }}
-              >
-                게시글
+                <div
+                  className={
+                    title === "게시글"
+                      ? "selected-management-user"
+                      : "management-user"
+                  }
+                  onClick={() => {
+                    allPostList();
+                    setIsPost(true);
+                    setIsSearch(false);
+                    setTitle("게시글");
+                  }}
+                >
+                  게시글
+                </div>
               </div>
             </div>
             <div className="main-content-right">
@@ -313,7 +348,7 @@ const UserManagement = ({ channelCode }) => {
                       className="search-submit"
                       onClick={() => allUser(inputNickname)}
                     >
-                      검색
+                      <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
                     </button>
                   </>
                 ) : isPost ? (
@@ -329,7 +364,7 @@ const UserManagement = ({ channelCode }) => {
                       className="search-submit"
                       onClick={() => postList(author)}
                     >
-                      검색
+                      <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
                     </button>
                   </>
                 ) : null}
@@ -344,7 +379,7 @@ const UserManagement = ({ channelCode }) => {
                           checked={
                             checkArray.length === post.length && post.length > 0
                           }
-                          onClick={() => allCheck()}
+                          onChange={() => allCheck()}
                         />
                         <button
                           className="deleteTh"
@@ -353,13 +388,13 @@ const UserManagement = ({ channelCode }) => {
                           삭제
                         </button>
                       </th>
-                      <th>닉네임 </th>
+                      <th>닉네임</th>
                       <th>이메일</th>
                       <th>게시판</th>
                       <th>제목</th>
                       <th>작성일</th>
-                      <th>조회 수 </th>
-                      <th>댓글 수 </th>
+                      <th>조회 수</th>
+                      <th>댓글 수</th>
                     </tr>
                   </thead>
 
@@ -367,17 +402,16 @@ const UserManagement = ({ channelCode }) => {
                     {post && post.length > 0 ? (
                       post.map((post) => (
                         <PostManagement
+                          key={post?.postCode}
                           channelCode={channelCode}
                           post={post}
-                          setCheck={setCheck}
                           addList={addList}
                           checkArray={checkArray}
                         />
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={6}>조회 결과가 없습니다.</td>{" "}
-                        {/* 대체 메시지 */}
+                        <td colSpan={6}>조회 결과가 없습니다.</td>
                       </tr>
                     )}
                   </tbody>
@@ -390,20 +424,19 @@ const UserManagement = ({ channelCode }) => {
                       <th>이메일</th>
                       <th>등급</th>
                       <th>삭제 예정일</th>
-                      <th>작성글 수 </th>
-                      <th>댓글 수 </th>
+                      <th>작성글 수</th>
+                      <th>댓글 수</th>
                     </tr>
                   </thead>
 
-                  <tbody>
+                  <tbody className="management-link">
                     {selectedUser && selectedUser.length > 0 ? (
                       selectedUser.map((users) => (
-                        <tr key={users.userEmail}>
-                          {" "}
-                          {/* 고유 키 추가 */}
-                          <td onClick={() => updateInfo(users)}>
-                            {users?.userNickname}
-                          </td>
+                        <tr
+                          key={users.userEmail}
+                          onClick={() => updateInfo(users)}
+                        >
+                          <td>{users?.userNickname}</td>
                           <td>{users?.userEmail}</td>
                           <td>
                             {users?.managementUserStatus != null
@@ -421,8 +454,7 @@ const UserManagement = ({ channelCode }) => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={6}>조회 결과가 없습니다.</td>{" "}
-                        {/* 대체 메시지 */}
+                        <td colSpan={6}>조회 결과가 없습니다.</td>
                       </tr>
                     )}
                   </tbody>

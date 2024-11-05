@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react";
 import { getPageNum } from "../../api/post";
-const PostManagement = ({
-  post,
-  channelCode,
-  setCheck,
-  check,
-  addList,
-  checkArray,
-}) => {
+const PostManagement = ({ post, channelCode, addList, checkArray }) => {
   const [page, setPage] = useState(1);
 
   const pages = async () => {
@@ -26,8 +19,8 @@ const PostManagement = ({
       <td className="custom-input">
         <input
           type="checkbox"
-          value={post?.postCode} //
-          onClick={(e) => addList(e.target.value)}
+          value={post?.postCode || ""} //
+          onChange={(e) => addList(e.target.value)}
           checked={checkArray.includes(Number(post?.postCode))}
         />
       </td>
