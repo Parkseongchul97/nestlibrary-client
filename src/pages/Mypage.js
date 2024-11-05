@@ -126,124 +126,139 @@ const Mypage = () => {
   return (
     <>
       <div className="main-box">
-        <div className="info-change-header">
-          <h1>마이 페이지</h1>
-        </div>
-        <div className="info-change-main">
-          <div className="info-change-left">
-            <p>내가 관리중인 채널</p>
-            {channel.map((channels) => (
-              <Link
-                to={`/update/${channels?.channelCode}`}
-                key={channels?.channelCode}
-              >
-                {channels?.channelName}
-              </Link>
-            ))}
-
-            {userDTO.userPassword != null ? (
-              <span onClick={() => setIsChange(!isChange)}>비밀번호 변경 </span>
-            ) : (
-              <span
-                onClick={() =>
-                  (window.location.href =
-                    "https://accounts.kakao.com/weblogin/find_password?continue=%2Flogin%3Fcontinue%3Dhttps%253A%252F%252Fcs.kakao.com%252Fhelps_html%252F1073185489%253Flocale%253Dko%26talk_login%3D&lang=ko")
-                }
-              >
-                비밀번호 변경{" "}
-              </span>
-            )}
-
-            <button onClick={openCreateChannel}>채널생성</button>
+        <div className="info-box">
+          <div className="info-change-header">
+            <h1>마이 페이지</h1>
           </div>
-          <div className="info-change-right">
-            <div className="change-text-box">
-              <div className="change-input-box">
-                <div>내 잔여 포인트 : {userDTO.userPoint}</div>
-                <label htmlFor="input-nickname">닉네임</label>
-                <input
-                  id="input-nickname"
-                  className="change-input-text"
-                  placeholder="닉네임"
-                  type="text"
-                  value={userDTO.userNickname || ""}
-                  onChange={(e) =>
-                    setUserDTO({ ...userDTO, userNickname: e.target.value })
-                  }
-                />
-              </div>
-              <div className="info-change-text">
-                닉네임 변경에는 500pt가 소모됩니다.
-              </div>
+          <div className="info-change-main">
+            <div className="info-change-left">
+              <p className="management-channel-title">관리 채널</p>
+              {channel.map((channels) => (
+                <Link
+                  className="management-channel-list"
+                  to={`/update/${channels?.channelCode}`}
+                  key={channels?.channelCode}
+                >
+                  {channels?.channelName}
+                </Link>
+              ))}
 
-              <div className="change-input-box">
-                <label htmlFor="input-info">나의 한마디</label>
-                <input
-                  id="input-info"
-                  className="change-input-text"
-                  placeholder="나의 한마디"
-                  type="text"
-                  value={userDTO.userInfo || ""}
-                  onChange={(e) =>
-                    setUserDTO({ ...userDTO, userInfo: e.target.value })
-                  }
-                />
-              </div>
+              <button className="create-channel" onClick={openCreateChannel}>
+                채널생성
+              </button>
             </div>
-            <div className="change-img-box">
-              <label htmlFor="img-file" className="user-img-box">
-                {previewUrl ? (
-                  <img
-                    id="preview-img"
-                    src={previewUrl}
-                    alt="프로필 미리보기"
-                  />
-                ) : (
-                  <img
-                    id="preview-img"
-                    src="http://192.168.10.51:8083/e0680940917fba1b2350c6563c32ad0c.jpg"
-                    alt="프로필 미리보기"
-                  />
-                )}
-              </label>
-              <div className="info-change-text">
-                프로필사진 변경에는 100pt가 소모됩니다.
+            <div className="info-change-right">
+              <div className="change-top-box">
+                <div className="change-img-box">
+                  <label htmlFor="img-file" className="user-img-box">
+                    {previewUrl ? (
+                      <img
+                        id="preview-img"
+                        src={previewUrl}
+                        alt="프로필 미리보기"
+                      />
+                    ) : (
+                      <img
+                        id="preview-img"
+                        src="http://192.168.10.51:8083/e0680940917fba1b2350c6563c32ad0c.jpg"
+                        alt="프로필 미리보기"
+                      />
+                    )}
+                  </label>
+                  <div className="info-change-text">
+                    * 프로필사진 변경에는 100pt가 소모됩니다.
+                  </div>
+                </div>
+                <div className="change-top-right">
+                  <div className="point-text">
+                    내 잔여 포인트 : {userDTO.userPoint}
+                  </div>
+                  {userDTO.userPassword != null ? (
+                    <div
+                      className="change-password"
+                      onClick={() => setIsChange(!isChange)}
+                    >
+                      비밀번호 변경{" "}
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() =>
+                        (window.location.href =
+                          "https://accounts.kakao.com/weblogin/find_password?continue=%2Flogin%3Fcontinue%3Dhttps%253A%252F%252Fcs.kakao.com%252Fhelps_html%252F1073185489%253Flocale%253Dko%26talk_login%3D&lang=ko")
+                      }
+                    >
+                      비밀번호 변경{" "}
+                    </div>
+                  )}
+                  <div className="update-btn-box">
+                    <button id="user-img-delete" onClick={deleteImg}>
+                      이미지 삭제
+                    </button>
+                    <button id="user-img-reset" onClick={resetImg}>
+                      이미지 되돌리기
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div className="btn-box">
-                <button id="user-img-delete" onClick={deleteImg}>
-                  이미지 삭제
-                </button>
-                <button id="user-img-reset" onClick={resetImg}>
-                  이미지 되돌리기
-                </button>
+              <div className="change-bottom-box">
+                <div className="change-input-box">
+                  <label htmlFor="input-nickname">닉네임</label>
+                  <input
+                    className="change-input-text"
+                    placeholder="닉네임"
+                    type="text"
+                    value={userDTO.userNickname || ""}
+                    onChange={(e) =>
+                      setUserDTO({ ...userDTO, userNickname: e.target.value })
+                    }
+                  />
+                  <div className="info-change-text">
+                    * 닉네임 변경에는 500pt가 소모됩니다.
+                  </div>
+                </div>
+
+                <div className="change-input-box">
+                  <label htmlFor="input-info">나의 한마디</label>
+                  <input
+                    className="change-input-text"
+                    placeholder="나의 한마디"
+                    type="text"
+                    value={userDTO.userInfo || ""}
+                    onChange={(e) =>
+                      setUserDTO({ ...userDTO, userInfo: e.target.value })
+                    }
+                  />
+                  <div className="change-submit-box">
+                    <button id="change-submit" onClick={submit}>
+                      변경사항 수정
+                    </button>
+                  </div>
+                </div>
               </div>
-              <input
-                className="change-input-file"
-                id="img-file"
-                type="file"
-                accept={"image/*"}
-                onChange={(e) => {
-                  const file = e.target.files[0]; // 첫 번째 파일 가져오기
-                  if (file) {
-                    // 있으면
-                    setUserDTO({ ...userDTO, userImg: file });
-                    setPreviewUrl(URL.createObjectURL(file));
-                    setChangeImg(0);
-                    // 미리보기 URL 설정
-                  } else {
-                    setUserDTO({ ...userDTO, userImg: null });
-                    setPreviewUrl(null);
-                    setChangeImg(1);
-                  }
-                }}
-              />
             </div>
           </div>
         </div>
-        <button id="change-submit" onClick={submit}>
-          변경사항 수정
-        </button>
       </div>
+      <input
+        className="change-input-file"
+        id="img-file"
+        type="file"
+        accept={"image/*"}
+        onChange={(e) => {
+          const file = e.target.files[0]; // 첫 번째 파일 가져오기
+          if (file) {
+            // 있으면
+            setUserDTO({ ...userDTO, userImg: file });
+            setPreviewUrl(URL.createObjectURL(file));
+            setChangeImg(0);
+            // 미리보기 URL 설정
+          } else {
+            setUserDTO({ ...userDTO, userImg: null });
+            setPreviewUrl(null);
+            setChangeImg(1);
+          }
+        }}
+      />
 
       {createPage && <CreateChannel onClose={closeCreateChannel} />}
       {isChange && <ChangePassword onClose={setIsChange} />}

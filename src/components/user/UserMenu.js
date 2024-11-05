@@ -161,7 +161,7 @@ const UserMenu = ({
           <img
             className="user-profile-img"
             src={
-              user?.userImgUrl !== null
+              user !== undefined && user?.userImgUrl !== null
                 ? "http://192.168.10.51:8083/user/" +
                   user?.userEmail +
                   "/" +
@@ -200,9 +200,12 @@ const UserMenu = ({
       </div>
       {isOpenUser && token && loginUser.userEmail !== user?.userEmail && (
         <div className="profile-actions">
-          <p className="user-accordion" onClick={() => setIsOpenMessage(true)}>
+          <div
+            className="user-accordion"
+            onClick={() => setIsOpenMessage(true)}
+          >
             쪽지 쓰기
-          </p>
+          </div>
           {isOpenMessage && (
             <MessageWrite
               toUser={{
@@ -215,31 +218,30 @@ const UserMenu = ({
               setIsOpenMessage={setIsOpenMessage}
             />
           )}
-          <Link to={"/user/" + user.userEmail}>
-            <a className="user-accordion">유저페이지로 이동</a>
+          <Link className="user-accordion" to={"/user/" + user.userEmail}>
+            유저페이지로 이동
           </Link>
 
           {loginUserGrade?.managementUserStatus == "host" && (
             <>
               {userGrade?.data?.managementUserStatus !== "ban" ? (
-                <a
+                <div
                   className="user-accordion"
                   onClick={() => setbanOpen(!banOpen)}
                 >
                   차단하기
-                </a>
+                </div>
               ) : (
-                <a
+                <div
                   className="user-accordion"
                   onClick={() => setbanOpen(!banOpen)}
                 >
                   벤풀기
-                </a>
+                </div>
               )}
               {banOpen && userGrade?.data?.managementUserStatus !== "ban" && (
                 <>
-                  <div>벤하실건가여?</div>
-                  <label>
+                  <label className="user-accordion">
                     <input
                       type="radio"
                       name={`option-${user?.userEmail}`}
@@ -248,7 +250,7 @@ const UserMenu = ({
                     />
                     1일
                   </label>
-                  <label>
+                  <label className="user-accordion">
                     <input
                       type="radio"
                       name={`option-${user?.userEmail}`}
@@ -257,7 +259,7 @@ const UserMenu = ({
                     />
                     1주일
                   </label>
-                  <label>
+                  <label className="user-accordion">
                     <input
                       type="radio"
                       name={`option-${user?.userEmail}`}
@@ -266,7 +268,7 @@ const UserMenu = ({
                     />
                     1달
                   </label>
-                  <label>
+                  <label className="user-accordion">
                     <input
                       type="radio"
                       name={`option-${user?.userEmail}`}
@@ -275,7 +277,7 @@ const UserMenu = ({
                     />
                     1년
                   </label>
-                  <label>
+                  <label className="user-accordion">
                     <input
                       type="radio"
                       name={`option-${user?.userEmail}`}
@@ -294,13 +296,16 @@ const UserMenu = ({
               )}
               {banOpen && userGrade?.data?.managementUserStatus === "ban" && (
                 <>
-                  <div>{userGrade?.data?.managementDeleteAt}</div>
+                  <div className="user-accordion">
+                    {userGrade?.data?.managementDeleteAt}
+                  </div>
                   <button onClick={banCanle}>벤 풀기</button>
                 </>
               )}
               {userGrade?.data?.managementUserStatus != "admin" &&
                 userGrade?.data?.managementUserStatus != "ban" && (
-                  <a
+                  <div
+                    className="user-accordion"
                     onClick={() => {
                       gradeChangeSubmit({
                         userEmail: user.userEmail,
@@ -311,13 +316,20 @@ const UserMenu = ({
                     }}
                   >
                     관리자로임명{" "}
-                  </a>
+                  </div>
                 )}
 
               {userGrade?.data?.managementUserStatus == "admin" && (
                 <>
-                  <a onClick={banCanle}>관리자 취소</a>
-                  <a onClick={() => setIsHost(!isHost)}>호스트로 임명</a>
+                  <div className="user-accordion" onClick={banCanle}>
+                    관리자 취소
+                  </div>
+                  <div
+                    className="user-accordion"
+                    onClick={() => setIsHost(!isHost)}
+                  >
+                    호스트로 임명
+                  </div>
                   {isHost && (
                     <>
                       <>
