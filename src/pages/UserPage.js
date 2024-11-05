@@ -29,7 +29,7 @@ const UserPage = () => {
   const getUser = async () => {
     const response = await userPageInfo(userEmail);
     setUser(response.data);
-    if (response.data == "") {
+    if (response.data === "") {
       navigate("/error");
     }
   };
@@ -50,7 +50,7 @@ const UserPage = () => {
                 <img
                   className="user-img"
                   src={
-                    user?.userImgUrl !== null
+                    user !== undefined && user?.userImgUrl !== null
                       ? "http://192.168.10.51:8083/user/" +
                         user?.userEmail +
                         "/" +
@@ -91,24 +91,28 @@ const UserPage = () => {
 
               {channel.length > 0 ? (
                 channel?.map((channel, index) => (
-                  <>
-                    <div className="userPage-channelDetail">
-                      <div className="userPage-favorate-rank">{index + 1}</div>
-                      <div className="userPage-favorate-title">
-                        {" "}
-                        <Link to={"/channel/" + channel.channelCode}>
-                          {channel.channelName}
-                        </Link>
-                      </div>{" "}
-                      <div className="userPage-favorate-post">
-                        {" "}
-                        {channel.postCount}
-                      </div>
-                      <div className="userPage-favorate-comment">
-                        {channel.commentCount}
-                      </div>
+                  <div
+                    className="userPage-channelDetail"
+                    key={channel?.channelCode}
+                  >
+                    <div className="userPage-favorate-rank">{index + 1}</div>
+                    <div className="userPage-favorate-title">
+                      {" "}
+                      <Link
+                        to={"/channel/" + channel.channelCode}
+                        key={channel?.channelCode}
+                      >
+                        {channel.channelName}
+                      </Link>
+                    </div>{" "}
+                    <div className="userPage-favorate-post">
+                      {" "}
+                      {channel.postCount}
                     </div>
-                  </>
+                    <div className="userPage-favorate-comment">
+                      {channel.commentCount}
+                    </div>
+                  </div>
                 ))
               ) : (
                 <>
@@ -132,7 +136,9 @@ const UserPage = () => {
               <div className="postList-comment">댓글</div>
             </div>
             {post.length > 0 ? (
-              post.map((post) => <RecentPost post={post} />)
+              post.map((post) => (
+                <RecentPost post={post} key={post?.postCode} />
+              ))
             ) : (
               <>
                 <div className="userPage-post-null">

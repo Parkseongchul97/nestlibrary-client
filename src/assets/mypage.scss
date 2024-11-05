@@ -4,9 +4,17 @@
   display: none;
 }
 .main-box {
+  .info-box {
+    background-color: #f4f4f4;
+    height: 550px;
+  }
   .info-change-header {
+    text-align: center;
+    border-bottom: 1px solid #cdcdcd;
+    margin-bottom: 10px;
+    padding: 5px;
     h1 {
-      font-size: 2rem;
+      font-size: 3rem;
       font-weight: bold;
       align-self: center;
       margin: 10px;
@@ -17,14 +25,38 @@
     background-color: #f4f4f4;
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+
     .info-change-left {
+      padding: 10px;
+      padding-top: 20px;
+      height: 100%;
+      width: 700px;
       display: flex;
       flex-direction: column;
+      justify-content: flex-start;
+      .management-channel-title {
+        width: 100%;
+        display: block;
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: bold;
+        padding: 5px;
+      }
+      .management-channel-list {
+        background-color: white;
+        padding: 8px;
+        border: 1px solid #cdcdcd;
+        margin-bottom: 3px;
+      }
+      .create-channel {
+        width: 100px;
+      }
     }
     .info-change-right {
+      border-left: 1px solid #cdcdcd;
       width: 100%;
       display: flex;
+      padding: 10px;
       flex-direction: column;
     }
 
@@ -33,61 +65,91 @@
       padding-left: 10px;
     }
 
-    .change-input-box {
-      padding: 5px;
+    .change-top-box {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      .change-input-text {
-        border-radius: 1rem;
-        padding: 8px;
-        width: 300px;
-        border: 2px solid;
-      }
-    }
 
-    .user-img-box {
-      right: 50px;
-      bottom: 150px;
-      align-self: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: white;
-      border-radius: 50%;
-      border: 1px solid black;
-      width: 102px;
-      height: 102px;
-      cursor: pointer;
-      &:hover {
-        border: 1px solid red;
+      padding: 10px;
+      padding-bottom: 50px;
+      .change-img-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .user-img-box {
+          right: 50px;
+          bottom: 150px;
+          align-self: center;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: white;
+          border-radius: 50%;
+          border: 1px solid black;
+          width: 102px;
+          height: 102px;
+          cursor: pointer;
+          &:hover {
+            border: 1px solid red;
+          }
+          #preview-img {
+            border-radius: 50%;
+            height: 100px;
+            width: 100px;
+          }
+        }
+        .info-change-text {
+          padding: 5px;
+        }
       }
-      #preview-img {
-        border-radius: 50%;
-        height: 100px;
-        width: 100px;
-      }
-      p {
-        font-weight: bold;
-        font-size: 1rem;
-      }
-    }
-    #btn-box {
-      display: flex;
-      justify-content: space-between;
-      padding: 5px;
-      button {
-        background-color: red;
-        &:hover {
-          background-color: #ff000086;
-          color: white;
+      .change-top-right {
+        width: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .point-text {
+        }
+        .change-password {
+          border: 1px solid;
+        }
+        .update-btn-box {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
         }
       }
     }
-  }
-  .info-change-text {
-    display: flex;
-    border: 1px solid;
+    .change-bottom-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      .change-input-box {
+        padding: 5px;
+        border-top: 0.5px solid #cdcdcd;
+        width: 800px;
+        display: flex;
+        align-items: center;
+        label {
+          width: 200px;
+        }
+        .change-input-text {
+          padding: 5px;
+          padding-left: 10px;
+        }
+        .change-submit-box {
+          display: flex;
+          justify-content: flex-end;
+          flex-grow: 1;
+        }
+        #change-submit {
+        }
+      }
+      .info-change-text {
+        padding: 5px;
+        margin-left: 10px;
+      }
+    }
   }
 }
