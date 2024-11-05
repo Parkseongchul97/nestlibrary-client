@@ -4,13 +4,15 @@
 }
 .push-box {
   display: flex;
+  padding: 3px;
   background-color: #dddddd;
   margin-bottom: 3px;
   justify-content: space-between;
   align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+    "Malgun Gothic", "맑은 고딕", arial, 굴림, Gulim, sans-serif;
   a,
   p {
-    padding: 5px;
     display: flex;
     justify-content: space-between;
     margin-left: 0.3rem;
@@ -22,8 +24,14 @@
     overflow: hidden;
     text-overflow: ellipsis;
     flex-grow: 1;
+    span {
+      margin-left: 8px;
+    }
   }
-  button {
-    background-color: antiquewhite;
+  svg {
+    cursor: pointer;
+    margin-left: 5px;
+
+    color: black;
   }
 }

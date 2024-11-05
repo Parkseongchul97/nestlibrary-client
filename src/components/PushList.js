@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
 import TimeFormat from "./TimeFormat";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { removePush } from "../api/push";
 import { useState, useEffect } from "react";
 import "../assets/pushList.scss";
 import { getPageNum } from "../api/post";
+import { TbXboxX } from "react-icons/tb";
+import { MdDelete, MdDeleteOutline } from "react-icons/md";
+import { RiDeleteBin6Fill } from "react-icons/ri";
 const PushList = ({ push }) => {
   const queryClient = useQueryClient();
   const [page, setPage] = useState();
@@ -44,7 +47,7 @@ const PushList = ({ push }) => {
       ) : (
         <p onClick={removeSubmit}>삭제된 게시글 입니다</p>
       )}
-      <button onClick={removeSubmit}>알림끄기</button>
+      <RiDeleteBin6Fill onClick={removeSubmit} />
     </div>
   );
 };

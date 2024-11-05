@@ -56,9 +56,7 @@ const MessageWrite = ({ toUser, setIsOpenMessage }) => {
 
     if (toUser !== undefined) setViewNickname(toUser.toUser.nickname);
   }, [toUser]);
-  useEffect(() => {
-    console.log(message.messagesContent.length);
-  }, [message]);
+
   return (
     <>
       <>

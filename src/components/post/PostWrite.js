@@ -143,11 +143,15 @@ const PostWrite = () => {
     }
 
     const response = await add(post);
-    if (response.data.managementUserStatus === "ban") {
+    console.log(response.data);
+    if (response.data?.managementUserStatus === "ban") {
       alert("글쓰기가 제한되어있습니다");
       return;
     }
-
+    if (response.data === "") {
+      alert("같은 내용의 글은 작성할 수 없습니다!");
+      return;
+    }
     window.location.href =
       "/channel/" +
       response.data.channel.channelCode +

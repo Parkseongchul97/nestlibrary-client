@@ -28,6 +28,7 @@
   text-wrap: nowrap;
 }
 .header-left {
+  width: 500px;
   height: 100%;
   align-items: center;
   display: flex;
@@ -63,7 +64,7 @@
 }
 
 .header-right-search {
-  margin-left: 50px;
+  margin-left: 150px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -103,18 +104,26 @@
     }
   }
 }
-.header-right-user {
+.header-right-user,
+.header-right-none-user {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   color: white;
   font-weight: bold;
+}
+.header-right-user {
+  justify-content: center;
   .user-img {
     background-color: white;
     margin: 5px;
     width: 40px;
     height: 40px;
     border-radius: 50%;
+  }
+  .header-right-push-list {
+    cursor: pointer;
+    margin-right: 10px;
   }
 }
 

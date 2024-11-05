@@ -7,6 +7,7 @@ import "../assets/mypage.scss";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import ChangePassword from "../pages/ChangePassword";
+import { FaCamera } from "react-icons/fa";
 
 const Mypage = () => {
   const navigate = useNavigate();
@@ -143,7 +144,11 @@ const Mypage = () => {
                 </Link>
               ))}
 
-              <button className="create-channel" onClick={openCreateChannel}>
+              <button
+                id="create-channel"
+                className="update-btn"
+                onClick={openCreateChannel}
+              >
                 채널생성
               </button>
             </div>
@@ -164,6 +169,9 @@ const Mypage = () => {
                         alt="프로필 미리보기"
                       />
                     )}
+                    <div className="user-img-ikon">
+                      <FaCamera />
+                    </div>
                   </label>
                   <div className="info-change-text">
                     * 프로필사진 변경에는 100pt가 소모됩니다.
@@ -175,13 +183,15 @@ const Mypage = () => {
                   </div>
                   {userDTO.userPassword != null ? (
                     <div
-                      className="change-password"
+                      id="password-update"
+                      className="update-btn"
                       onClick={() => setIsChange(!isChange)}
                     >
                       비밀번호 변경{" "}
                     </div>
                   ) : (
                     <div
+                      className="update-btn"
                       onClick={() =>
                         (window.location.href =
                           "https://accounts.kakao.com/weblogin/find_password?continue=%2Flogin%3Fcontinue%3Dhttps%253A%252F%252Fcs.kakao.com%252Fhelps_html%252F1073185489%253Flocale%253Dko%26talk_login%3D&lang=ko")
@@ -191,10 +201,10 @@ const Mypage = () => {
                     </div>
                   )}
                   <div className="update-btn-box">
-                    <button id="user-img-delete" onClick={deleteImg}>
+                    <button className="update-btn" onClick={deleteImg}>
                       이미지 삭제
                     </button>
-                    <button id="user-img-reset" onClick={resetImg}>
+                    <button className="update-btn" onClick={resetImg}>
                       이미지 되돌리기
                     </button>
                   </div>
@@ -229,7 +239,11 @@ const Mypage = () => {
                     }
                   />
                   <div className="change-submit-box">
-                    <button id="change-submit" onClick={submit}>
+                    <button
+                      className="update-btn"
+                      id="change-submit"
+                      onClick={submit}
+                    >
                       변경사항 수정
                     </button>
                   </div>
