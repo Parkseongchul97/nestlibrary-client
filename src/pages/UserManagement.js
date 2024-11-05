@@ -137,7 +137,6 @@ const UserManagement = ({ channelCode }) => {
   const loginUser = async () => {
     const response = await loginUserChannelGrade(channelCode);
     setLoginDto(response.data);
-    console.log(response.data);
   };
 
   useEffect(() => {

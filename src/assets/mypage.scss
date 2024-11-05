@@ -7,6 +7,8 @@
   .info-box {
     background-color: #f4f4f4;
     height: 550px;
+    font-family: "Pretendard Variable";
+    font-style: normal;
   }
   .info-change-header {
     text-align: center;
@@ -48,7 +50,7 @@
         border: 1px solid #cdcdcd;
         margin-bottom: 3px;
       }
-      .create-channel {
+      #create-channel {
         width: 100px;
       }
     }
@@ -90,12 +92,33 @@
           height: 102px;
           cursor: pointer;
           &:hover {
-            border: 1px solid red;
+            #preview-img {
+              opacity: 0.3;
+            }
           }
+
           #preview-img {
             border-radius: 50%;
             height: 100px;
             width: 100px;
+          }
+          .user-img-ikon {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            svg {
+              font-size: 40px;
+              position: absolute;
+              opacity: 0;
+            }
+            &:hover {
+              svg {
+                opacity: 1;
+              }
+            }
           }
         }
         .info-change-text {
@@ -143,8 +166,6 @@
           justify-content: flex-end;
           flex-grow: 1;
         }
-        #change-submit {
-        }
       }
       .info-change-text {
         padding: 5px;
@@ -152,4 +173,24 @@
       }
     }
   }
+}
+.update-btn {
+  cursor: pointer;
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  border: none;
+  padding: 5px 8px;
+  border-radius: 5px;
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.9rem;
+  &:hover {
+    background-color: #444444;
+  }
+}
+#password-update {
+  width: 150px;
 }

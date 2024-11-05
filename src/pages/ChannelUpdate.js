@@ -11,15 +11,9 @@ import {
 } from "../api/channel";
 import "../assets/channelUpdate.scss";
 import { TbXboxX } from "react-icons/tb";
-import { IoIosArrowForward } from "react-icons/io";
-
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { checkEmail, sendCode } from "../api/email";
-import { findUser as byNickname } from "../api/message";
-import { useQuery } from "@tanstack/react-query";
-import UserMenu from "../components/user/UserMenu";
-import FindUser from "../components/user/FindUser";
 import UserManagement from "./UserManagement";
 import { loginUserChannelGrade } from "../api/management";
 
@@ -40,10 +34,6 @@ const ChannelUpdate = () => {
     channelImg: null,
     change: 0,
   });
-  const [isOpen, setIsOpen] = useState(false);
-  const [inputNickname, setInputNickname] = useState("");
-  const [toNickname, setToNickname] = useState(""); //
-  const [viewNickname, setViewNickname] = useState("");
 
   //  업데이트 전  채널 정보들
   const [channelInfos, setChannelInfos] = useState({
@@ -72,16 +62,6 @@ const ChannelUpdate = () => {
       }
     }
   };
-
-  const {
-    data: findUser,
-    isLoading,
-    errors,
-  } = useQuery({
-    queryKey: ["findUser", toNickname],
-    queryFn: () => byNickname(toNickname),
-    enabled: toNickname.length > 1,
-  });
 
   useEffect(() => {
     update();
@@ -173,21 +153,6 @@ const ChannelUpdate = () => {
     }
   };
 
-  const findSubmit = () => {
-    setToNickname(inputNickname);
-    setIsOpen(true);
-  };
-  const selectedUser = (targetUser) => {
-    // 여기서 필요한곳에 타겟 유저.필요한정보 담기
-    setViewNickname(targetUser?.userNickname);
-  };
-  const deleteToUser = () => {
-    // 여기서 타겟유저 정보 담아둔거 날리기
-    setToNickname("");
-    setViewNickname("");
-    setInputNickname("");
-  };
-
   const getOpenType = (data) => {
     setView(data);
   };
@@ -195,7 +160,6 @@ const ChannelUpdate = () => {
   const loginUser = async () => {
     const response = await loginUserChannelGrade(channelCode);
     setLoginDTO(response.data);
-    console.log(response.data);
   };
 
   return (

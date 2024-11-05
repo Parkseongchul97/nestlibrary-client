@@ -8,6 +8,7 @@ import {
 } from "../../api/comment";
 import "../../assets/comment.scss";
 import UserMenu from "../user/UserMenu";
+import { PiArrowBendDownRightBold } from "react-icons/pi";
 
 const CommentComponent = ({
   channelCode,
@@ -193,6 +194,7 @@ const CommentComponent = ({
           {newReComment.commentParentsCode === comment.commentCode && (
             <div className="re-comment-form-box">
               <div className="re-comment-form">
+                <PiArrowBendDownRightBold />
                 <input
                   type="text"
                   placeholder="답글 추가.."

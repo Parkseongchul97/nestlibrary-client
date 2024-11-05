@@ -66,13 +66,6 @@ const Header = ({ onSearch }) => {
     event.preventDefault();
   };
 
-  const hidenTogle = () => {
-    /*
-    const div = document.querySelector("#search-hidden");
-    div.style = "display: block";*/
-    setIsSearch(true);
-  };
-
   const closeLogin = () => {
     setPage(false);
   };
@@ -159,7 +152,7 @@ const Header = ({ onSearch }) => {
           </div>
 
           {token === null ? (
-            <div className="header-right-user">
+            <div className="header-right-none-user">
               <Link id="login-btn" onClick={openPage} className="info">
                 로그인
               </Link>
@@ -188,7 +181,7 @@ const Header = ({ onSearch }) => {
               {isPush && (
                 <div className="push-list-box">
                   {pushCount.data.map((push) => (
-                    <PushList push={push} />
+                    <PushList push={push} key={push?.pushCode} />
                   ))}
                 </div>
               )}

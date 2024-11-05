@@ -26,7 +26,7 @@
 }
 .comment-content-box {
   margin-left: 40px;
-  border-left: 0.5px solid #454545;
+  border-left: 0.5px solid #cdcdcd;
 }
 .comment-content,
 .comment-content-writer,
@@ -34,8 +34,9 @@
   display: flex;
   padding: 10px;
   flex-direction: column;
-  background-color: #ddd;
-  border: 0.5px solid;
+  background-color: #f4f4f4;
+  border-top: 1px solid #cdcdcd;
+
   margin-bottom: 5px;
   border-left: none;
   .comment-text {
@@ -70,6 +71,10 @@
     justify-content: flex-end;
     align-items: center;
     margin-bottom: 5px;
+    svg {
+      font-size: 2rem;
+      margin-right: 3px;
+    }
     .re-comment-add {
       padding-left: 50px;
       width: 80%;

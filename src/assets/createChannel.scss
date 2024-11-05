@@ -1,28 +1,120 @@
 .create-channel-box {
   display: flex;
-  justify-content: center;
   flex-direction: column;
-
   font-family: "Pretendard Variable";
   font-style: normal;
   font-weight: 600;
   background-color: #ffffff;
-  width: 1000px;
-  height: 500px;
+  width: 500px;
+  height: 350px;
   position: fixed;
   top: 20%;
-  left: 23%;
+  left: 36%;
   border-radius: 8px;
   padding: 20px;
-  color: #7e8e9f;
-  opacity: 1;
+  color: #444444;
   z-index: 20;
-  .channel-input-file {
-    display: none;
+  .create-channel-header {
+    font-size: 2rem;
+    text-align: center;
+    padding: 5px;
+    border-bottom: 0.5px solid #cdcdcd;
+    margin-bottom: 10px;
   }
-  #preview-channel-img {
-    width: 800px;
-    height: 200px;
+  .create-box {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    padding-top: 20px;
+    .create-channel-left {
+      padding: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: column;
+      align-self: center;
+      label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        #preview-channel-img {
+          background-color: white;
+          border: 1px solid;
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          margin-bottom: 10px;
+        }
+        &:hover {
+          #preview-channel-img {
+            opacity: 0.3;
+          }
+        }
+        .create-channel-img-ikon {
+          width: 100px;
+          height: 100px;
+          position: absolute;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          svg {
+            font-size: 40px;
+            position: absolute;
+            opacity: 0;
+          }
+          &:hover {
+            svg {
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+    .create-channel-right {
+      display: flex;
+      flex-direction: column;
+      width: 500px;
+      align-items: flex-end;
+      h1 {
+        width: 100%;
+        padding: 5px;
+        text-align: center;
+      }
+      .create-channel-input-box {
+        display: flex;
+        padding: 5px;
+        .channel-input-text {
+          padding: 5px;
+          padding-left: 10px;
+        }
+      }
+    }
+  }
+  .create-channel-bottom {
+    border-top: 0.5px solid #cdcdcd;
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .create-channel-btn {
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    border: none;
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-family: "Pretendard Variable";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 0.9rem;
+    &:hover {
+      background-color: #444444;
+    }
   }
 }
 #create-channel-bg {
@@ -32,4 +124,10 @@
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
+}
+.channel-input-file {
+  display: none;
+}
+#create-channel-out {
+  margin-top: 10px;
 }
