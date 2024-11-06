@@ -57,9 +57,10 @@
         }
       }
       .post-text {
-        display: flex;
-        justify-content: flex-start;
-        width: 500px;
+        padding: 5px;
+        display: block;
+        width: 100%;
+        max-width: 480px;
         text-wrap: nowrap;
         font-size: 0.9rem;
         font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",

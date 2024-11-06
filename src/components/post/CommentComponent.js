@@ -114,7 +114,7 @@ const CommentComponent = ({
     <div className="comment-content-box" id={"comment-code-" + id}>
       {comment?.commentContent === null ? (
         <div className="comment-content">
-          <p className="none-comment">삭제된 댓글입니다...</p>
+          <div className="none-comment">삭제된 댓글입니다...</div>
         </div>
       ) : (
         <div

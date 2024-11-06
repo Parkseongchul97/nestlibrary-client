@@ -143,14 +143,18 @@
     justify-content: flex-end;
     .comment-submit {
       text-wrap: nowrap;
-      background-color: #ddd;
+      background-color: black;
+      color: white;
       cursor: pointer;
       padding: 5px 10px;
       font-weight: bold;
       font-size: 1.2rem;
       border: none;
-      border-radius: 10px;
+      border-radius: 15px;
       margin: 0px 3px;
+      &:hover {
+        background-color: #444;
+      }
     }
   }
 }

@@ -37,6 +37,11 @@
         background-color: white;
         border-radius: 50%;
       }
+      .channel-header-left-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
     }
 
     .channel-header-right {

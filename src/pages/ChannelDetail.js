@@ -176,6 +176,12 @@ const ChannelDetail = () => {
 
             <div className="channel-header-right">
               <div className="channel-header-auth">
+                {(loginUserGrade?.managementUserStatus === "host" ||
+                  loginUserGrade?.managementUserStatus === "admin") && (
+                  <Link className="write-btn" to={`/update/${channelCode}`}>
+                    채널수정
+                  </Link>
+                )}
                 <p>구독자수 {channel?.favoriteCount}</p>
                 {!token ? null : data?.data ? (
                   <FaHeart
@@ -191,10 +197,6 @@ const ChannelDetail = () => {
                   />
                 )}
 
-                {(loginUserGrade?.managementUserStatus === "host" ||
-                  loginUserGrade?.managementUserStatus === "admin") && (
-                  <Link to={`/update/${channelCode}`}>채널수정</Link>
-                )}
                 {token && (
                   <Link
                     className="write-btn"
