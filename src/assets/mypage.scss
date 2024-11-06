@@ -131,8 +131,11 @@
         flex-direction: column;
         justify-content: space-between;
 
-        .point-text {
+        .privte-box {
+          display: flex;
+          justify-content: space-between;
         }
+
         .change-password {
           border: 1px solid;
         }

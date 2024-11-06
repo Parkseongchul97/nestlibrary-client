@@ -55,3 +55,6 @@ export const updatePass = async (userEmail, userPassword) => {
 export const userPageInfo = async (userEmail) => {
   return await instance.get(`/userInfo/${userEmail}`);
 };
+export const removeUser = async () => {
+  return await authorize.delete(`remove`);
+};
