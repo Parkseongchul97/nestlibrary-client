@@ -181,7 +181,7 @@
   cursor: pointer;
   background-color: black;
   color: white;
-  display: flex;
+
   justify-content: center;
   border: none;
   padding: 5px 8px;
@@ -194,6 +194,52 @@
     background-color: #444444;
   }
 }
-#password-update {
-  width: 150px;
+
+.email-auth {
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 600;
+  width: 400px;
+  height: 220px;
+  padding: 20px;
+  position: fixed;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 20px;
+  top: 25%;
+  right: 40%;
+  display: flex;
+  .code-header {
+    text-align: center;
+    padding: 10px;
+    border-bottom: 0.5px solid #cdcdcd;
+    margin-bottom: 5px;
+  }
+  p {
+    padding-top: 5px;
+    text-align: center;
+  }
+  .code-input-box {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    padding: 20px;
+    border-bottom: 0.5px solid #cdcdcd;
+    .code-input {
+      width: 80%;
+      padding: 5px;
+      padding-left: 10px;
+    }
+  }
+
+  .code-btn-box {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    button {
+      margin: 5px;
+      align-self: flex-end;
+      height: 30px;
+    }
+  }
 }

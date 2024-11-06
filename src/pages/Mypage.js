@@ -307,16 +307,30 @@ const Mypage = () => {
         }}
       />
       {isDelete && (
-        <>
-          <div>채널 삭제는 이메일 인증코드가 필요 합니다 </div>
-          <input
-            type="text"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-          />
-          <button onClick={getCode}>발송</button>
-          <button onClick={submitCode}>확인</button>
-        </>
+        <div className="email-auth">
+          <div className="code-header">회원 탈퇴</div>
+          <p>회원 탈퇴는 이메일 인증코드가 필요 합니다 </p>
+          <div className="code-input-box">
+            <button className="update-btn" onClick={getCode}>
+              발송
+            </button>
+            <input
+              placeholder="6자리 코드를 입력해 주십시오"
+              className="code-input"
+              type="text"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+            />
+          </div>
+          <div className="code-btn-box">
+            <button className="update-btn" onClick={() => setIsDelete(false)}>
+              취소
+            </button>
+            <button className="update-btn" onClick={submitCode}>
+              확인
+            </button>
+          </div>
+        </div>
       )}
 
       {createPage && <CreateChannel onClose={closeCreateChannel} />}
