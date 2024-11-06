@@ -31,6 +31,7 @@
 .comment-content,
 .comment-content-writer,
 .comment-content-my {
+  min-height: 100px;
   display: flex;
   padding: 10px;
   flex-direction: column;
@@ -39,6 +40,12 @@
 
   margin-bottom: 5px;
   border-left: none;
+  .none-comment {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-grow: 1;
+  }
   .comment-text {
     padding-left: 50px;
   }
@@ -52,6 +59,14 @@
       border: none;
       border-radius: 10px;
       margin: 0px 3px;
+      font-family: "Pretendard Variable";
+      font-style: normal;
+      font-weight: 600;
+      background-color: black;
+      color: white;
+      &:hover {
+        background-color: #444;
+      }
     }
   }
 }
@@ -85,14 +100,18 @@
       justify-content: flex-end;
       .re-comment-submit {
         text-wrap: nowrap;
-        background-color: #ddd;
+        background-color: black;
+        color: white;
         cursor: pointer;
         padding: 5px 10px;
         font-weight: bold;
         font-size: 1.2rem;
         border: none;
-        border-radius: 10px;
+        border-radius: 15px;
         margin: 0px 3px;
+        &:hover {
+          background-color: #444;
+        }
       }
     }
   }

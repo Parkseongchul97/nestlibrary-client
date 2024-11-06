@@ -48,6 +48,9 @@
           overflow: hidden;
           text-overflow: ellipsis;
           display: block;
+          padding: 5px;
+          max-width: 170px;
+          text-wrap: nowrap;
         }
         &:hover {
           color: #5f5f5f;
