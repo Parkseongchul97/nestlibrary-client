@@ -4,6 +4,7 @@ import MessagesDetail from "../messages/MessagesDetail";
 import { useEffect, useState } from "react";
 import { IoMailOpenOutline, IoMailOutline } from "react-icons/io5";
 import TimeFormat from "../TimeFormat";
+import { useQueryClient } from "@tanstack/react-query";
 const MessageList = ({
   message,
   setIsOpen,
@@ -15,10 +16,12 @@ const MessageList = ({
   isOpenUser,
   userMenuToggle,
   openDetail,
+  setIsOpenMessage,
+  setToUser,
 }) => {
   const { user } = useAuth();
   const [isCheck, setIsCheck] = useState(isChecked);
-
+  const queryClient = useQueryClient();
   const [notRead, setNotRead] = useState(false);
   const listChange = (messagesCode) => {
     const list = [...checkedList, messagesCode];
@@ -36,6 +39,9 @@ const MessageList = ({
       }
       setCheckedList(updatedList);
     }
+  };
+  const resetMessage = () => {
+    queryClient.invalidateQueries({ queryKey: ["messageList"] });
   };
   useEffect(() => {
     setIsCheck(isChecked);
@@ -66,6 +72,7 @@ const MessageList = ({
             onClick={() => {
               openDetail(message.messagesCode);
               setNotRead(true);
+              resetMessage();
             }}
             className="message-link"
           >
@@ -76,7 +83,6 @@ const MessageList = ({
         <div className="message-right">
           {user.userEmail === message.messagesFromUser.userEmail ? (
             <div className="message-user">
-              <div className="user-left">수신자</div>
               <UserMenu
                 user={message.messagesToUser}
                 isOpenUser={isOpenUser === message.messagesCode}
@@ -85,7 +91,6 @@ const MessageList = ({
             </div>
           ) : (
             <div className="message-user">
-              <div className="user-left">발신자</div>
               <UserMenu
                 user={message.messagesFromUser}
                 isOpenUser={isOpenUser === message.messagesCode}
@@ -126,6 +131,9 @@ const MessageList = ({
           setIsOpen={setIsOpen}
           messagesCode={message?.messagesCode}
           key={message?.messagesCode}
+          viewType={viewType}
+          setIsOpenMessage={setIsOpenMessage}
+          setToUser={setToUser}
         />
       )}
     </>

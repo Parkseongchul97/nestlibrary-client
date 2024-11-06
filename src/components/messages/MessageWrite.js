@@ -4,7 +4,8 @@ import { addMessage } from "../../api/message";
 import "../../assets/messageWrite.scss";
 import { Link } from "react-router-dom";
 import FindUser from "../user/FindUser";
-const MessageWrite = ({ toUser, setIsOpenMessage }) => {
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
+const MessageWrite = ({ toUser, setIsOpenMessage, setViewType }) => {
   const { user } = useAuth(); // 발신자(로그인유저)
   const [message, setMessage] = useState({
     messagesTitle: "",
@@ -22,12 +23,16 @@ const MessageWrite = ({ toUser, setIsOpenMessage }) => {
     // 단순 화면단에 보일 닉네임
     toUser !== undefined ? toUser.nickname : ""
   );
+  const queryClient = useQueryClient();
 
   const submitMessage = async () => {
     const response = await addMessage(message);
     setIsOpenMessage(false);
     if (response.data) {
       alert("발송 완료!");
+
+      queryClient.invalidateQueries({ queryKey: ["messageList"] });
+      setViewType("from");
     }
   };
   const findSubmit = () => {

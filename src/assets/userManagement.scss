@@ -74,50 +74,44 @@ table {
   border-collapse: collapse;
 
   overflow: hidden;
-
-  tr {
-    line-height: 2;
-    border-bottom: 0.5px solid #cdcdcd;
+  thead {
+    font-weight: bold;
+    color: #fff;
+    background: #73685d;
+    text-align: center;
+    tr {
+      position: relative;
+      background-color: black;
+      line-height: 2;
+      border-bottom: 0.5px solid #cdcdcd;
+      th {
+        padding: 10px;
+        line-height: 2;
+        text-align: center;
+        vertical-align: middle;
+        height: 50px;
+      }
+    }
   }
-}
-
-th {
-  text-align: center;
-}
-
-thead {
-  font-weight: bold;
-  color: #fff;
-  background: #73685d;
-  text-align: center;
-  th {
-    padding: 10px;
-    line-height: 2;
+  tbody {
+    tr {
+      border-bottom: 0.5px solid #cdcdcd;
+      td {
+        padding: 10px;
+        background: #fff;
+        text-align: center;
+        height: 50px;
+      }
+    }
   }
-}
-
-td,
-th {
-  padding: 2px;
-  vertical-align: middle;
-  height: 50px;
 }
 
 .btn:hover {
   background: #e76f00;
 }
-td {
-  border-bottom: 1px solid black;
-  background: #fff;
-  text-align: center;
-}
 
-tbody {
-  td {
-    padding: 10px;
-  }
-}
 .search-form {
+  position: relative;
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -168,9 +162,6 @@ tbody {
   align-items: center;
 }
 
-.custom-th {
-  width: 120px;
-}
 .channelUpdate-authorization {
   font-size: 3rem;
   background-color: white;
@@ -181,6 +172,11 @@ tbody {
   border: 1px solid black;
   border-radius: 20px;
 }
+
+.custom-th {
+  width: 120px;
+}
+
 .management-link {
   tr {
     cursor: pointer;

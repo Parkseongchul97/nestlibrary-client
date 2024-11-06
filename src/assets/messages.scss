@@ -2,6 +2,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 600;
 }
 .message-big-box {
   display: flex;
@@ -99,6 +103,7 @@
   width: 300px;
   display: flex;
   align-items: center;
+  justify-content: center;
   .user-left {
     padding-right: 20px;
   }
@@ -118,6 +123,7 @@
   .message-left {
     flex-grow: 1;
     display: flex;
+
     input {
       cursor: pointer;
     }
@@ -133,6 +139,10 @@
     width: 100%;
     .message-center {
       align-self: center;
+      width: 525px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
   .message-right {

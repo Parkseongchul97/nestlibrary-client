@@ -2,9 +2,9 @@
   font-family: "Pretendard Variable";
   font-style: normal;
   font-weight: 600;
-  background-color: #ffffff;
-  width: 400px;
-  height: 400px;
+
+  width: 500px;
+  height: 300px;
   position: fixed;
   top: 25%;
   left: 40%;
@@ -14,26 +14,26 @@
   opacity: 1;
   z-index: 20;
   border: 1px solid;
+  background-color: #f4f4f4;
+
   .message-detail-body {
-    .message-user-box{
+    .message-user-box {
       padding: 5px;
       display: flex;
       flex-direction: column;
       border-bottom: 1px solid #cdcdcd;
       margin-bottom: 10px;
       .message-to-user,
-      .message-from-user{
-        border-top: 1px solid #cdcdcd;
-       display: flex;
-       align-items: center;
-       .user-profile-box{
-        padding-left: 8px;
-       
-       }
-      }
+      .message-from-user {
+        display: flex;
+        align-items: center;
 
+        .user-profile-box {
+          padding-left: 8px;
+        }
+      }
     }
-   
+
     button {
       align-items: center;
       height: 2.5rem;
@@ -43,14 +43,39 @@
       background-color: #f7f8f9;
       margin-bottom: 1rem;
     }
-    .message-detail-content{}
+    .message-detail-content {
+      overflow-y: scroll;
+
+      background-color: white;
+      height: 121px;
+
+      border-radius: 5px;
+      padding: 3px;
+    }
   }
 
   .message-detail-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 0;
+    flex-direction: column;
+    .message-button-type {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      justify-content: space-between;
+    }
+    .message-type {
+      font-size: 2rem;
+      color: black;
+      width: 50%;
+      display: flex;
+      justify-content: center;
+    }
+    .header-balance {
+      width: 32px;
+    }
+
     width: 100%;
     .close {
       cursor: pointer;
@@ -58,11 +83,11 @@
       height: 2rem;
       border-radius: 6px;
       border: 1px solid #f7f8f9;
-      background-color: #f7f8f9;
+      background-color: #d5d5d5;
     }
     h3 {
       font-weight: bold;
-      font-size: 1.5rem;
+      font-size: 1rem;
       color: black;
     }
     .balance {

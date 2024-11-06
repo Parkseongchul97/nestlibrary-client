@@ -21,6 +21,10 @@ const Messages = () => {
   let page = query.get("page") || 1;
   const [allCheck, setAllCheck] = useState(false);
   const [checkedList, setCheckedList] = useState([]);
+  const [toUsers, setToUsers] = useState({
+    email: "",
+    nickname: "",
+  });
 
   const [searchKeyword, setSearchKeyword] = useState(""); // 검색어
   const [searchTarget, setSearchTarget] = useState("title"); // 기본
@@ -112,6 +116,14 @@ const Messages = () => {
     setAllCheck(false);
   };
   useEffect(() => {
+    if (viewType === "open") {
+      if (!(isOpen > 1)) {
+        queryClient.invalidateQueries({ queryKey: ["messageList"] });
+      }
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
     setCheckedList(newCheckList);
   }, [newCheckList]);
 
@@ -133,8 +145,13 @@ const Messages = () => {
     queryClient.invalidateQueries({ queryKey: ["messageList"] });
   };
   useEffect(() => {
+    if (viewType === "open") {
+      if (isOpen > 0) {
+        return;
+      }
+    }
     queryClient.invalidateQueries({ queryKey: ["messageList"] });
-  }, [page, viewType]);
+  }, [page, viewType, isOpen]);
 
   useEffect(() => {
     if (
@@ -186,20 +203,7 @@ const Messages = () => {
               >
                 안읽은 쪽지
               </Link>
-              <Link
-                className={
-                  viewType === "all"
-                    ? "messages-selected-type"
-                    : "messages-type"
-                }
-                to="#"
-                onClick={() => {
-                  setViewType("all");
-                  AllListRemove();
-                }}
-              >
-                모든 쪽지
-              </Link>
+
               <Link
                 className={
                   viewType === "to" ? "messages-selected-type" : "messages-type"
@@ -246,7 +250,9 @@ const Messages = () => {
                     ))}
                   <div className="messages-header-title">제목</div>
                 </div>
-                <div className="messages-header-user">유저</div>
+                <div className="messages-header-user">
+                  {viewType === "from" ? "받은사람" : "보낸사람"}
+                </div>
                 <div className="messages-header-time">시간</div>
               </div>
               {/*메세지 컴포넌트 출력*/}
@@ -270,7 +276,9 @@ const Messages = () => {
                       checkedList={checkedList}
                       viewType={viewType}
                       isOpenUser={isOpenUser}
+                      setIsOpenMessage={setIsOpenMessage}
                       userMenuToggle={userMenuToggle}
+                      setToUser={setToUsers}
                     />
                   ))}
                 </div>
@@ -308,6 +316,13 @@ const Messages = () => {
           <MessageWrite
             isOpenMessage={isOpenMessage}
             setIsOpenMessage={setIsOpenMessage}
+            setViewType={setViewType}
+            toUser={{
+              toUser: {
+                email: toUsers.email,
+                nickname: toUsers.nickname,
+              },
+            }}
           />
         )}
       </div>

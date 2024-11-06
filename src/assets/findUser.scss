@@ -5,6 +5,9 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 600;
 
   .find-header {
     display: flex;
@@ -33,6 +36,9 @@
       padding-left: 10px;
       width: 100%;
       margin-right: 10px;
+      font-family: "Pretendard Variable";
+      font-style: normal;
+      font-weight: 600;
     }
     button {
       width: 60px;
@@ -45,6 +51,9 @@
       height: 30px;
       background-color: #f5f5f5;
       color: black;
+      font-family: "Pretendard Variable";
+      font-style: normal;
+      font-weight: 600;
       cursor: pointer;
       &:hover {
         background-color: #d5d5d5;
