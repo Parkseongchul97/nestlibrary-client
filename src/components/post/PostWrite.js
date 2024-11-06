@@ -45,6 +45,8 @@ const PostWrite = () => {
   };
 
   useEffect(() => {
+    console.log(isPost);
+    console.log(post);
     channelInfo();
   }, []);
 

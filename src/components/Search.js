@@ -19,6 +19,7 @@ const Search = ({
   return (
     <div className="search">
       <input
+        className="search-input"
         type="text"
         value={searchKeyword}
         onChange={(e) => setSearchKeyword(e.target.value)}
@@ -29,6 +30,7 @@ const Search = ({
       />
       {/*2번 호출되는 상황 또발생 */}
       <select
+        className="search-select"
         value={searchTarget}
         onChange={(e) => setSearchTarget(e.target.value)}
       >
@@ -45,7 +47,9 @@ const Search = ({
           </>
         )}
       </select>
-      <button onClick={onSubmit}>검색</button>
+      <button className="search-btn" onClick={onSubmit}>
+        검색
+      </button>
     </div>
   );
 };
