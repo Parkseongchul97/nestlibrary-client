@@ -83,7 +83,7 @@ const MessageList = ({
         <div className="message-right">
           {user.userEmail === message.messagesFromUser?.userEmail ? (
             <div className="message-user">
-              {message.messagesToUser !== null ? (
+              {message.messagesToUser ? (
                 <UserMenu
                   user={message.messagesToUser}
                   isOpenUser={isOpenUser === message.messagesCode}
@@ -95,7 +95,7 @@ const MessageList = ({
             </div>
           ) : (
             <div className="message-user">
-              {message.messagesFromUser !== null ? (
+              {message.messagesFromUser ? (
                 <UserMenu
                   user={message.messagesFromUser}
                   isOpenUser={isOpenUser === message.messagesCode}

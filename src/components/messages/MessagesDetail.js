@@ -38,7 +38,7 @@ const MessagesDetail = ({
           <div className="message-user-box">
             {viewType === "from" ? (
               <div className="message-from-user">
-                {message?.messageToUser !== null ? (
+                {message?.messagesToUser ? (
                   <UserMenu user={message?.messagesToUser} />
                 ) : (
                   <div>탈퇴한 회원입니다</div>
@@ -46,7 +46,7 @@ const MessagesDetail = ({
               </div>
             ) : (
               <div className="message-to-user">
-                {message?.messagesFromUser !== null ? (
+                {message?.messagesFromUser ? (
                   <UserMenu user={message?.messagesFromUser} />
                 ) : (
                   <div>탈퇴한 회원입니다</div>
@@ -57,7 +57,11 @@ const MessagesDetail = ({
           <div className="message-detail-content">
             {message?.messagesContent}
           </div>
-          {viewType === "from" ? (
+        </div>
+        <div className="message-detail-bottom">
+          {message?.messagesToUser &&
+          message?.messagesFromUser &&
+          viewType === "from" ? (
             <div
               className="message-resend"
               onClick={() => {
@@ -72,19 +76,22 @@ const MessagesDetail = ({
               또 보내기
             </div>
           ) : (
-            <div
-              className="message-resend"
-              onClick={() => {
-                setIsOpenMessage(true);
-                setIsOpen(0);
-                setToUser({
-                  email: message?.messagesFromUser.userEmail,
-                  nickname: message?.messagesFromUser.userNickname,
-                });
-              }}
-            >
-              답장하기
-            </div>
+            message?.messagesToUser &&
+            message?.messagesFromUser && (
+              <div
+                className="message-resend"
+                onClick={() => {
+                  setIsOpenMessage(true);
+                  setIsOpen(0);
+                  setToUser({
+                    email: message?.messagesFromUser.userEmail,
+                    nickname: message?.messagesFromUser.userNickname,
+                  });
+                }}
+              >
+                답장하기
+              </div>
+            )
           )}
         </div>
       </div>
