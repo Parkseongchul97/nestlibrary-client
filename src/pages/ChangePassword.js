@@ -38,6 +38,7 @@ const ChangePassword = ({ onClose }) => {
     } else if (response.data != null) {
       if (newCheck) {
         await updatePass(user.userEmail, newpass);
+        alert("비밀번호 변경에 성공하셨습니다!");
         authLogout();
         window.location.href = "/";
       }

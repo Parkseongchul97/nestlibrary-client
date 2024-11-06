@@ -113,7 +113,7 @@
     align-items: center;
   }
   .postList-title {
-    width: 500px;
+    width: 450px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -152,6 +152,17 @@
   border-bottom: 0.5px solid #acacac;
   justify-content: space-between;
   padding: 5px;
+  .post-link {
+    display: block;
+    width: 100%;
+    max-width: 450px;
+    .RecentPost-text {
+      width: 100%;
+      text-wrap: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 }
 
 .RecentPost-channel-name {
@@ -179,9 +190,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.RecentPost-text {
-  width: 500px;
-}
+
 .RecentPost-at {
   width: 100px;
   display: flex;

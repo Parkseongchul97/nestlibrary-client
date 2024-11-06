@@ -107,7 +107,7 @@ const CommentComponent = ({
       }
   };
   useEffect(() => {
-    setIsPostUser(isWriter === comment.user.userEmail);
+    setIsPostUser(isWriter === comment.user?.userEmail);
   }, [isWriter]);
 
   return (

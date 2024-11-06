@@ -170,7 +170,7 @@ const ChannelDetail = () => {
                 </Link>
 
                 <p>{channel?.channelInfo}</p>
-                <p>생성일 {channel?.channelCreatedAt}</p>
+                <p>Since : {channel?.channelCreatedAt.split("T")[0]}</p>
               </div>
             </div>
 
