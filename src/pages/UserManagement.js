@@ -22,6 +22,7 @@ import "../assets/login.scss";
 
 const UserManagement = ({ channelCode }) => {
   const { user } = useAuth();
+
   const [isOpen, setIsOpen] = useState(false);
   const [isSearch, setIsSearch] = useState(true);
   const [inputNickname, setInputNickname] = useState("");
@@ -203,6 +204,7 @@ const UserManagement = ({ channelCode }) => {
       await addRole(managementDTO);
       setIsOpen(false);
       banList();
+      setTitle("차단리스트");
       return;
     }
   };

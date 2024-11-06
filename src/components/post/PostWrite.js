@@ -49,6 +49,9 @@ const PostWrite = () => {
   }, []);
 
   useEffect(() => {
+    console.log(post);
+  }, [post]);
+  useEffect(() => {
     const firstTag =
       post?.channelTag?.channelTagName !== undefined
         ? Channel.channelTag.find(
@@ -168,13 +171,17 @@ const PostWrite = () => {
       alert("내용을 입력해주세요");
       return;
     }
-
+    console.log("포스트");
+    console.log(post);
     const response = await update(post);
+
+    console.log(response.data);
     if (response.data.managementUserStatus === "ban") {
       alert("글쓰기가 제한되어있습니다");
       return;
     }
-    window.location.href = `/channel/${response.data?.channelCode}/post/${response.data?.postCode}`;
+
+    window.location.href = `/channel/${response.data?.channel.channelCode}/post/${response.data?.postCode}`;
   };
 
   return (
