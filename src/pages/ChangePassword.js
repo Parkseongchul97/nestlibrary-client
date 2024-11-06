@@ -11,7 +11,7 @@ const ChangePassword = ({ onClose }) => {
   const [newpass, setNewPass] = useState("");
   const [newpass2, setNewPass2] = useState("");
   const [loginUser, setLoginUser] = useState({
-    userEmail: user.userEmail,
+    userEmail: user !== null ? user.userEmail : "",
     userPassword: "",
   });
   const pwdRegExp =
@@ -32,16 +32,14 @@ const ChangePassword = ({ onClose }) => {
   }, [newpass, newpass2]);
 
   const check = async () => {
-    alert(newCheck);
     const response = await login(loginUser);
     if (response == "error") {
       alert("현재 비밀번호 입력 오류 입니다");
     } else if (response.data != null) {
       if (newCheck) {
         await updatePass(user.userEmail, newpass);
-
-        window.location.href = "/";
         authLogout();
+        window.location.href = "/";
       }
     }
   };

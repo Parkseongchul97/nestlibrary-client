@@ -32,11 +32,13 @@ const Mypage = () => {
   };
   const { user, login, logout } = useAuth();
   const [previewUrl, setPreviewUrl] = useState(
-    user.userImgUrl != null
-      ? "http://192.168.10.51:8083/user/" +
+    user !== null
+      ? user.userImgUrl != null
+        ? "http://192.168.10.51:8083/user/" +
           user.userEmail +
           "/" +
           user.userImgUrl
+        : null
       : null
   );
 
@@ -82,11 +84,11 @@ const Mypage = () => {
   const resetImg = () => {
     setUserDTO({ ...userDTO, userImg: null });
     setPreviewUrl(
-      user.userImgUrl != null
+      user?.userImgUrl != null
         ? "http://192.168.10.51:8083/user/" +
-            user.userEmail +
+            user?.userEmail +
             "/" +
-            user.userImgUrl
+            user?.userImgUrl
         : null
     );
     setChangeImg(-1);
@@ -127,12 +129,19 @@ const Mypage = () => {
     // 기존꺼랑 바뀐거랑 비교 랑 포인트 소모는 백단에서
     // 무엇을 바꿨냐에 따라서 포인트 소모량 차이나게 담기
     const result = await updateUser(formData);
+
+    if (result.data === "") {
+      alert("포인트가 부족합니다!");
+      return;
+    }
+
     if (result.status === 200) {
       alert("정보수정 완료!");
       // 유저 정보 수정값 담아줘야함
       logout(true);
       login(result.data);
-      window.location.href = "/";
+
+      window.location.reload();
     } else {
       alert("회원정보를 수정할 수 없습니다!");
       navigate("/mypage");
@@ -203,36 +212,38 @@ const Mypage = () => {
                   <div className="point-text">
                     내 잔여 포인트 : {userDTO.userPoint}
                   </div>
-                  {userDTO.userPassword != null ? (
-                    <div className="privte-box">
+                  <div className="privte-box">
+                    {userDTO.userPassword != null ? (
+                      <>
+                        <div
+                          id="password-update"
+                          className="update-btn"
+                          onClick={() => setIsChange(!isChange)}
+                        >
+                          비밀번호 변경
+                        </div>
+                        <div
+                          id="remove-user"
+                          className="update-btn"
+                          onClick={() => {
+                            setIsDelete(!isDelete);
+                          }}
+                        >
+                          회원탈퇴
+                        </div>
+                      </>
+                    ) : (
                       <div
-                        id="password-update"
                         className="update-btn"
-                        onClick={() => setIsChange(!isChange)}
+                        onClick={() =>
+                          (window.location.href =
+                            "https://accounts.kakao.com/weblogin/find_password?continue=%2Flogin%3Fcontinue%3Dhttps%253A%252F%252Fcs.kakao.com%252Fhelps_html%252F1073185489%253Flocale%253Dko%26talk_login%3D&lang=ko")
+                        }
                       >
-                        비밀번호 변경
+                        비밀번호 변경{" "}
                       </div>
-                      <div
-                        id="remove-user"
-                        className="update-btn"
-                        onClick={() => {
-                          setIsDelete(!isDelete);
-                        }}
-                      >
-                        회원탈퇴
-                      </div>
-                    </div>
-                  ) : (
-                    <div
-                      className="update-btn"
-                      onClick={() =>
-                        (window.location.href =
-                          "https://accounts.kakao.com/weblogin/find_password?continue=%2Flogin%3Fcontinue%3Dhttps%253A%252F%252Fcs.kakao.com%252Fhelps_html%252F1073185489%253Flocale%253Dko%26talk_login%3D&lang=ko")
-                      }
-                    >
-                      비밀번호 변경{" "}
-                    </div>
-                  )}
+                    )}
+                  </div>
                   <div className="update-btn-box">
                     <button className="update-btn" onClick={deleteImg}>
                       이미지 삭제

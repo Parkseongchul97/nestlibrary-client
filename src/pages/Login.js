@@ -18,10 +18,19 @@ const Login = ({ onClose }) => {
 
   const submit = async () => {
     const result = await login(loginUser);
-    authLogin(result.data);
-    window.location.reload();
-    alert("로그인 성공!");
-    onClose();
+    console.log(result === "error");
+    if (result === "error") {
+      alert("아이디 또는 비밀번호가 틀립니다!");
+      setLoginUser({
+        userEmail: "",
+        userPassword: "",
+      });
+    } else {
+      authLogin(result.data);
+      window.location.reload();
+      alert("로그인 성공!");
+      onClose();
+    }
   };
 
   const find = async () => {

@@ -81,21 +81,29 @@ const MessageList = ({
         </div>
 
         <div className="message-right">
-          {user.userEmail === message.messagesFromUser.userEmail ? (
+          {user.userEmail === message.messagesFromUser?.userEmail ? (
             <div className="message-user">
-              <UserMenu
-                user={message.messagesToUser}
-                isOpenUser={isOpenUser === message.messagesCode}
-                userMenuToggle={() => userMenuToggle(message.messagesCode)}
-              />
+              {message.messagesToUser !== null ? (
+                <UserMenu
+                  user={message.messagesToUser}
+                  isOpenUser={isOpenUser === message.messagesCode}
+                  userMenuToggle={() => userMenuToggle(message.messagesCode)}
+                />
+              ) : (
+                <div>탈퇴한 회원입니다</div>
+              )}
             </div>
           ) : (
             <div className="message-user">
-              <UserMenu
-                user={message.messagesFromUser}
-                isOpenUser={isOpenUser === message.messagesCode}
-                userMenuToggle={() => userMenuToggle(message.messagesCode)}
-              />
+              {message.messagesFromUser !== null ? (
+                <UserMenu
+                  user={message.messagesFromUser}
+                  isOpenUser={isOpenUser === message.messagesCode}
+                  userMenuToggle={() => userMenuToggle(message.messagesCode)}
+                />
+              ) : (
+                <div>탈퇴한 회원입니다</div>
+              )}
             </div>
           )}
           <div className="maessage-right-right">

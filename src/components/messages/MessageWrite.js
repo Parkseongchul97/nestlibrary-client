@@ -28,6 +28,11 @@ const MessageWrite = ({ toUser, setIsOpenMessage, setViewType }) => {
   const submitMessage = async () => {
     const response = await addMessage(message);
     setIsOpenMessage(false);
+    console.log(response);
+    if (response.data === "") {
+      alert("포인트가 부족합니다! (50포인트 필요)");
+    }
+
     if (response.data) {
       alert("발송 완료!");
 

@@ -38,13 +38,19 @@ const MessagesDetail = ({
           <div className="message-user-box">
             {viewType === "from" ? (
               <div className="message-from-user">
-                <div>받은사람</div>
-                <UserMenu user={message?.messagesToUser} />
+                {message?.messageToUser !== null ? (
+                  <UserMenu user={message?.messagesToUser} />
+                ) : (
+                  <div>탈퇴한 회원입니다</div>
+                )}
               </div>
             ) : (
               <div className="message-to-user">
-                <div>보낸사람</div>
-                <UserMenu user={message?.messagesFromUser} />
+                {message?.messagesFromUser !== null ? (
+                  <UserMenu user={message?.messagesFromUser} />
+                ) : (
+                  <div>탈퇴한 회원입니다</div>
+                )}
               </div>
             )}
           </div>
