@@ -1,24 +1,24 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import PostManagement from "../components/post/PostManagement.js";
+import PostManagement from "../post/PostManagement.js";
 
-import "../assets/userManagement.scss";
+import "../../assets/userManagement.scss";
 import {
   everyRole,
   addRole,
   removeRole,
   loginUserChannelGrade,
   allPost,
-} from "../api/management.js";
+} from "../../api/management.js";
 
 import { IoIosArrowBack } from "react-icons/io";
-import { useAuth } from "../contexts/AuthContext.js";
-import { sendCode, checkEmail } from "../api/email.js";
+import { useAuth } from "../../contexts/AuthContext.js";
+import { sendCode, checkEmail } from "../../api/email.js";
 
-import { remove } from "../api/post.js";
+import { remove } from "../../api/post.js";
 
-import "../assets/login.scss";
+import "../../assets/login.scss";
 
 const UserManagement = ({ channelCode }) => {
   const { user } = useAuth();
