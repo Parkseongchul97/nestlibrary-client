@@ -1,4 +1,4 @@
-import "../assets/userHelp.scss";
+import "../../assets/userHelp.scss";
 
 const UserHelp = () => {
   return (

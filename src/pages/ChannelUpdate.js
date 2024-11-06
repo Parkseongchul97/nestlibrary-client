@@ -14,8 +14,9 @@ import { TbXboxX } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { checkEmail, sendCode } from "../api/email";
-import UserManagement from "./UserManagement";
+
 import { loginUserChannelGrade } from "../api/management";
+import UserManagement from "../components/user/UserManagement";
 
 const ChannelUpdate = () => {
   const { user } = useAuth(); // 발신자(로그인유저)

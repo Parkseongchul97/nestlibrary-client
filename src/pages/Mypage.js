@@ -1,22 +1,29 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CreateChannel from "./CreateChannel";
-import { nicknameCheck, updateUser, getUserInfo } from "../api/user";
+import {
+  nicknameCheck,
+  updateUser,
+  getUserInfo,
+  removeUser,
+} from "../api/user";
 import { myChannel } from "../api/channel";
 import "../assets/mypage.scss";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import ChangePassword from "../pages/ChangePassword";
 import { FaCamera } from "react-icons/fa";
+import { checkEmail, sendCode } from "../api/email";
 
 const Mypage = () => {
   const navigate = useNavigate();
+
   const [channel, setChannel] = useState([]);
   const [isChange, setIsChange] = useState(false);
-
+  const [code, setCode] = useState("");
   const [createPage, setCreatePage] = useState(false);
-  // changeImg : -1 = (기존꺼 그대로), 0 =(변경), 1 =(이미지 삭제만)
   const [changeImg, setChangeImg] = useState(-1);
+  const [isDelete, setIsDelete] = useState(false);
   const closeCreateChannel = () => {
     setCreatePage(false);
   };
@@ -47,7 +54,22 @@ const Mypage = () => {
       userPassword: result.data.userPassword, // 카카오 때문에 추가
     });
   };
+  const getCode = async () => {
+    await sendCode(user.userEmail);
+    alert("인증번호가 발송되었습니다");
+  };
 
+  const submitCode = async () => {
+    const response = await checkEmail(code);
+    if (response.data) {
+      const result = window.confirm("정말 탈퇴 하시겠습니까?");
+      if (result) {
+        alert("회원 탈퇴가 완료되었습니다.");
+        removeUser();
+        logout();
+      }
+    }
+  };
   useEffect(() => {
     findUser();
     myChannelInfo();
@@ -182,12 +204,23 @@ const Mypage = () => {
                     내 잔여 포인트 : {userDTO.userPoint}
                   </div>
                   {userDTO.userPassword != null ? (
-                    <div
-                      id="password-update"
-                      className="update-btn"
-                      onClick={() => setIsChange(!isChange)}
-                    >
-                      비밀번호 변경{" "}
+                    <div className="privte-box">
+                      <div
+                        id="password-update"
+                        className="update-btn"
+                        onClick={() => setIsChange(!isChange)}
+                      >
+                        비밀번호 변경
+                      </div>
+                      <div
+                        id="remove-user"
+                        className="update-btn"
+                        onClick={() => {
+                          setIsDelete(!isDelete);
+                        }}
+                      >
+                        회원탈퇴
+                      </div>
                     </div>
                   ) : (
                     <div
@@ -273,6 +306,18 @@ const Mypage = () => {
           }
         }}
       />
+      {isDelete && (
+        <>
+          <div>채널 삭제는 이메일 인증코드가 필요 합니다 </div>
+          <input
+            type="text"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+          />
+          <button onClick={getCode}>발송</button>
+          <button onClick={submitCode}>확인</button>
+        </>
+      )}
 
       {createPage && <CreateChannel onClose={closeCreateChannel} />}
       {isChange && <ChangePassword onClose={setIsChange} />}

@@ -11,7 +11,7 @@ import PostWrite from "./components/post/PostWrite";
 import ChannelUpdate from "./pages/ChannelUpdate";
 import Messages from "./pages/Messages";
 
-import UserHelp from "./pages/UserHelp";
+import UserHelp from "./components/user/UserHelp";
 
 import UserPage from "./pages/UserPage";
 import Error from "./pages/Error";
