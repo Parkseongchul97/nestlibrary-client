@@ -25,6 +25,7 @@ const UserPage = () => {
   };
   const getChannel = async () => {
     const response = await mostChannel(userEmail);
+    console.log(response.data);
     setChannel(response.data);
   };
   const getUser = async () => {
@@ -78,58 +79,55 @@ const UserPage = () => {
                 <div className="user-point">Point : {user?.userPoint}</div>
               </div>
             </div>
-            <div className="user-chart">
-              <div className="userPage-channelList">
-                <div className="userPage-channelList-info">
-                  자주 이용한 채널 목록
-                </div>
-                <div className="userPage-channel-item">
-                  <div className="userPage-channel-rank">NO.</div>
-                  <div className="userPage-channel-title">채널명</div>
-                  <div className="userPage-channel-post">작성글 수</div>
-                  <div className="userPage-channel-comment">댓글 수</div>
-                </div>
-
-                {channel.length > 0 ? (
-                  channel?.map((channel, index) => (
-                    <div
-                      className="userPage-channelDetail"
-                      key={channel?.channelCode}
-                    >
-                      <div className="userPage-favorate-rank">{index + 1}</div>
-                      <div className="userPage-favorate-title">
-                        {" "}
-                        <Link
-                          to={"/channel/" + channel.channelCode}
-                          key={channel?.channelCode}
-                        >
-                          {channel.channelName}
-                        </Link>
-                      </div>{" "}
-                      <div className="userPage-favorate-post">
-                        {" "}
-                        {channel.postCount}
-                      </div>
-                      <div className="userPage-favorate-comment">
-                        {channel.commentCount}
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <>
-                    <div className="userPage-favorate-null">
-                      아직 활동한 채널이 없습니다{" "}
-                    </div>
-                  </>
-                )}
+            <div className="userPage-channelList">
+              <div className="userPage-channelList-info">
+                자주 이용한 채널 목록
               </div>
-              <div style={{ width: "800px", height: "200px" }}>
-                {" "}
-                <Example />
+              <div className="userPage-channel-item">
+                <div className="userPage-channel-rank">NO.</div>
+                <div className="userPage-channel-title">채널명</div>
+                <div className="userPage-channel-post">작성글 수</div>
+                <div className="userPage-channel-comment">댓글 수</div>
               </div>
+              {channel.length > 0 ? (
+                channel?.map((channel, index) => (
+                  <div
+                    className="userPage-channelDetail"
+                    key={channel?.channelCode}
+                  >
+                    <div className="userPage-favorate-rank">{index + 1}</div>
+                    <div className="userPage-favorate-title">
+                      {" "}
+                      <Link
+                        to={"/channel/" + channel.channelCode}
+                        key={channel?.channelCode}
+                      >
+                        {channel.channelName}
+                      </Link>
+                    </div>{" "}
+                    <div className="userPage-favorate-post">
+                      {" "}
+                      {channel.postCount}
+                    </div>
+                    <div className="userPage-favorate-comment">
+                      {channel.commentCount}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <>
+                  <div className="userPage-favorate-null">
+                    아직 활동한 채널이 없습니다{" "}
+                  </div>
+                </>
+              )}
             </div>
           </div>
-
+          <div className="chart-grand-parent">
+            <div className="chart-parent">
+              <Example channel={channel} />
+            </div>
+          </div>
           <div className="userPage-post-list">
             <div className="userPage-title">최근 작성 게시물 </div>
             <div className="userPage-post-item">
