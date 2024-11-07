@@ -156,12 +156,28 @@
   flex-direction: column;
 }
 .channelUpdate-input {
+  width: 35%;
+  justify-content: space-between;
   display: flex;
+  align-items: center;
   input {
+    padding: 3px;
+    margin: 5px;
+    padding-left: 5px;
     font-size: 1.5rem;
   }
   button {
-    height: 34px;
+    padding: 5px 8px;
+    cursor: pointer;
+    background-color: #d5d5d5;
+    border: none;
+    border-radius: 5px;
+    font-family: "Pretendard Variable";
+    font-style: normal;
+    font-weight: 600;
+    &:hover {
+      background-color: #c4c4c4;
+    }
   }
 }
 .channelUpdate-buttones {
@@ -174,7 +190,7 @@
   display: flex;
   justify-content: space-around;
   button {
-    padding: 10px;
+    padding: 6px 10px;
     cursor: pointer;
     background-color: #d5d5d5;
     border: none;

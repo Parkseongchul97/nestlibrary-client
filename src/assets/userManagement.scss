@@ -156,15 +156,6 @@ table {
   padding: 10px;
 }
 
-.email-box {
-  display: flex;
-
-  justify-content: space-around;
-  width: 320px;
-  height: 60px;
-  align-items: center;
-}
-
 .channelUpdate-authorization {
   font-size: 3rem;
   background-color: white;
@@ -219,4 +210,145 @@ table {
     width: 60px;
     height: 30px;
   }
+}
+.management-modal-box {
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 600;
+  background-color: #ffffff;
+  width: 400px;
+  max-height: 400px;
+  position: fixed;
+  top: 25%;
+  left: 40%;
+  border-radius: 8px;
+  padding: 20px;
+  color: #7e8e9f;
+  opacity: 1;
+  z-index: 20;
+  .management-modal-body {
+    button {
+      align-items: center;
+
+      width: 90%;
+      border-radius: 6px;
+      border: 1px solid #f7f8f9;
+      background-color: #d3d3d3;
+      padding: 5px 8px;
+      cursor: pointer;
+      font-family: "Pretendard Variable";
+      font-style: normal;
+      font-weight: 600;
+    }
+  }
+
+  .management-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    width: 100%;
+    .close {
+      cursor: pointer;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 6px;
+      border: 1px solid #f7f8f9;
+      background-color: #f7f8f9;
+    }
+    h3 {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: black;
+    }
+    .balance {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+  .management-modal-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    .email-text {
+      padding: 10px;
+    }
+    .input-box {
+      width: 100%;
+      .management-modal-input-text {
+        padding-left: 0.5rem;
+        font-family: "Pretendard Variable";
+        font-weight: bold;
+        border-radius: 6px;
+        border: 1px solid #f7f8f9;
+        width: 100%;
+        height: 40px;
+        background-color: #f7f8f9;
+        margin: 0.5rem 0;
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+    .email-box {
+      display: flex;
+      justify-content: space-between;
+      width: 300px;
+      height: 60px;
+      align-items: center;
+      .email-submit-btn {
+        width: 50px;
+        padding: 2px 5px;
+      }
+      .code-input {
+        margin: 5px;
+        width: 70%;
+      }
+    }
+  }
+  .message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    #register-message {
+      color: red;
+      span {
+        margin-right: 0.3rem;
+      }
+    }
+  }
+}
+.login-bg {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.arther-login {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 350px;
+  height: 50px;
+  margin-bottom: 5px;
+  .arther-login-btn {
+    width: 150px;
+    height: 40px;
+    cursor: pointer;
+    transition: filter 0.3s;
+    &:hover {
+      filter: brightness(0.9);
+    }
+  }
+}
+// 비밀번호 변경시
+.warning {
+  color: red;
+}
+.no-warning {
+  color: green;
 }
