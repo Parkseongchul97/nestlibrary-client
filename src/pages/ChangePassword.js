@@ -77,16 +77,7 @@ const ChangePassword = ({ onClose }) => {
                   value={newpass}
                   onChange={(e) => setNewPass(e.target.value)}
                 />
-                {newpass.length > 0 && !pwdRegExp.test(newpass) ? (
-                  <span className="warning">
-                    영문자,숫자,특수문자를 포함한 8~16자리로 구성된 비밀번호를
-                    입력해주십시오.
-                  </span>
-                ) : newpass.length > 0 && !newCheck ? (
-                  <span className="warning">불일치</span>
-                ) : newpass.length > 0 && newCheck ? (
-                  <span className="no-warning">일치</span>
-                ) : null}
+
                 <input
                   placeholder="새 비밀번호 확인"
                   type="password"
@@ -94,6 +85,16 @@ const ChangePassword = ({ onClose }) => {
                   value={newpass2}
                   onChange={(e) => setNewPass2(e.target.value)}
                 />
+                {newpass.length > 0 && !pwdRegExp.test(newpass) ? (
+                  <span className="warning">
+                    영문자,숫자,특수문자를 포함한 8~16자리로 구성된
+                    <br /> 비밀번호를 입력해주십시오.
+                  </span>
+                ) : newpass.length > 0 && !newCheck ? (
+                  <span className="warning">불일치</span>
+                ) : newpass.length > 0 && newCheck ? (
+                  <span className="no-warning">일치</span>
+                ) : null}
               </div>
 
               <button

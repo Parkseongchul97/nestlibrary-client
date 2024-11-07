@@ -22,7 +22,7 @@ const ChannelUpdate = () => {
   const { user } = useAuth(); // 발신자(로그인유저)
   const { channelCode } = useParams();
   const [previewUrl, setPreviewUrl] = useState("");
-
+  const [isComposing, setIsComposing] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [code, setCode] = useState("");
   const [reCode, setReCode] = useState(false);
@@ -76,7 +76,21 @@ const ChannelUpdate = () => {
 
   // 입력된 태그 정보 DB로 전송
   const getTag = () => {
-    tagUpdate();
+    if (Object.entries(channelInfos?.channelTag).length > 8) {
+      alert("태그의 숫자는 8개를 넘을수 없습니다!");
+      return;
+    }
+    if (tags.channelTagName.length >= 2 && 5 >= tags.channelTagName.length) {
+      tagUpdate();
+      setTags({ ...tags, channelTagName: "" });
+    } else {
+      alert("태그 이름은 2~5글자 사이로 만들어야 합니다!");
+    }
+  };
+  const enterSubmit = (e) => {
+    if ((e.code === "Enter" || e.code === "NumpadEnter") && !isComposing) {
+      getTag();
+    }
   };
 
   const tagUpdate = async () => {
@@ -318,6 +332,9 @@ const ChannelUpdate = () => {
                                 channelTagName: e.target.value,
                               })
                             }
+                            onKeyDown={(e) => enterSubmit(e)}
+                            onCompositionStart={() => setIsComposing(true)}
+                            onCompositionEnd={() => setIsComposing(false)}
                           />
                           <button onClick={getTag}>태그 추가</button>
                           <button

@@ -44,7 +44,7 @@
   border-radius: 15px;
 }
 .channelUpdate-tag {
-  padding: 10px;
+  padding: 5px 8px;
   background-color: black;
   color: white;
   display: flex;
@@ -71,6 +71,16 @@
   }
   button {
     margin-left: 10px;
+    font-family: "Pretendard Variable";
+    font-style: normal;
+    font-weight: 600;
+    background-color: #d5d5d5;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    &:hover {
+      background-color: #c4c4c4;
+    }
   }
 }
 .cancle-ikon:hover {
@@ -169,6 +179,12 @@
     background-color: #d5d5d5;
     border: none;
     border-radius: 5px;
+    font-family: "Pretendard Variable";
+    font-style: normal;
+    font-weight: 600;
+    &:hover {
+      background-color: #c4c4c4;
+    }
   }
 }
 #change-channel-img {

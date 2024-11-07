@@ -152,9 +152,9 @@ const UserMenu = ({
         onClick={
           token === null
             ? goUserPage
-            : loginUser.userEmail !== user?.userEmail
-            ? userMenuToggle
-            : goUserPage
+            : loginUser.userEmail === user?.userEmail && !noneImg
+            ? goUserPage
+            : userMenuToggle
         }
       >
         {!noneImg && (

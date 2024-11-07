@@ -38,16 +38,22 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
+    margin-right: 20px;
     img {
       width: 150px;
       height: 150px;
-      margin-right: 20px;
+
       border-radius: 50%;
     }
     .user-page-message {
       cursor: pointer;
       margin-top: 10px;
+      background-color: #d5d5d5;
+      padding: 5px 8px;
+      border-radius: 10px;
+      &:hover {
+        background-color: #c4c4c4;
+      }
     }
   }
 }

@@ -5,7 +5,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useEffect, useRef, useState } from "react";
 import UserMenu from "../user/UserMenu";
 import "../../assets/findUser.scss";
-import MessageWrite from "../messages/MessageWrite";
+
 const FindUser = ({
   toNickname,
   inputNickname,
@@ -16,6 +16,7 @@ const FindUser = ({
   deleteToUser,
   isOpen,
   setIsOpen,
+  checked,
 }) => {
   const { user } = useAuth(); // 발신자(로그인유저)
   const [isComposing, setIsComposing] = useState(false);
@@ -33,7 +34,7 @@ const FindUser = ({
   } = useQuery({
     queryKey: ["findUser", toNickname],
     queryFn: () => byNickname(toNickname),
-    enabled: toNickname.length > 1,
+    enabled: !!toNickname,
   });
   const handleClickOutside = (event) => {
     if (resultRef.current && !resultRef.current.contains(event.target)) {
