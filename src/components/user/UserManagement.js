@@ -23,7 +23,9 @@ import "../../assets/login.scss";
 
 const UserManagement = ({ channelCode }) => {
   const { user } = useAuth();
-
+  const [resend, setResend] = useState(0);
+  const [secondsLeft, setSecondsLeft] = useState(0);
+  const [isActive, setIsActive] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [isSearch, setIsSearch] = useState(true);
   const [inputNickname, setInputNickname] = useState("");
@@ -118,10 +120,12 @@ const UserManagement = ({ channelCode }) => {
   // 이메일 발송
   const goEmail = async (data) => {
     const response = await sendCode(data);
-    alert("이메일로 인증번호가 발송되었습니다!");
+    //alert("이메일로 인증번호가 발송되었습니다!");
   };
   // 인증코드 확인
   const codeCheck = async (data) => {
+    console.log(typeof Number(emailCode));
+
     const response = await checkEmail(emailCode);
     let result = null;
     if (response.data) {
@@ -151,11 +155,23 @@ const UserManagement = ({ channelCode }) => {
   useEffect(() => {
     if (!isOpen) {
       setSent(false);
+      setEmailCode("");
+      setSecondsLeft(0);
     }
     if (ban) {
       setSent(false);
+      setEmailCode("");
+      setSecondsLeft(0);
     }
   }, [isOpen, ban]);
+
+  useEffect(() => {
+    if (!host) {
+      setSent(false);
+      setEmailCode("");
+      setSecondsLeft(0);
+    }
+  }, [host]);
   useEffect(() => {
     setBan(false);
     setHost(false);
@@ -275,6 +291,10 @@ const UserManagement = ({ channelCode }) => {
     setCheckArray([]);
     setPost(response);
   };
+
+  useEffect(() => {
+    console.log(typeof Number(emailCode));
+  }, [emailCode]);
 
   return (
     <>
@@ -634,13 +654,20 @@ const UserManagement = ({ channelCode }) => {
                   <>
                     <div className="email-box">
                       <span>이메일 인증이 필요합니다 </span>
-                      {send && <CountdownTimer />}
+                      {send && (
+                        <CountdownTimer
+                          resend={resend}
+                          secondsLeft={secondsLeft}
+                          setSecondsLeft={setSecondsLeft}
+                          isOpen={isOpen}
+                        />
+                      )}
 
                       <input
-                        type="text
-                        "
+                        type="text"
                         value={emailCode}
                         onChange={(e) => setEmailCode(e.target.value)}
+                        disabled={secondsLeft != 0 ? false : true}
                       />
                     </div>
 
@@ -648,6 +675,8 @@ const UserManagement = ({ channelCode }) => {
                       onClick={() => {
                         setSent(true);
                         goEmail(user.userEmail);
+                        setResend(resend + 1);
+                        setSecondsLeft(30);
                       }}
                     >
                       {send ? "재발송" : "발송"}
@@ -661,6 +690,8 @@ const UserManagement = ({ channelCode }) => {
                           banDate: 0,
                         })
                       }
+                      // 입력값의 길이가 0보다 크면서 발송버튼을 눌렀을경우 에만 false
+                      disabled={!(emailCode.length > 0 && secondsLeft > 0)}
                     >
                       확인
                     </button>
