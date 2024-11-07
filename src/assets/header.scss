@@ -169,7 +169,7 @@
   display: flex;
   justify-content: space-between;
   background-color: rgb(214, 214, 214);
-  width: 200px;
+  width: 250px;
   margin-top: 1.3rem;
   position: fixed;
   ul {
@@ -179,11 +179,29 @@
     width: 100%;
     margin: 10px;
     li {
-      margin-bottom: 5px;
+      padding: 5px;
+      border-bottom: 1px solid black;
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
+      .sub-box-channel-name {
+        a {
+          width: 100px;
+          display: block;
+          text-wrap: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+      .sub-box-button {
+        padding: 5px 8px;
+        border: none;
+        border-radius: 10px;
+        font-family: "Pretendard Variable";
+        font-weight: 600;
+        cursor: pointer;
+      }
     }
   }
 }

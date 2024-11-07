@@ -29,10 +29,21 @@
   justify-content: space-around;
   width: 100%;
   padding-bottom: 0;
+  flex-direction: row;
+}
+.user-chart {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .recharts-responsive-container {
+    margin-top: 60px;
+  }
 }
 
 .userPage-userProfile {
   display: flex;
+
   .userPage-img-box {
     display: flex;
     flex-direction: column;
@@ -277,4 +288,23 @@
   text-align: center;
   padding: 50px;
   font-size: 1.3rem;
+}
+.chart-grand-parent {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.chart-parent {
+  padding: 20px 0;
+  border-radius: 10px;
+  background-color: #ffffff;
+  display: flex;
+  width: 1000px;
+  height: 300px;
+  .recharts-responsive-container {
+    .recharts-wrapper {
+      right: 20px;
+    }
+  }
 }

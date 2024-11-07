@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import RecentPost from "../components/post/RecentPost.js";
 import { useAuth } from "../contexts/AuthContext.js";
 import MessageWrite from "../components/messages/MessageWrite.js";
+import Example from "../components/Chart.js";
 
 const UserPage = () => {
   const { token, user: loginUser } = useAuth();
@@ -24,6 +25,7 @@ const UserPage = () => {
   };
   const getChannel = async () => {
     const response = await mostChannel(userEmail);
+    console.log(response.data);
     setChannel(response.data);
   };
   const getUser = async () => {
@@ -77,7 +79,6 @@ const UserPage = () => {
                 <div className="user-point">Point : {user?.userPoint}</div>
               </div>
             </div>
-
             <div className="userPage-channelList">
               <div className="userPage-channelList-info">
                 자주 이용한 채널 목록
@@ -88,7 +89,6 @@ const UserPage = () => {
                 <div className="userPage-channel-post">작성글 수</div>
                 <div className="userPage-channel-comment">댓글 수</div>
               </div>
-
               {channel.length > 0 ? (
                 channel?.map((channel, index) => (
                   <div
@@ -123,7 +123,11 @@ const UserPage = () => {
               )}
             </div>
           </div>
-
+          <div className="chart-grand-parent">
+            <div className="chart-parent">
+              <Example channel={channel} />
+            </div>
+          </div>
           <div className="userPage-post-list">
             <div className="userPage-title">최근 작성 게시물 </div>
             <div className="userPage-post-item">

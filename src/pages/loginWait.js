@@ -9,9 +9,16 @@ const LoginWait = () => {
   useEffect(() => {
     const kakao = async () => {
       if (kakaoKey) {
-        const result = await kakaologin({ code: kakaoKey }); // 객체 형태로 보내기
-        authLogin(result.data);
-        window.location.href = "/";
+        const result = await kakaologin({ code: kakaoKey });
+        // 객체 형태로 보내기
+        if (result.data === "") {
+          alert("이미 해당 이메일로 가입한 계정이 있습니다");
+          window.location.href = "/";
+        } else {
+          authLogin(result.data);
+
+          window.location.href = "/";
+        }
       }
     };
     kakao();
