@@ -14,6 +14,7 @@ const MessageWrite = ({ toUser, setIsOpenMessage, setViewType }) => {
     messagesFromUser: user.userEmail, // 보내는 로그인유저
     messagesToUser: "", // 받을사람
   });
+
   const [isOpen, setIsOpen] = useState(false);
   const [inputNickname, setInputNickname] = useState(
     toUser !== undefined ? toUser.nickname : ""
@@ -22,6 +23,9 @@ const MessageWrite = ({ toUser, setIsOpenMessage, setViewType }) => {
   const [viewNickname, setViewNickname] = useState(
     // 단순 화면단에 보일 닉네임
     toUser !== undefined ? toUser.nickname : ""
+  );
+  const [checked, setChecked] = useState(
+    !!inputNickname && inputNickname.length > 1
   );
   const queryClient = useQueryClient();
 
@@ -42,6 +46,7 @@ const MessageWrite = ({ toUser, setIsOpenMessage, setViewType }) => {
   };
   const findSubmit = () => {
     // 찾기버튼 누를시 넣어서 찾고 열어줌
+    if (!inputNickname) alert("입력값이 없습니다");
     setToNickname(inputNickname);
     setIsOpen(true);
     // 검색결과가 없는경우 얼럿 추가
@@ -57,6 +62,7 @@ const MessageWrite = ({ toUser, setIsOpenMessage, setViewType }) => {
     setViewNickname("");
     setInputNickname("");
   };
+
   useEffect(() => {
     setMessage(
       toUser !== undefined
@@ -100,6 +106,8 @@ const MessageWrite = ({ toUser, setIsOpenMessage, setViewType }) => {
               selectedUser={selectedUser}
               isOpen={isOpen}
               setIsOpen={setIsOpen}
+              setChecked={setChecked}
+              checked={checked}
             />
           </div>
           <div className="message-content-box">

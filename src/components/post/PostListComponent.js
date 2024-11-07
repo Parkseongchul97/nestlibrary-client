@@ -49,7 +49,9 @@ const PostListComponent = ({
           }
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
-          <span className="post-text">{post?.postTitle}</span>
+          <span className="post-text" title={post?.postTitle}>
+            {post?.postTitle}
+          </span>
         </Link>
         <div className="post-user">
           <UserMenu

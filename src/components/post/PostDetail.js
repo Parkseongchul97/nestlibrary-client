@@ -209,16 +209,16 @@ const PostDetail = ({ postCode, page, loginUserGrade }) => {
         </div>
         <div className="post-header-bottom">
           <div className="post-header-bottom-left">
-            <p>글쓴이 : </p>
             <UserMenu
               user={post?.user}
-              time={post?.postCreatedAt}
               isOpenUser={isOpenUser === post?.postCode}
               userMenuToggle={() => userMenuToggle(post?.postCode)}
               channelCode={post?.channelCode}
             />{" "}
           </div>
           <div className="post-header-bottom-right">
+            <p>작성 시간 : {post?.postCreatedAt.split("T")[0]} </p>
+
             <p>조회수 : {post?.postViews}</p>
             <p>추천수 : {post?.likeCount}</p>
             <p>댓글수 : {post?.commentCount}</p>
