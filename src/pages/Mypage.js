@@ -14,6 +14,8 @@ import { useAuth } from "../contexts/AuthContext";
 import ChangePassword from "../pages/ChangePassword";
 import { FaCamera } from "react-icons/fa";
 import { checkEmail, sendCode } from "../api/email";
+import Timer from "../components/user/Timer";
+import { set } from "lodash";
 
 const Mypage = () => {
   const navigate = useNavigate();
@@ -24,6 +26,7 @@ const Mypage = () => {
   const [createPage, setCreatePage] = useState(false);
   const [changeImg, setChangeImg] = useState(-1);
   const [isDelete, setIsDelete] = useState(false);
+  const [count, setCount] = useState(0);
   const closeCreateChannel = () => {
     setCreatePage(false);
   };
@@ -57,6 +60,7 @@ const Mypage = () => {
     });
   };
   const getCode = async () => {
+    setCount(180);
     await sendCode(user.userEmail);
     alert("인증번호가 발송되었습니다");
   };
@@ -70,6 +74,9 @@ const Mypage = () => {
         removeUser();
         logout();
       }
+    } else {
+      alert("인증코드가 틀렸습니다");
+      setCode("");
     }
   };
   useEffect(() => {
@@ -325,16 +332,30 @@ const Mypage = () => {
             <button className="update-btn" onClick={getCode}>
               발송
             </button>
+
             <input
               placeholder="6자리 코드를 입력해 주십시오"
               className="code-input"
               type="text"
               value={code}
               onChange={(e) => setCode(e.target.value)}
+              disabled={count === 0 ? true : false}
             />
+            {count > 0 ? (
+              <Timer count={count} setCount={setCount} />
+            ) : (
+              <div className="timer-container"></div>
+            )}
           </div>
           <div className="code-btn-box">
-            <button className="update-btn" onClick={() => setIsDelete(false)}>
+            <button
+              className="update-btn"
+              onClick={() => {
+                setIsDelete(false);
+                setCount(0);
+                setCode("");
+              }}
+            >
               취소
             </button>
             <button className="update-btn" onClick={submitCode}>
