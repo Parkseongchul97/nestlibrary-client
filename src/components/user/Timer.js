@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import "../../assets/timer.scss";
 
 const Timer = ({ count, setCount }) => {
   const formatTime = (time) => {
@@ -23,8 +24,8 @@ const Timer = ({ count, setCount }) => {
   }, [count]);
 
   return (
-    <div className="timerContainer">
-      <span className="timerText">
+    <div className="timer-container">
+      <span className="timer-text">
         {count !== -1 ? formatTime(count) : null}
       </span>
     </div>

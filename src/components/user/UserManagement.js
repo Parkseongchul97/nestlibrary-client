@@ -26,7 +26,7 @@ const UserManagement = ({ channelCode }) => {
   const { user } = useAuth();
   const [resend, setResend] = useState(0);
   const [secondsLeft, setSecondsLeft] = useState(0);
-  const [isActive, setIsActive] = useState(true);
+
   const [isOpen, setIsOpen] = useState(false);
   const [isSearch, setIsSearch] = useState(true);
   const [inputNickname, setInputNickname] = useState("");
@@ -538,9 +538,15 @@ const UserManagement = ({ channelCode }) => {
                   <div className="button-type">
                     {targetUser.managementUserStatus === null ? (
                       <>
-                        <button onClick={() => setBan(!ban)}>벤</button>
+                        <button
+                          className="management-btn"
+                          onClick={() => setBan(!ban)}
+                        >
+                          벤
+                        </button>
                         {loginDto.managementUserStatus === "host" && (
                           <button
+                            className="management-btn"
                             onClick={() =>
                               gradeChangeSubmit({
                                 userEmail: targetUser.userEmail,
@@ -557,13 +563,17 @@ const UserManagement = ({ channelCode }) => {
                     ) : targetUser.managementUserStatus === "ban" ? (
                       <>
                         <button
+                          className="management-btn"
                           onClick={() => {
                             setBan(!ban);
                           }}
                         >
                           벤연장
                         </button>
-                        <button onClick={() => agree(targetUser)}>
+                        <button
+                          className="management-btn"
+                          onClick={() => agree(targetUser)}
+                        >
                           벤취소
                         </button>
                       </>
@@ -571,6 +581,7 @@ const UserManagement = ({ channelCode }) => {
                       loginDto.managementUserStatus === "host" ? (
                       <>
                         <button
+                          className="management-btn"
                           onClick={() => {
                             setHost(false);
                             setBan(false);
@@ -580,6 +591,7 @@ const UserManagement = ({ channelCode }) => {
                           관리자 취소
                         </button>
                         <button
+                          className="management-btn"
                           onClick={() => {
                             setHost(!host);
                             setBan(false);
@@ -588,6 +600,7 @@ const UserManagement = ({ channelCode }) => {
                           호스트로 임명
                         </button>
                         <button
+                          className="management-btn"
                           onClick={() => {
                             setBan(!ban);
                             setHost(false);
@@ -653,11 +666,18 @@ const UserManagement = ({ channelCode }) => {
                 )}
                 {host && (
                   <>
+                    <p className="email-text">이메일 인증이 필요합니다 </p>
                     <div className="email-box">
-                      <span>이메일 인증이 필요합니다 </span>
-                      {send && (
-                        <Timer count={secondsLeft} setCount={setSecondsLeft} />
-                      )}
+                      <button
+                        onClick={() => {
+                          setSent(true);
+                          goEmail(user.userEmail);
+                          setResend(resend + 1);
+                          setSecondsLeft(30);
+                        }}
+                      >
+                        {send ? "재발송" : "발송"}
+                      </button>
 
                       <input
                         type="text"
@@ -665,18 +685,13 @@ const UserManagement = ({ channelCode }) => {
                         onChange={(e) => setEmailCode(e.target.value)}
                         disabled={secondsLeft != 0 ? false : true}
                       />
+                      {send ? (
+                        <Timer count={secondsLeft} setCount={setSecondsLeft} />
+                      ) : (
+                        <div className="timer-container"></div>
+                      )}
                     </div>
 
-                    <button
-                      onClick={() => {
-                        setSent(true);
-                        goEmail(user.userEmail);
-                        setResend(resend + 1);
-                        setSecondsLeft(30);
-                      }}
-                    >
-                      {send ? "재발송" : "발송"}
-                    </button>
                     <button
                       onClick={() =>
                         codeCheck({
