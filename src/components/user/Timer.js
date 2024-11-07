@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
-const Timer = ({ count, setCount, stopCount }) => {
+const Timer = ({ count, setCount }) => {
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
@@ -10,17 +10,15 @@ const Timer = ({ count, setCount, stopCount }) => {
   };
 
   useEffect(() => {
-    if (!stopCount) {
-      if (count > 0) {
-        const id = setInterval(() => {
-          setCount((count) => count - 1);
-        }, 1000);
+    if (count > 0) {
+      const id = setInterval(() => {
+        setCount((count) => count - 1);
+      }, 1000);
 
-        if (count === 0) {
-          clearInterval(id);
-        }
-        return () => clearInterval(id);
+      if (count === 0) {
+        clearInterval(id);
       }
+      return () => clearInterval(id);
     }
   }, [count]);
 
