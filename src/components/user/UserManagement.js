@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import PostManagement from "../post/PostManagement.js";
+import CountdownTimer from "./Timer.js";
 
 import "../../assets/userManagement.scss";
 import {
@@ -52,12 +53,15 @@ const UserManagement = ({ channelCode }) => {
   const [checkArray, setCheckArray] = useState([]);
 
   const removePost = async () => {
+    let asd = checkArray.length;
     if (checkArray.length < 1) {
       await remove(checkArray[0]);
+      alert("게시글 삭제 완료");
     } else {
       for (let i = 0; i < checkArray.length; i++) {
         await remove(checkArray[i]);
       }
+      alert("게시글 " + asd + "개 삭제완료");
     }
     if (author.trim().length > 1) {
       postList(author);
@@ -144,6 +148,14 @@ const UserManagement = ({ channelCode }) => {
     loginUser();
   }, [isOpen]);
 
+  useEffect(() => {
+    if (!isOpen) {
+      setSent(false);
+    }
+    if (ban) {
+      setSent(false);
+    }
+  }, [isOpen, ban]);
   useEffect(() => {
     setBan(false);
     setHost(false);
@@ -371,58 +383,54 @@ const UserManagement = ({ channelCode }) => {
                 ) : null}
               </div>
               {isPost ? (
-                <table>
-                  <thead>
-                    <tr>
-                      <th className="custom-th">
-                        <input
-                          type="checkbox"
-                          checked={
-                            checkArray.length === post.length && post.length > 0
-                          }
-                          onChange={() => allCheck()}
-                        />
-                        <button
-                          className="deleteTh"
-                          onClick={() => removePost()}
-                        >
-                          삭제
-                        </button>
-                      </th>
-                      <th>닉네임</th>
-                      <th>이메일</th>
-                      <th>게시판</th>
-                      <th>제목</th>
-                      <th>작성일</th>
-                      <th>조회 수</th>
-                      <th>댓글 수</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {post && post.length > 0 ? (
-                      post.map((post) => (
-                        <PostManagement
-                          key={post?.postCode}
-                          channelCode={channelCode}
-                          post={post}
-                          addList={addList}
-                          checkArray={checkArray}
-                        />
-                      ))
-                    ) : (
+                <>
+                  <table>
+                    <thead>
                       <tr>
-                        <td colSpan={6}>조회 결과가 없습니다.</td>
+                        <th className="custom-th">
+                          <input
+                            type="checkbox"
+                            checked={
+                              checkArray.length === post.length &&
+                              post.length > 0
+                            }
+                            onChange={() => allCheck()}
+                          />
+                        </th>
+                        <th className="custom-nickname">닉네임</th>
+
+                        <th className="custom-tag">게시판</th>
+                        <th>제목</th>
+                        <th className="custom-time">작성일</th>
+                        <th className="custom-view">조회 수</th>
+                        <th className="custom-comment">댓글 수</th>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
+                    </thead>
+
+                    <tbody>
+                      {post && post.length > 0 ? (
+                        post.map((post) => (
+                          <PostManagement
+                            key={post?.postCode}
+                            channelCode={channelCode}
+                            post={post}
+                            addList={addList}
+                            checkArray={checkArray}
+                          />
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={7}>조회 결과가 없습니다.</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </>
               ) : (
                 <table>
                   <thead>
                     <tr>
                       <th>닉네임</th>
-                      <th>이메일</th>
                       <th>등급</th>
                       <th>삭제 예정일</th>
                       <th>작성글 수</th>
@@ -438,7 +446,7 @@ const UserManagement = ({ channelCode }) => {
                           onClick={() => updateInfo(users)}
                         >
                           <td>{users?.userNickname}</td>
-                          <td>{users?.userEmail}</td>
+
                           <td>
                             {users?.managementUserStatus != null
                               ? users?.managementUserStatus
@@ -455,7 +463,7 @@ const UserManagement = ({ channelCode }) => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={6}>조회 결과가 없습니다.</td>
+                        <td colSpan={5}>조회 결과가 없습니다.</td>
                       </tr>
                     )}
                   </tbody>
@@ -464,6 +472,19 @@ const UserManagement = ({ channelCode }) => {
             </div>
           </div>
         </div>
+        {isPost && (
+          <div className="channel-update-footer">
+            {
+              <button
+                className="deleteTh"
+                onClick={() => removePost()}
+                disabled={checkArray.length === 0}
+              >
+                삭제
+              </button>
+            }
+          </div>
+        )}
       </div>
 
       {isOpen && (
@@ -613,6 +634,8 @@ const UserManagement = ({ channelCode }) => {
                   <>
                     <div className="email-box">
                       <span>이메일 인증이 필요합니다 </span>
+                      {send && <CountdownTimer />}
+
                       <input
                         type="text
                         "
@@ -620,6 +643,7 @@ const UserManagement = ({ channelCode }) => {
                         onChange={(e) => setEmailCode(e.target.value)}
                       />
                     </div>
+
                     <button
                       onClick={() => {
                         setSent(true);

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { getPageNum } from "../../api/post";
+import { Link } from "react-router-dom";
+import { FaList } from "react-icons/fa";
 const PostManagement = ({ post, channelCode, addList, checkArray }) => {
   const [page, setPage] = useState(1);
 
@@ -25,11 +27,29 @@ const PostManagement = ({ post, channelCode, addList, checkArray }) => {
         />
       </td>
 
-      <td>{post?.user.userNickname}</td>
-      <td>{post?.user.userEmail}</td>
-      <td>{post?.channelTag.channelTagName}</td>
+      <td className="custom-userNickname">
+        <a
+          href={"/user/" + post?.user.userEmail}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {post?.user.userNickname}
+        </a>
+      </td>
 
       <td>
+        <a
+          href={
+            "/channel/" + channelCode + "/" + post?.channelTag.channelTagCode
+          }
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {post?.channelTag.channelTagName}
+        </a>
+      </td>
+
+      <td className="custom-postTitle" data-fulltext={post.postTitle}>
         {" "}
         <a
           href={
@@ -42,6 +62,7 @@ const PostManagement = ({ post, channelCode, addList, checkArray }) => {
           }
           target="_blank"
           rel="noopener noreferrer"
+          title={post.postTitle}
         >
           {post.bestPoint >= 50 ? "🔥" : null}
           {post.postTitle}
@@ -49,7 +70,7 @@ const PostManagement = ({ post, channelCode, addList, checkArray }) => {
       </td>
 
       <td>{post.postCreatedAt.split("T")[0]}</td>
-      <td>{post.postViews}</td>
+      <td title={post.postViews}>{post.postViews}</td>
       <td>{post.commentCount}</td>
     </tr>
   );
