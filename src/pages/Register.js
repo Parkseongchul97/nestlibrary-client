@@ -6,6 +6,7 @@ import { nicknameCheck, register } from "../api/user";
 import { checkEmail, sendEmail } from "../api/email";
 import { FaCheck } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
+import Timer from "../components/user/Timer";
 
 const Register = () => {
   const { token } = useAuth();
@@ -20,6 +21,8 @@ const Register = () => {
   const [nicknameSubmit, setnicknameSubmit] = useState(false);
   const [emailSubmit, setEmailSubmit] = useState(false);
   const [codeSubmit, setCodeSubmit] = useState(false);
+
+  const [count, setCount] = useState(0);
   const emailRegExp =
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
   const pwdRegExp =
@@ -94,8 +97,13 @@ const Register = () => {
 
   const checkEmailCode = async () => {
     const result = await checkEmail(code);
-    if (result.data) {
+
+    if (count === 0) {
+      alert("인증시간이 만료되었습니다!");
+      setCodeSubmit(false);
+    } else if (result.data) {
       alert("인증이 완료되었습니다.");
+      setCount(-1);
       setCodeSubmit(true);
     } else {
       alert("코드를 다시 확인해 주십시오!");
@@ -150,18 +158,54 @@ const Register = () => {
                     onKeyDown={(e) => enterSubmit(e, "email")}
                     disabled={codeSubmit}
                   />
-
-                  <button
-                    className="submit-btn"
-                    onClick={sendUserEmail}
-                    disabled={emailSubmit}
-                  >
-                    이메일 인증 발송
-                  </button>
+                  {!emailSubmit ? (
+                    <button
+                      className="submit-btn"
+                      onClick={() => {
+                        setCount(180);
+                        sendUserEmail();
+                      }}
+                      disabled={emailSubmit}
+                    >
+                      이메일 인증 발송
+                    </button>
+                  ) : count === -1 ? (
+                    <button
+                      className="submit-btn"
+                      onClick={() => {
+                        setCount(0);
+                        setUserDTO({ ...userDTO, userEmail: "" });
+                        setEmailSubmit(!emailSubmit);
+                        setCodeSubmit(!codeSubmit);
+                        setCode("");
+                      }}
+                    >
+                      이메일 재입력
+                    </button>
+                  ) : (
+                    <button
+                      className="submit-btn"
+                      onClick={() => {
+                        setCount(180);
+                        sendUserEmail();
+                      }}
+                      disabled={!emailSubmit}
+                    >
+                      인증 재발송
+                    </button>
+                  )}
                 </div>
               </div>
-              <div className="text-div">
-                * 아이디를 이메일 형식으로 입력해 주세요. 예: abcd1234@naver.com
+              <div className="timer-box">
+                <div className="text-div">
+                  * 아이디를 이메일 형식으로 입력해 주세요. 예:
+                  abcd1234@naver.com
+                </div>
+                {emailSubmit && (
+                  <>
+                    <Timer count={count} setCount={setCount} />
+                  </>
+                )}
               </div>
               <span id="email-span" className="submit-span">
                 {userDTO.userEmail === "" ? (
