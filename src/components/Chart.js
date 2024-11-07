@@ -15,7 +15,7 @@ import {
 // 함수형 컴포넌트로 변경
 const Example = React.memo(({ channel }) => {
   const data = [];
-  channel.map((channelInfo, index1) => {
+  channel?.map((channelInfo, index1) => {
     channelInfo?.chartDTO?.map((chart, index2) => {
       const name = channelInfo.channelName;
       console.log(chart);
