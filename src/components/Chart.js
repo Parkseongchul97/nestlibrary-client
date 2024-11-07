@@ -15,15 +15,16 @@ import {
 // 함수형 컴포넌트로 변경
 const Example = React.memo(({ channel }) => {
   const data = [];
-  channel.map((channelInfo, index1) => {
+
+  channel?.map((channelInfo, index1) => {
     channelInfo?.chartDTO?.map((chart, index2) => {
-      const name = channelInfo.channelName;
+      const name = channelInfo?.channelName;
       console.log(chart);
       if (index1 === 0) {
         data.push({
-          name: chart.date.split("-").slice(1).join("-"),
-          [name + "댓글"]: chart.commentCount,
-          [name + "게시글"]: chart.postCount,
+          name: chart?.date.split("-").slice(1).join("-"),
+          [name + "댓글"]: chart?.commentCount,
+          [name + "게시글"]: chart?.postCount,
         });
       } else {
         data[index2] = {

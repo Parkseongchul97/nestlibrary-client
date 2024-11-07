@@ -95,8 +95,8 @@ const UserPage = () => {
                     className="userPage-channelDetail"
                     key={channel?.channelCode}
                   >
-                    <div className="userPage-favorate-rank">{index + 1}</div>
-                    <div className="userPage-favorate-title">
+                    <div className={"userPage-favorate-rank"}>{index + 1}</div>
+                    <div className={"userPage-favorate-title-" + index}>
                       {" "}
                       <Link
                         to={"/channel/" + channel.channelCode}
@@ -123,11 +123,13 @@ const UserPage = () => {
               )}
             </div>
           </div>
-          <div className="chart-grand-parent">
-            <div className="chart-parent">
-              <Example channel={channel} />
+          {channel && (
+            <div className="chart-grand-parent">
+              <div className="chart-parent">
+                <Example channel={channel} />
+              </div>
             </div>
-          </div>
+          )}
           <div className="userPage-post-list">
             <div className="userPage-title">최근 작성 게시물 </div>
             <div className="userPage-post-item">
