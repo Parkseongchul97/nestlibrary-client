@@ -20,6 +20,7 @@ import { sendCode, checkEmail } from "../../api/email.js";
 import { remove } from "../../api/post.js";
 
 import "../../assets/login.scss";
+import Timer from "./Timer.js";
 
 const UserManagement = ({ channelCode }) => {
   const { user } = useAuth();
@@ -655,12 +656,7 @@ const UserManagement = ({ channelCode }) => {
                     <div className="email-box">
                       <span>이메일 인증이 필요합니다 </span>
                       {send && (
-                        <CountdownTimer
-                          resend={resend}
-                          secondsLeft={secondsLeft}
-                          setSecondsLeft={setSecondsLeft}
-                          isOpen={isOpen}
-                        />
+                        <Timer count={secondsLeft} setCount={setSecondsLeft} />
                       )}
 
                       <input
