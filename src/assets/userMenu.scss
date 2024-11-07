@@ -41,25 +41,43 @@
   position: absolute;
   margin-left: 50px;
   margin-top: -10px;
+  border: 1px solid #e3e4e4;
 
-  .user-accordion {
+  .user-accordion,
+  .user-accordion2,
+  .user-accordion3 {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 150px;
     border-top: 1px solid #cdcdcd;
+    box-shadow: 10px 10px 10px #e3e4e4;
 
     cursor: pointer;
     background-color: white;
     color: black;
     padding: 7px;
     font-family: "Pretendard Variable";
+    &:hover {
+      background-color: #e3e4e4;
+    }
+  }
+  .user-accordion2 {
+    justify-content: flex-start;
+    padding-left: 45px;
+  }
+  .user-accordion3 {
     font-weight: bold;
+    color: white;
+    background-color: #000;
+    &:hover {
+      background-color: #000;
+      color: red;
+    }
   }
 }
 .profile-actions > .user-accordion:first-child {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  border: none;
 }
 
 .profile-actions > .user-accordion:last-child {

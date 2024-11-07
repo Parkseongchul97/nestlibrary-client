@@ -227,7 +227,15 @@ const UserMenu = ({
               {userGrade?.data?.managementUserStatus !== "ban" ? (
                 <div
                   className="user-accordion"
-                  onClick={() => setbanOpen(!banOpen)}
+                  onClick={() => {
+                    setbanOpen(!banOpen);
+                    setManagementDTO({
+                      userEmail: user?.userEmail,
+                      managementUserStatus: "",
+                      channelCode: "",
+                      banDate: 0,
+                    });
+                  }}
                 >
                   차단하기
                 </div>
@@ -241,7 +249,7 @@ const UserMenu = ({
               )}
               {banOpen && userGrade?.data?.managementUserStatus !== "ban" && (
                 <>
-                  <label className="user-accordion">
+                  <label className="user-accordion2">
                     <input
                       type="radio"
                       name={`option-${user?.userEmail}`}
@@ -250,7 +258,7 @@ const UserMenu = ({
                     />
                     1일
                   </label>
-                  <label className="user-accordion">
+                  <label className="user-accordion2">
                     <input
                       type="radio"
                       name={`option-${user?.userEmail}`}
@@ -259,7 +267,7 @@ const UserMenu = ({
                     />
                     1주일
                   </label>
-                  <label className="user-accordion">
+                  <label className="user-accordion2">
                     <input
                       type="radio"
                       name={`option-${user?.userEmail}`}
@@ -268,7 +276,7 @@ const UserMenu = ({
                     />
                     1달
                   </label>
-                  <label className="user-accordion">
+                  <label className="user-accordion2">
                     <input
                       type="radio"
                       name={`option-${user?.userEmail}`}
@@ -277,7 +285,7 @@ const UserMenu = ({
                     />
                     1년
                   </label>
-                  <label className="user-accordion">
+                  <label className="user-accordion2">
                     <input
                       type="radio"
                       name={`option-${user?.userEmail}`}
@@ -286,12 +294,14 @@ const UserMenu = ({
                     />
                     영구벤
                   </label>
-                  <button
-                    onClick={gradeChangeSubmit}
-                    disabled={managementDTO.banDate > 0 ? false : true}
-                  >
-                    확인
-                  </button>
+                  {managementDTO.banDate > 0 && (
+                    <div
+                      className="user-accordion3"
+                      onClick={gradeChangeSubmit}
+                    >
+                      확인
+                    </div>
+                  )}
                 </>
               )}
               {banOpen && userGrade?.data?.managementUserStatus === "ban" && (

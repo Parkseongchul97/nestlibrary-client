@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import RecentPost from "../components/post/RecentPost.js";
 import { useAuth } from "../contexts/AuthContext.js";
 import MessageWrite from "../components/messages/MessageWrite.js";
+import Example from "../components/Chart.js";
 
 const UserPage = () => {
   const { token, user: loginUser } = useAuth();
@@ -77,50 +78,55 @@ const UserPage = () => {
                 <div className="user-point">Point : {user?.userPoint}</div>
               </div>
             </div>
+            <div className="user-chart">
+              <div className="userPage-channelList">
+                <div className="userPage-channelList-info">
+                  자주 이용한 채널 목록
+                </div>
+                <div className="userPage-channel-item">
+                  <div className="userPage-channel-rank">NO.</div>
+                  <div className="userPage-channel-title">채널명</div>
+                  <div className="userPage-channel-post">작성글 수</div>
+                  <div className="userPage-channel-comment">댓글 수</div>
+                </div>
 
-            <div className="userPage-channelList">
-              <div className="userPage-channelList-info">
-                자주 이용한 채널 목록
-              </div>
-              <div className="userPage-channel-item">
-                <div className="userPage-channel-rank">NO.</div>
-                <div className="userPage-channel-title">채널명</div>
-                <div className="userPage-channel-post">작성글 수</div>
-                <div className="userPage-channel-comment">댓글 수</div>
-              </div>
-
-              {channel.length > 0 ? (
-                channel?.map((channel, index) => (
-                  <div
-                    className="userPage-channelDetail"
-                    key={channel?.channelCode}
-                  >
-                    <div className="userPage-favorate-rank">{index + 1}</div>
-                    <div className="userPage-favorate-title">
-                      {" "}
-                      <Link
-                        to={"/channel/" + channel.channelCode}
-                        key={channel?.channelCode}
-                      >
-                        {channel.channelName}
-                      </Link>
-                    </div>{" "}
-                    <div className="userPage-favorate-post">
-                      {" "}
-                      {channel.postCount}
+                {channel.length > 0 ? (
+                  channel?.map((channel, index) => (
+                    <div
+                      className="userPage-channelDetail"
+                      key={channel?.channelCode}
+                    >
+                      <div className="userPage-favorate-rank">{index + 1}</div>
+                      <div className="userPage-favorate-title">
+                        {" "}
+                        <Link
+                          to={"/channel/" + channel.channelCode}
+                          key={channel?.channelCode}
+                        >
+                          {channel.channelName}
+                        </Link>
+                      </div>{" "}
+                      <div className="userPage-favorate-post">
+                        {" "}
+                        {channel.postCount}
+                      </div>
+                      <div className="userPage-favorate-comment">
+                        {channel.commentCount}
+                      </div>
                     </div>
-                    <div className="userPage-favorate-comment">
-                      {channel.commentCount}
+                  ))
+                ) : (
+                  <>
+                    <div className="userPage-favorate-null">
+                      아직 활동한 채널이 없습니다{" "}
                     </div>
-                  </div>
-                ))
-              ) : (
-                <>
-                  <div className="userPage-favorate-null">
-                    아직 활동한 채널이 없습니다{" "}
-                  </div>
-                </>
-              )}
+                  </>
+                )}
+              </div>
+              <div style={{ width: "800px", height: "200px" }}>
+                {" "}
+                <Example />
+              </div>
             </div>
           </div>
 

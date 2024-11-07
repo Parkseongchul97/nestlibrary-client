@@ -221,6 +221,7 @@ const UserManagement = ({ channelCode }) => {
         await addRole(data);
         adminList();
         alert("관리자가 추가 되었습니다");
+        setTitle("관리자");
         setIsOpen(false);
         return;
       } else {

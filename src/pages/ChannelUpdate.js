@@ -17,6 +17,7 @@ import { checkEmail, sendCode } from "../api/email";
 
 import { loginUserChannelGrade } from "../api/management";
 import UserManagement from "../components/user/UserManagement";
+import Example from "../components/Chart";
 
 const ChannelUpdate = () => {
   const { user } = useAuth(); // 발신자(로그인유저)
@@ -344,6 +345,11 @@ const ChannelUpdate = () => {
                           >
                             채널삭제
                           </button>
+                          <div style={{ width: "65%", height: "400px" }}>
+                            {" "}
+                            <Example />
+                          </div>
+
                           {isDelete && (
                             <>
                               <div>
