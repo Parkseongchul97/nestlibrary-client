@@ -22,14 +22,14 @@ const ChartComponent = React.memo(({ channel }) => {
         if (index1 === 0) {
           data.push({
             name: chart?.date.split("-").slice(1).join("-"),
-            [name + "댓글"]: chart?.commentCount,
-            [name + "게시글"]: chart?.postCount,
+            [name + "채널 댓글"]: chart?.commentCount,
+            [name + "채널 게시글"]: chart?.postCount,
           });
         } else {
           data[index2] = {
             ...data[index2],
-            [name + "댓글"]: chart.commentCount,
-            [name + "게시글"]: chart.postCount,
+            [name + "채널 댓글"]: chart.commentCount,
+            [name + "채널 게시글"]: chart.postCount,
           };
         }
       });
@@ -59,13 +59,13 @@ const ChartComponent = React.memo(({ channel }) => {
             <Fragment key={index1}>
               <Line
                 type="linear"
-                dataKey={channelInfo.channelName + "게시글"}
+                dataKey={channelInfo.channelName + "채널 게시글"}
                 stroke={color[index1]}
                 activeDot={{ r: 4 }}
               />
               <Line
                 type="linear"
-                dataKey={channelInfo.channelName + "댓글"}
+                dataKey={channelInfo.channelName + "채널 댓글"}
                 stroke={color[index1]}
                 strokeDasharray="2 2 2 2"
               />
