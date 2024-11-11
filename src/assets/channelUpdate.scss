@@ -255,3 +255,37 @@
   margin-bottom: 20px;
   border: 1px solid #cdcdcd;
 }
+.channelUpdate-delete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0 30px 30px 30px;
+  input {
+    font-size: 25px;
+  }
+  button {
+    width: 61.27px;
+    height: 35px;
+    margin-left: 10px;
+    font-family: "Pretendard Variable";
+    font-style: normal;
+    font-weight: 600;
+    background-color: #d5d5d5;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    &:hover {
+      background-color: #c4c4c4;
+    }
+  }
+}
+.channelUpdate-emailCode {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+.channelUpdate-delete-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -10,6 +10,9 @@ const authorize = axios.create({
     Authorization: `Bearer ${localStorage.getItem("token")}`,
   },
 });
+export const write = async (channelCode) => {
+  return await authorize.get(`/post/${channelCode}`);
+};
 
 export const add = async (data) => {
   return await authorize.post("/post", data);
@@ -17,10 +20,6 @@ export const add = async (data) => {
 
 export const update = async (data) => {
   return await authorize.put("/post", data);
-};
-
-export const write = async (channelCode) => {
-  return await authorize.get(`/post/${channelCode}`);
 };
 
 export const remove = async (postCode) => {

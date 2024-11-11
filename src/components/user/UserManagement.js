@@ -135,6 +135,7 @@ const UserManagement = ({ channelCode }) => {
         addRole(data);
         alert("양도 되었습니다");
         adminList();
+        setTitle("관리자");
         setIsOpen(false);
       } else {
         alert("취소되었습니다");
@@ -261,6 +262,7 @@ const UserManagement = ({ channelCode }) => {
         cancle(data.managementCode);
         alert("완료되었습니다");
         banList();
+        setTitle("차단리스트");
         setIsOpen(false);
       } else {
         alert("취소되었습니다");
@@ -271,6 +273,7 @@ const UserManagement = ({ channelCode }) => {
         cancle(data.managementCode);
         alert("완료되었습니다");
         adminList();
+        setTitle("관리자");
         setIsOpen(false);
       } else {
         alert("취소되었습니다");
@@ -329,6 +332,7 @@ const UserManagement = ({ channelCode }) => {
                       : "management-user"
                   }
                   onClick={() => {
+                    setSelectedUser([]);
                     adminList();
                     setIsPost(false);
                     setTitle("관리자");
@@ -343,6 +347,7 @@ const UserManagement = ({ channelCode }) => {
                       : "management-user"
                   }
                   onClick={() => {
+                    setSelectedUser([]);
                     banList();
                     setIsPost(false);
                     setTitle("차단리스트");

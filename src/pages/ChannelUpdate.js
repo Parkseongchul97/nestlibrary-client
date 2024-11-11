@@ -20,6 +20,7 @@ import UserManagement from "../components/user/UserManagement";
 
 import ChartComponent from "../components/Chart";
 import { channelChart } from "../api/channel";
+import Timer from "../components/user/Timer";
 const ChannelUpdate = () => {
   const { user } = useAuth(); // 발신자(로그인유저)
   const { channelCode } = useParams();
@@ -32,6 +33,7 @@ const ChannelUpdate = () => {
   const [view, setView] = useState("door");
   const [loginDTO, setLoginDTO] = useState("");
   const [channel, setChannel] = useState();
+  const [count, setCount] = useState(0);
 
   const [chan, setChan] = useState({
     channelCode: channelCode,
@@ -91,6 +93,7 @@ const ChannelUpdate = () => {
       alert("태그 이름은 2~5글자 사이로 만들어야 합니다!");
     }
   };
+
   const enterSubmit = (e) => {
     if ((e.code === "Enter" || e.code === "NumpadEnter") && !isComposing) {
       getTag();
@@ -161,6 +164,7 @@ const ChannelUpdate = () => {
   };
 
   const getCode = async () => {
+    setCount(180);
     setReCode(true);
     await sendCode(user.userEmail);
     alert("인증번호가 발송되었습니다");
@@ -359,24 +363,50 @@ const ChannelUpdate = () => {
                           >
                             채널삭제
                           </button>
+                        </div>
+                        {isDelete && (
+                          <div className="email-auth">
+                            <div className="code-header">채널 삭제</div>
+                            <p>채널 삭제는 이메일 인증코드가 필요 합니다 </p>
+                            <div className="code-input-box">
+                              <button className="update-btn" onClick={getCode}>
+                                발송
+                              </button>
 
-                          {isDelete && (
-                            <>
-                              <div>
-                                채널 삭제는 이메일 인증코드가 필요 합니다{" "}
-                              </div>
                               <input
+                                placeholder="6자리 코드를 입력해 주십시오"
+                                className="code-input"
                                 type="text"
                                 value={code}
                                 onChange={(e) => setCode(e.target.value)}
+                                disabled={count === 0 ? true : false}
                               />
-                              <button onClick={getCode}>
-                                {reCode ? "재발송" : "발송"}
+                              {count > 0 ? (
+                                <Timer count={count} setCount={setCount} />
+                              ) : (
+                                <div className="timer-container"></div>
+                              )}
+                            </div>
+                            <div className="code-btn-box">
+                              <button
+                                className="update-btn"
+                                onClick={() => {
+                                  setIsDelete(false);
+                                  setCount(0);
+                                  setCode("");
+                                }}
+                              >
+                                취소
                               </button>
-                              <button onClick={submitCode}>확인</button>
-                            </>
-                          )}
-                        </div>
+                              <button
+                                className="update-btn"
+                                onClick={submitCode}
+                              >
+                                확인
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </>
                   ) : (
