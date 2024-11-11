@@ -68,6 +68,7 @@
   width: 90%;
   overflow-y: scroll;
   height: 400px;
+  background-color: white;
 }
 
 table {
@@ -348,6 +349,14 @@ table {
       filter: brightness(0.9);
     }
   }
+}
+.userManagement-none-info {
+  height: 326px;
+  font-size: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1000px;
 }
 // 비밀번호 변경시
 .warning {

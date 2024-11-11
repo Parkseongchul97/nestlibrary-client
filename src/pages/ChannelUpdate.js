@@ -114,6 +114,7 @@ const ChannelUpdate = () => {
   const infoSubmit = async () => {
     await infoUpdate(channelInfos);
     update();
+    alert("변경되었습니다");
   };
 
   const remove = async () => {
@@ -136,6 +137,7 @@ const ChannelUpdate = () => {
       await addImg(formData);
       update();
     }
+    alert("적용되었습니다!");
   };
 
   const reset = () => {

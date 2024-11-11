@@ -441,9 +441,16 @@ const UserManagement = ({ channelCode }) => {
                           />
                         ))
                       ) : (
-                        <tr>
-                          <td colSpan={7}>조회 결과가 없습니다.</td>
-                        </tr>
+                        <>
+                          <tr>
+                            <td
+                              className="userManagement-none-info"
+                              colSpan={7}
+                            >
+                              조회 결과가 없습니다.
+                            </td>
+                          </tr>
+                        </>
                       )}
                     </tbody>
                   </table>
@@ -485,7 +492,9 @@ const UserManagement = ({ channelCode }) => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={5}>조회 결과가 없습니다.</td>
+                        <td className="userManagement-none-info" colSpan={5}>
+                          조회 결과가 없습니다.
+                        </td>
                       </tr>
                     )}
                   </tbody>
