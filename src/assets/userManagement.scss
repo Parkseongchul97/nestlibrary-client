@@ -2,6 +2,8 @@
   display: flex;
   width: 100%;
   flex-direction: column;
+  border: 1px solid #cdcdcd;
+  border-radius: 20px 20px 0px 0px;
   button {
     font-family: "Pretendard Variable";
     font-style: normal;
@@ -14,6 +16,8 @@
   padding: 20px;
   background-color: #d5d5d5;
   text-align: center;
+
+  border-radius: 20px 20px 0px 0px;
 }
 
 .main-content {
