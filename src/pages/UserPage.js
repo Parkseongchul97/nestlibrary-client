@@ -9,7 +9,8 @@ import { useNavigate } from "react-router-dom";
 import RecentPost from "../components/post/RecentPost.js";
 import { useAuth } from "../contexts/AuthContext.js";
 import MessageWrite from "../components/messages/MessageWrite.js";
-import Example from "../components/Chart.js";
+
+import ChartComponent from "../components/Chart.js";
 
 const UserPage = () => {
   const { token, user: loginUser } = useAuth();
@@ -126,7 +127,7 @@ const UserPage = () => {
           {channel && (
             <div className="chart-grand-parent">
               <div className="chart-parent">
-                <Example channel={channel} />
+                <ChartComponent channel={channel} />
               </div>
             </div>
           )}
