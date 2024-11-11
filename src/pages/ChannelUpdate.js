@@ -17,8 +17,9 @@ import { checkEmail, sendCode } from "../api/email";
 
 import { loginUserChannelGrade } from "../api/management";
 import UserManagement from "../components/user/UserManagement";
-import Example from "../components/Chart";
 
+import ChartComponent from "../components/Chart";
+import { channelChart } from "../api/channel";
 const ChannelUpdate = () => {
   const { user } = useAuth(); // 발신자(로그인유저)
   const { channelCode } = useParams();
@@ -30,6 +31,7 @@ const ChannelUpdate = () => {
   const navigate = useNavigate();
   const [view, setView] = useState("door");
   const [loginDTO, setLoginDTO] = useState("");
+  const [channel, setChannel] = useState();
 
   const [chan, setChan] = useState({
     channelCode: channelCode,
@@ -68,6 +70,7 @@ const ChannelUpdate = () => {
   useEffect(() => {
     update();
     loginUser();
+    chart();
   }, []);
 
   const [tags, setTags] = useState({
@@ -93,7 +96,11 @@ const ChannelUpdate = () => {
       getTag();
     }
   };
-
+  const chart = async () => {
+    const response = await channelChart(channelCode);
+    console.log(response);
+    setChannel(response.data);
+  };
   const tagUpdate = async () => {
     await addTags(tags);
     update();
@@ -177,7 +184,9 @@ const ChannelUpdate = () => {
     const response = await loginUserChannelGrade(channelCode);
     setLoginDTO(response.data);
   };
-
+  useEffect(() => {
+    console.log(channel);
+  }, [channel]);
   return (
     <>
       <div className="channelUpdate-container">
@@ -214,6 +223,9 @@ const ChannelUpdate = () => {
                   >
                     채널관리
                   </div>
+                </div>
+                <div id="is-channel-chart" className="chart-parent">
+                  <ChartComponent channel={channel} />
                 </div>
                 <div className="channelUpdate-right">
                   {view === "door" ? (
@@ -345,10 +357,6 @@ const ChannelUpdate = () => {
                           >
                             채널삭제
                           </button>
-                          <div style={{ width: "65%", height: "400px" }}>
-                            {" "}
-                            <Example />
-                          </div>
 
                           {isDelete && (
                             <>

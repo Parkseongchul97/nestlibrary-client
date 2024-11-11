@@ -163,26 +163,20 @@ const Header = ({ onSearch }) => {
             </div>
           ) : (
             <div className="header-right-user">
-              {pushCount.data !== undefined ||
-                (pushCount.data.length !== 0 && (
-                  <p onClick={removeAllSubmit}>모두끄기</p>
-                ))}
-
-              <div
-                className="header-right-push-list"
-                onClick={() => setIsPush(!isPush)}
-              >
-                {pushCount.data === undefined || pushCount.data.length === 0 ? (
-                  <FaBell size={"2rem"} style={{ color: "white" }} />
-                ) : (
-                  <FaBell size={"2rem"} style={{ color: "red" }} />
-                )}
-              </div>
               {isPush && (
                 <div className="push-list-box">
                   {pushCount.data.map((push) => (
                     <PushList push={push} key={push?.pushCode} />
                   ))}
+                  {pushCount.data !== undefined &&
+                    pushCount.data.length !== 0 && (
+                      <div
+                        className="push-box-remove"
+                        onClick={removeAllSubmit}
+                      >
+                        모두끄기
+                      </div>
+                    )}
                 </div>
               )}
               <UserMenu user={user} />
@@ -205,6 +199,19 @@ const Header = ({ onSearch }) => {
                     <span>{messageCount.data}</span>
                   </Link>
                 ))}
+
+              <div
+                className="header-right-push-list"
+                onClick={() => setIsPush(!isPush)}
+              >
+                {pushCount.data === undefined || pushCount.data.length === 0 ? (
+                  <FaBell size={"2rem"} style={{ color: "white" }} />
+                ) : (
+                  <>
+                    <FaBell size={"2rem"} style={{ color: "red" }} />
+                  </>
+                )}
+              </div>
             </div>
           )}
         </div>

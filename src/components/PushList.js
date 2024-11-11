@@ -5,8 +5,7 @@ import { removePush } from "../api/push";
 import { useState, useEffect } from "react";
 import "../assets/pushList.scss";
 import { getPageNum } from "../api/post";
-import { TbXboxX } from "react-icons/tb";
-import { MdDelete, MdDeleteOutline } from "react-icons/md";
+
 import { RiDeleteBin6Fill } from "react-icons/ri";
 const PushList = ({ push }) => {
   const queryClient = useQueryClient();
@@ -26,6 +25,7 @@ const PushList = ({ push }) => {
     setPage(result.data);
   };
   useEffect(() => {
+    console.log(push);
     postPaging();
   }, [push]);
 
@@ -39,7 +39,7 @@ const PushList = ({ push }) => {
           {push.pushMassage}
           <TimeFormat time={push.pushCreatedAt} />
         </Link>
-      ) : push.postCode !== 0 && (page === undefined || page === -1) ? (
+      ) : push.postCode === 0 && (page === undefined || page === -1) ? (
         <Link to={`/channel/${push.channelCode}`} onClick={removeSubmit}>
           {push.pushMassage}
           <TimeFormat time={push.pushCreatedAt} />

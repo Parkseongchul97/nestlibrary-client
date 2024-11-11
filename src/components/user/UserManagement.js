@@ -511,23 +511,29 @@ const UserManagement = ({ channelCode }) => {
 
       {isOpen && (
         <>
-          <div className="login-box">
-            <div className="login-header">
+          <div className="management-modal-box">
+            <div className="management-modal-header">
               <button className="close" onClick={() => setIsOpen(!isOpen)}>
                 <IoIosArrowBack />
               </button>
               <h3>정보 수정</h3>
               <div className="balance"></div>
             </div>
-            <div className="login-body">
-              <div className="login-form">
+            <div className="management-modal-body">
+              <div className="management-modal-form">
                 <div className="input-box">
                   <span>닉네임 : {targetUser.userNickname}</span>
                   <span>
-                    현재등급 :
-                    {targetUser.managementUserStatus !== null
-                      ? targetUser.managementUserStatus
-                      : "해당없음"}
+                    권한 :
+                    {targetUser.managementUserStatus === null
+                      ? " 해당없음"
+                      : targetUser.managementUserStatus === "host"
+                      ? " 호스트"
+                      : targetUser.managementUserStatus === "admin"
+                      ? " 관리자"
+                      : targetUser.managementUserStatus === "ban"
+                      ? " 차단"
+                      : null}
                   </span>
                   {targetUser.managementUserStatus === "ban" && (
                     <span>
@@ -670,6 +676,7 @@ const UserManagement = ({ channelCode }) => {
                     <p className="email-text">이메일 인증이 필요합니다 </p>
                     <div className="email-box">
                       <button
+                        className="email-submit-btn"
                         onClick={() => {
                           setSent(true);
                           goEmail(user.userEmail);
@@ -681,6 +688,7 @@ const UserManagement = ({ channelCode }) => {
                       </button>
 
                       <input
+                        className="code-input"
                         type="text"
                         value={emailCode}
                         onChange={(e) => setEmailCode(e.target.value)}

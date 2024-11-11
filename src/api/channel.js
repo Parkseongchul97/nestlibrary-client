@@ -127,6 +127,10 @@ export const nameCheck = async (channelName, channelCode) => {
 export const updateInfo = async (channelCode) => {
   return await authorize.get(`/update/${channelCode}`);
 };
+// 채널 수정 차트 가져오기
+export const channelChart = async (channelCode) => {
+  return await authorize.get(`chart/${channelCode}`);
+};
 // 채널 태그 추가
 export const addTags = async (data) => {
   return await authorize.post("/tag", data);

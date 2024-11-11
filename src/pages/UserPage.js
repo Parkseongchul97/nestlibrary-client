@@ -9,7 +9,8 @@ import { useNavigate } from "react-router-dom";
 import RecentPost from "../components/post/RecentPost.js";
 import { useAuth } from "../contexts/AuthContext.js";
 import MessageWrite from "../components/messages/MessageWrite.js";
-import Example from "../components/Chart.js";
+
+import ChartComponent from "../components/Chart.js";
 
 const UserPage = () => {
   const { token, user: loginUser } = useAuth();
@@ -95,7 +96,7 @@ const UserPage = () => {
                     className="userPage-channelDetail"
                     key={channel?.channelCode}
                   >
-                    <div className="userPage-favorate-rank">{index + 1}</div>
+                    <div className={"userPage-favorate-rank"}>{index + 1}</div>
                     <div className={"userPage-favorate-title-" + index}>
                       {" "}
                       <Link
@@ -126,11 +127,10 @@ const UserPage = () => {
           {channel && (
             <div className="chart-grand-parent">
               <div className="chart-parent">
-                <Example channel={channel} />
+                <ChartComponent channel={channel} />
               </div>
             </div>
           )}
-
           <div className="userPage-post-list">
             <div className="userPage-title">최근 작성 게시물 </div>
             <div className="userPage-post-item">
