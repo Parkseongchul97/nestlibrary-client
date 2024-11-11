@@ -97,7 +97,6 @@ const Register = () => {
 
   const checkEmailCode = async () => {
     const result = await checkEmail(code);
-
     if (count === 0) {
       alert("인증시간이 만료되었습니다!");
       setCodeSubmit(false);

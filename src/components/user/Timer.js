@@ -25,9 +25,7 @@ const Timer = ({ count, setCount }) => {
 
   return (
     <div className="timer-container">
-      <span className="timer-text">
-        {count !== -1 ? formatTime(count) : null}
-      </span>
+      <span className="timer-text">{count > 0 ? formatTime(count) : null}</span>
     </div>
   );
 };

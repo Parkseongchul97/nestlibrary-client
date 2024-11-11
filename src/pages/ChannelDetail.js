@@ -51,7 +51,6 @@ const ChannelDetail = () => {
   const fetch = async () => {
     setPosts([]);
     const info = await channelInfo(channelCode);
-
     setChannel(info.data);
     const channelPosts =
       viewType === "best" && channelTagCode === undefined // 베스트면서 채널 태그코드가 없으면
