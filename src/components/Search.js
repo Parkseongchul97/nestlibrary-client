@@ -28,7 +28,6 @@ const Search = ({
         onCompositionStart={() => setIsComposing(true)}
         onCompositionEnd={() => setIsComposing(false)}
       />
-      {/*2번 호출되는 상황 또발생 */}
       <select
         className="search-select"
         value={searchTarget}

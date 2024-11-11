@@ -36,12 +36,12 @@ const MessageWrite = ({ toUser, setIsOpenMessage, setViewType }) => {
     if (response.data === "") {
       alert("포인트가 부족합니다! (50포인트 필요)");
     }
-
     if (response.data) {
       alert("발송 완료!");
-
       queryClient.invalidateQueries({ queryKey: ["messageList"] });
-      setViewType("from");
+      if (!toUser) {
+        setViewType("from");
+      }
     }
   };
   const findSubmit = () => {
@@ -49,7 +49,6 @@ const MessageWrite = ({ toUser, setIsOpenMessage, setViewType }) => {
     if (!inputNickname) alert("입력값이 없습니다");
     setToNickname(inputNickname);
     setIsOpen(true);
-    // 검색결과가 없는경우 얼럿 추가
   };
   const selectedUser = (targetUser) => {
     // 선택 누르면 필요값 담고 선택한 사람 닉네임 노출

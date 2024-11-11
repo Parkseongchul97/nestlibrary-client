@@ -76,6 +76,7 @@ const Messages = () => {
           return allMessage(page, searchTarget, searchKeyword);
         }
       } else {
+        // 조회 안한
         if (searchTarget === undefined || searchKeyword === undefined) {
           return noOpenMessage(page);
         } else {

@@ -6,10 +6,8 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 const Page = ({ page, totalPages, pageBtnOnClick, isComment, commentPage }) => {
   // 페이지 현제 페이지 토탈은 총 몇페이지인지
   const pageCount = 10; // 화면에 보이는 페이지 숫자
-  let num = totalPages % 10; // 페이지 좌표 한계점 ex 토탈 173개의 개시글이면 토탈 18p? 2번째부턴 8페이지가끝
-
+  let num = totalPages % 10;
   const [start, setStart] = useState(1); // 시작점
-
   const prevClick = () => {
     // 10단위 이전페이지
     if (start > 10) {
@@ -19,20 +17,16 @@ const Page = ({ page, totalPages, pageBtnOnClick, isComment, commentPage }) => {
   };
 
   const nextClick = () => {
-    // 10단위 다음페이지
+    // 남은페이지가 있으면 현재 +10
     if (start + pageCount <= totalPages) {
-      // 남은페이지가 있으면 현재 +10
-      setStart(start + pageCount);
-      // 11페이지로 스타팅을 바꿈
+      setStart(start + pageCount); // 11페이지로 스타팅을 바꿈
     }
   };
-
   const lastPage = () => {
     // 맨마지막 좌표 페이지로
     if (num === 0) {
       // 값이 딱떨어지는 페이지 숫자라면
-      setStart(totalPages - 9);
-      // 바로 마지막 페이지로
+      setStart(totalPages - 9); // 바로 마지막 페이지로
     } else {
       setStart(totalPages - (num - 1));
     }
