@@ -2,7 +2,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { allChannel } from "../api/channel";
 import { useEffect, useState, useCallback } from "react";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const Layout = () => {
   const currentUrl = window.location.href;

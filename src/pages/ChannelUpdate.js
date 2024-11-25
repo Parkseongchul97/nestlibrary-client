@@ -28,7 +28,6 @@ const ChannelUpdate = () => {
   const [isComposing, setIsComposing] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [code, setCode] = useState("");
-  const [reCode, setReCode] = useState(false);
   const navigate = useNavigate();
   const [view, setView] = useState("door");
   const [loginDTO, setLoginDTO] = useState("");
@@ -165,7 +164,6 @@ const ChannelUpdate = () => {
 
   const getCode = async () => {
     setCount(180);
-    setReCode(true);
     await sendCode(user.userEmail);
     alert("인증번호가 발송되었습니다");
   };

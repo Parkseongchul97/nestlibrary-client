@@ -1,8 +1,6 @@
 import axios from "axios";
 
-const instance = axios.create({
-  baseURL: "http://localhost:8080/api/",
-});
+
 const authorize = axios.create({
   baseURL: "http://localhost:8080/api/private/",
   headers: {

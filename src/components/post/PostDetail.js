@@ -10,10 +10,7 @@ import { likeState as state, like, unLike } from "../../api/postLike";
 import Page from "../Page";
 import { remove } from "../../api/post";
 import UserMenu from "../user/UserMenu";
-import { HiStar } from "react-icons/hi";
-import { FaFire } from "react-icons/fa";
-import { RiFireFill, RiFireLine } from "react-icons/ri";
-import { loginUserChannelGrade } from "../../api/management";
+import { RiFireFill } from "react-icons/ri";
 const PostDetail = ({ postCode, page, loginUserGrade }) => {
   const [isOpenUser, setIsOpenUser] = useState(false);
   const { user, token } = useAuth();

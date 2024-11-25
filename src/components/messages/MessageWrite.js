@@ -4,7 +4,7 @@ import { addMessage } from "../../api/message";
 import "../../assets/messageWrite.scss";
 import { Link } from "react-router-dom";
 import FindUser from "../user/FindUser";
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import {  useQueryClient } from "@tanstack/react-query";
 const MessageWrite = ({ toUser, setIsOpenMessage, setViewType }) => {
   const { user } = useAuth(); // 발신자(로그인유저)
   const [message, setMessage] = useState({

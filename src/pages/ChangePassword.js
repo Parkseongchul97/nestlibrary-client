@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { login, updatePass } from "../api/user";
 import { IoIosArrowBack } from "react-icons/io";
-import { set } from "lodash";
 
 const ChangePassword = ({ onClose }) => {
   const { user, logout: authLogout } = useAuth();

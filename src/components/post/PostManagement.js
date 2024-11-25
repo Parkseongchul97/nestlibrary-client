@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { getPageNum } from "../../api/post";
-import { Link } from "react-router-dom";
-import { FaList } from "react-icons/fa";
+
 const PostManagement = ({ post, channelCode, addList, checkArray }) => {
   const [page, setPage] = useState(1);
 
